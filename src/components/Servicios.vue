@@ -7,8 +7,8 @@ import ItemServicio from './ItemServicio.vue';
       <div class="container pt-13 pb-16 pb-md-18">
         <div class="row">
           <div class="col-lg-8 col-xl-7 col-xxl-6">
-            <h2 class="fs-16 text-uppercase text-line text-primary mb-3">What We Do?</h2>
-            <h3 class="display-4 mb-9">The service we offer is specifically designed to meet your needs.</h3>
+            <h2 class="fs-16 text-uppercase text-line text-primary mb-3">¿Que servicios ofrecemos?</h2>
+            <h3 class="display-4 mb-9">Tenemos el servicio que necesitas para satisfacer tus necesidades.</h3>
           </div>
           <!-- /column -->
         </div>

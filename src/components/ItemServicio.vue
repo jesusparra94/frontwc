@@ -13,7 +13,7 @@
 
                 </slot>
 
-                <router-link class="button" to="/servicio/hosting">Ver Planes</router-link>
+                <a class="button" href="/servicio/hosting">Ver Planes</a>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
 
       <div class="col-md-12 text-center">
 
-        <router-link class="btn btn-outline-primary rounded-pill" to="/servicio/hosting">Ver Planes</router-link>
+        <a class="btn btn-outline-primary rounded-pill" href="/servicio/hosting">Ver Planes</a>
 
       </div>
 
