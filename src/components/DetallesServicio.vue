@@ -4,7 +4,9 @@ export default {
 
   data() {
     return {
-      nombreServicio: ""
+      nombreServicio: "",
+      planes:'',
+      urlBackend: this.urlBackend,
     };
   },
 
@@ -14,7 +16,9 @@ export default {
     },
   methods:{
       traerInformacion() {
+
         this.nombreServicio = this.$route.params.nombre;
+         
       }
   }
 
@@ -33,7 +37,7 @@ export default {
       
             <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-6 mx-auto">
       
-              <h1 class="display-1 text-white mb-3">{{nombreServicio}}</h1>
+              <h1 class="display-1 text-white mb-3 ">{{nombreServicio}}</h1>
               <p class="lead fs-lg px-md-3 px-lg-7 px-xl-9 px-xxl-10">We are a creative company that focuses on establishing long-term relationships with customers.</p>
             
             </div>

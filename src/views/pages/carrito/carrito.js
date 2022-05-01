@@ -14,10 +14,18 @@ export default {
             identificacion:false,
             pago:false,
             confirmacion:false,
-            isActive: true
+            isActive: true,
+            jsoncarro:''
         };
     },
     mounted() {
+
+
+        if(localStorage.getItem('carrito')){
+
+            this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
+
+        }
         
     },
 

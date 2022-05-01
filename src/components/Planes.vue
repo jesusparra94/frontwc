@@ -1,28 +1,17 @@
 <script>
-import ItemServicio from "./ItemServicio.vue";
+import ItemPlanes from "./ItemPlanes.vue";
 
 export default {
   components:{
-    ItemServicio
+    ItemPlanes
   },
   data() {
     return {
-      categorias: "",
       urlBackend: this.urlBackend,
     };
   },
 
-  mounted() {
-    this.traerCategorias();
-  },
-  methods: {
-    traerCategorias() {
-      this.axios.get(`${this.urlBackend}/api/getcategorias`).then((response) => {
-        console.log(response);
-        this.categorias = response.data;
-      });
-    },
-  },
+  props:['planes']
 };
 </script>
 
@@ -42,15 +31,28 @@ export default {
       </div>
       <!-- /.row -->
       <div class="row gx-md-8 gy-8 mb-14 mb-md-18">
-        <div class="col-md-4" v-for="(item, i) in categorias" :key="i">
-          <ItemServicio :categoria="item">
-            <template #nombre>{{item.nombre}}</template>
+        <div class="col-md-4" v-for="(item, i) in planes" :key="i">
+          <ItemPlanes :plan="item">
+            <template #nombre>
+                <p class="text-uppercase"> {{item.nombre}} </p>
+                            <p>{{$filters.currencyUSD(item.precio)}} / al Mes</p>
+
+            </template>
 
             <template #contenido>
-              <p>{{item.nombre}}</p>
-              <p>{{item.descripcion}}</p>
+              <p class="text-uppercase">{{item.nombre}}</p>
+
+              <ul>
+
+                  <li v-for="(item1, j) in item.caracteristicas" :key="j"> {{item1.nombre}} {{item1.capacidad}}</li>
+
+              </ul>
+
+              <p> {{ $filters.currencyUSD(item.precio) }} al Mes</p>
+
+              
             </template>
-          </ItemServicio>
+          </ItemPlanes>
         </div>
       </div>
     </div>

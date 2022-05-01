@@ -1,5 +1,16 @@
+<script>
+export default {
+  
+  data(){
+    return {
+    }
+  },
+  props: ['categoria']
+}
+</script>
+
 <template>
-    <a class="card" href="#!">
+    <a class="card" :href="'servicio/'+categoria.slug" v-if="!categoria.cotizable">
 
         <div class="front" >
           
@@ -13,17 +24,49 @@
 
                 </slot>
 
-                <a class="button" href="/servicio/hosting">Ver Planes</a>
+                <a class="button" :href="'servicio/'+categoria.slug">Ver Planes</a>
             </div>
         </div>
 
     </a>
 
-    <div class="row">
+    <a class="card" :href="'https://wa.me/5636298783/?text=/'+categoria.nombre" v-else>
+
+        <div class="front" >
+          
+            <p><slot name="nombre"></slot></p>
+        
+        </div>
+        
+        <div class="back">
+            <div>
+                <slot name="contenido">
+
+                </slot>
+
+                <a class="button" :href="'servicio/'+categoria.slug">Cotizar</a>
+            </div>
+        </div>
+
+    </a>
+
+    
+
+    <div class="row" v-if="!categoria.cotizable">
 
       <div class="col-md-12 text-center">
 
-        <a class="btn btn-outline-primary rounded-pill" href="/servicio/hosting">Ver Planes</a>
+        <a class="btn btn-outline-primary rounded-pill" :href="'servicio/'+categoria.slug">Ver Planes</a>
+
+      </div>
+
+    </div>
+
+    <div class="row" v-else>
+
+      <div class="col-md-12 text-center">
+
+        <a class="btn btn-outline-primary rounded-pill" :href="'https://wa.me/5636298783/?text=/'+categoria.nombre">Cotizar</a>
 
       </div>
 

@@ -1,61 +1,66 @@
 <script>
-import ItemServicio from "./ItemServicio.vue";
-
 export default {
-  components:{
-    ItemServicio
-  },
-  data() {
+  
+  data(){
     return {
-      categorias: "",
-      urlBackend: this.urlBackend,
-    };
+    }
   },
+  props: ['plan'],
 
-  mounted() {
-    this.traerCategorias();
-  },
-  methods: {
-    traerCategorias() {
-      this.axios.get(`${this.urlBackend}/api/getcategorias`).then((response) => {
-        console.log(response);
-        this.categorias = response.data;
-      });
-    },
-  },
-};
+  methods:{
+      addcarro(item){
+
+          let carrito = [];
+
+          if(localStorage.getItem('carrito')){
+
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+          }
+
+          carrito.push(item);
+
+         localStorage.setItem('carrito',JSON.stringify(carrito));
+
+         this.$router.push('/carrito')
+
+
+      }
+  }
+}
 </script>
 
 <template>
-  <section class="wrapper bg-light">
-    <div class="container pt-13 pb-16 pb-md-18">
-      <div class="row">
-        <div class="col-lg-8 col-xl-7 col-xxl-6">
-          <h2 class="fs-16 text-uppercase text-line text-primary mb-3">
-            ¿Que servicios ofrecemos?
-          </h2>
-          <h3 class="display-4 mb-9">
-            Tenemos el servicio que necesitas para satisfacer tus necesidades.
-          </h3>
-        </div>
-        <!-- /column -->
-      </div>
-      <!-- /.row -->
-      <div class="row gx-md-8 gy-8 mb-14 mb-md-18">
-        <div class="col-md-4" v-for="(item, i) in categorias" :key="i">
-          <ItemServicio :categoria="item">
-            <template #nombre>{{item.nombre}}</template>
+    <div class="card" >
 
-            <template #contenido>
-              <p>{{item.nombre}}</p>
-              <p>{{item.descripcion}}</p>
-            </template>
-          </ItemServicio>
+        <div class="front" >
+          
+            <p><slot name="nombre"></slot></p>
+        
         </div>
-      </div>
+        
+        <div class="back">
+            <div>
+                <slot name="contenido">
+
+                </slot>
+
+                <button class="button" @click="addcarro(plan)" >Comprar</button>
+            </div>
+        </div>
+
     </div>
-    <!-- /.container -->
-  </section>
+
+    <div class="row">
+
+      <div class="col-md-12 text-center">
+
+        <button class="btn btn-outline-primary rounded-pill" @click="addcarro(plan)">Comprar</button>
+
+      </div>
+
+    </div>
+
 </template>
 
 <style scoped>
@@ -101,6 +106,7 @@ export default {
 }
 
 .front {
+  background-image: url("../assets/img/photos/b6.jpg");
   background-size: cover;
   padding: 2rem;
   font-size: 1.618rem;

@@ -107,7 +107,7 @@
                     
                     <h5>Listado de productos:</h5>
 
-                    <div class="card shadow-lg">
+                    <div class="card shadow-lg" v-for="(item, i) in jsoncarro" :key="i"  >
                         
                         <div class="card-body">
 
@@ -119,7 +119,7 @@
                                     
                                         <div class="col-md-5 col-12 col-sm-12 d-flex align-items-center">
 
-                                            <h6>Hosting</h6>
+                                            <h6>{{item.nombre}}</h6>
 
                                         </div>
 
@@ -127,8 +127,8 @@
                                             
                                             <select class="form-control selectperiododominio">
 
-                                                <option value="1" selected>
-                                                    1 año 3.500
+                                                <option value="1" v-for="(item1, j) in item.periodosproducto" :key="j">
+                                                    {{item1.periodo.periodo}} {{$filters.currencyUSD(item1.periodo.precio)}}
                                                 </option>
 
                                             </select>
