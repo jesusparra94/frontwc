@@ -109,7 +109,7 @@
 
                     <div class="card shadow-lg" v-for="(item, i) in jsoncarro" :key="i"  >
                         
-                        <div class="card-body">
+                        <div class="card-body p-md-4 p-0">
 
                             <div class="col-md-12 mb-5">
 
@@ -151,7 +151,17 @@
 
                                                     <div class="form-check">
                                                 
-                                                        <input  class="form-check-input" type="radio" name="opcdominio" id="nuevodominio"/>
+                                                        <input  
+                                                        
+                                                                class="form-check-input" 
+                                                                type="radio" 
+                                                                name="opcdominio" 
+                                                                id="nuevodominio"
+                                                                :value="newdomain"
+                                                                v-model="optdomain"
+                                                                :checked="domainNew"
+                                                                @click="changeOption()"
+                                                        />
 
                                                         <label style="font-size:14px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
                                                             Quiero registrar un nuevo dominio
@@ -165,170 +175,16 @@
 
                                                     <div class="form-check">
                                                 
-                                                        <input  class="form-check-input" type="radio" name="opcdominio" id="nuevodominio"/>
-
-                                                        <label style="font-size:14px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
-                                                            Quiero usar un dominio que ya tengo registrado
-                                                        </label>
-                                                        
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="row" style="width: 100%">
-
-                                        <div class="col-md-12">
-
-                                            <form class="pt-3">
-                                            
-                                                <div class="row">
-                                                    
-                                                    <div class="col-md-2 d-none d-md-block d-lg-block p-0">
-                                                
-                                                        <div class="form-group float-end mt-1">
-                                                            <h6>www.&nbsp;</h6>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-5 col-9 col-sm-9 px-md-0 pe-0">
-                                                
-                                                        <div class="form-group">
-                                                        
-                                                            <input
-                                                            class="input__field_dominio"
-                                                            type="text"
-                                                            placeholder=" "
-                                                            id="dominio"
-                                                            />
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="col-md-2 col-3 col-sm-3 px-md-0 ps-0">
-
-                                                        <div class="form-group contenedor-extension-dominio">
-                                                        
-                                                            <select
-                                                            class="input__field_exten"
-                                                            formControlName="extension"
-                                                            >
-
-                                                                <option value="cl">.cl</option>
-
-                                                                <option value="com">.com</option>
-
-                                                                <option value="net">.net</option>
-
-                                                                <option value="info">.info</option>
-
-                                                                <option value="org">.org</option>
-
-                                                            </select>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
-
-                                                        <button
-                                                            type="button"
-                                                            class="btn"
-                                                            style="
-                                                            background-color: #005ad2;
-                                                            color: #f2f3f5;
-                                                            font-weight: bold;
-                                                            max-height: 40px;
-                                                            font-size: 13px;"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop"
-                                                        >
-                                                        Buscar
-                                                        </button>
-
-                                                    </div>
-
-                                                    <div class="col-md-12 col-12 text-center">
-                                                    
-                                                        <small class="text-danger"><b>Debes ingresar algún dominio</b></small>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </form>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <!-- <div class="col-md-12 mb-5">
-
-                                <div class="card pt-4 pb-5 d-flex justify-content-center align-items-center">
-
-                                    <div class="row" style="width: 100%">
-                                    
-                                        <div class="col-md-5 col-12 col-sm-12 d-flex align-items-center">
-
-                                            <h6>Hosting</h6>
-
-                                        </div>
-
-                                        <div class="col-md-5 col-8 col-sm-8 d-flex justify-content-center align-items-center">
-                                            
-                                            <select class="form-control selectperiododominio">
-
-                                                <option value="1" selected>
-                                                    1 año 3.500
-                                                </option>
-
-                                            </select>
-
-                                        </div>
-
-                                        <div class="col-md-2 col-2 col-sm-2 d-flex align-items-center">
-
-                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" style="cursor:pointer" width="22" alt="">
-
-                                        </div>
-
-                                        <hr class="mt-5 mb-3">
-
-                                        <div class="col-md-12">
-
-                                            <div class="row">
-
-                                                <div class="col-md-6">
-
-                                                    <div class="form-check">
-                                                
-                                                        <input  class="form-check-input" type="radio" name="opcdominio" id="nuevodominio"/>
-
-                                                        <label style="font-size:14px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
-                                                            Quiero registrar un nuevo dominio
-                                                        </label>
-                                                        
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="col-md-6">
-
-                                                    <div class="form-check">
-                                                
-                                                        <input  class="form-check-input" type="radio" name="opcdominio" id="nuevodominio"/>
+                                                        <input  
+                                                                class="form-check-input" 
+                                                                type="radio" 
+                                                                name="opcdominio" 
+                                                                id="nuevodominio"
+                                                                :value="olddomain"
+                                                                v-model="optdomain"
+                                                                :checked="domainOld"
+                                                                @click="changeOption()"
+                                                        />
 
                                                         <label style="font-size:14px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
                                                             Quiero usar un dominio que ya tengo registrado
@@ -350,82 +206,370 @@
                                         <div class="col-md-12">
 
                                             <form class="pt-3">
-                                            
-                                                <div class="row">
-                                                    
-                                                    <div class="col-md-2 d-none d-md-block d-lg-block p-0">
-                                                
-                                                        <div class="form-group float-end mt-1">
-                                                            <h6>www.&nbsp;</h6>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col-md-5 col-9 col-sm-9 px-0">
-                                                
-                                                        <div class="form-group">
+                                                    <div class="row" v-if="domainNew">
+
+                                                        <div class="col-md-6 col-9 col-sm-9 px-md-0 pe-0">
                                                         
-                                                            <input
-                                                            class="input__field_dominio"
-                                                            type="text"
-                                                            placeholder=" "
-                                                            id="dominio"
-                                                            />
-
+                                                            <div class="form-group">
+                                                            
+                                                                <input
+                                                                class="input__field_dominio"
+                                                                type="text"
+                                                                placeholder=" "
+                                                                id="dominio"
+                                                                v-model="form.dominio"
+                                                                />
+                                                        
+                                                            </div>
+                                                        
+                                                        </div>
+                                                        
+                                                        <div class="col-md-2 col-3 col-sm-3 px-md-0 ps-0">
+                                                        
+                                                            <div class="form-group contenedor-extension-dominio">
+                                                            
+                                                                <select
+                                                                class="input__field_exten"
+                                                                v-model="form.ext"
+                                                                >
+                                                                
+                                                                    <option disabled value="">...</option>
+                                                        
+                                                                    <option :value="cl">.cl</option>
+                                                        
+                                                                    <option :value="com">.com</option>
+                                                        
+                                                                    <option :value="net">.net</option>
+                                                        
+                                                                    <option :value="info">.info</option>
+                                                        
+                                                                    <option :value="org">.org</option>
+                                                        
+                                                                </select>
+                                                        
+                                                            </div>
+                                                        
                                                         </div>
 
-                                                    </div>
-
-                                                    <div class="col-md-2 col-3 col-sm-3 px-0">
-
-                                                        <div class="form-group contenedor-extension-dominio">
                                                         
-                                                            <select
-                                                            class="input__field_exten"
-                                                            formControlName="extension"
+                                                        <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+
+                                                            <button
+                                                                type="button"
+                                                                class="btn"
+                                                                style="
+                                                                background-color: #005ad2;
+                                                                color: #f2f3f5;
+                                                                font-weight: bold;
+                                                                max-height: 40px;
+                                                                font-size: 13px;"
+                                                                @click="buscardominio()"
+                                                                v-if="domainNew"
                                                             >
-
-                                                                <option value="cl">.cl</option>
-
-                                                                <option value="com">.com</option>
-
-                                                                <option value="net">.net</option>
-
-                                                                <option value="info">.info</option>
-
-                                                                <option value="org">.org</option>
-
-                                                            </select>
+                                                            Buscar
+                                                            </button>
 
                                                         </div>
 
                                                     </div>
 
-                                                    <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+                                                    <div class="row" v-else>
 
-                                                        <button
-                                                            type="button"
-                                                            class="btn"
-                                                            style="
-                                                            background-color: #005ad2;
-                                                            color: #f2f3f5;
-                                                            font-weight: bold;
-                                                            max-height: 40px;
-                                                            font-size: 13px;"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop"
-                                                        >
-                                                        Buscar
-                                                        </button>
+                                                        <div class="row" v-if="dominioguardado!==''">
+
+                                                            <div class="col-md-6 col-9 col-sm-9 px-md-0 pe-0">
+                                                            
+                                                                <div class="form-group">
+                                                                
+                                                                    <input
+                                                                    class="input__field_dominio"
+                                                                    type="text"
+                                                                    placeholder=" "
+                                                                    id="dominio"
+                                                                    v-model="form.dominio"
+                                                                    />
+                                                            
+                                                                </div>
+                                                            
+                                                            </div>
+                                                            
+                                                            <div class="col-md-2 col-3 col-sm-3 px-md-0 ps-0">
+                                                            
+                                                                <div class="form-group contenedor-extension-dominio">
+                                                                
+                                                                    <select
+                                                                    class="input__field_exten"
+                                                                    v-model="form.ext"
+                                                                    >
+                                                                    
+                                                                        <option disabled value="">...</option>
+                                                            
+                                                                        <option :value="cl">.cl</option>
+                                                            
+                                                                        <option :value="com">.com</option>
+                                                            
+                                                                        <option :value="net">.net</option>
+                                                            
+                                                                        <option :value="info">.info</option>
+                                                            
+                                                                        <option :value="org">.org</option>
+                                                            
+                                                                    </select>
+                                                            
+                                                                </div>
+                                                            
+                                                            </div>
+                                                            
+                                                            <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+                                                            
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn"
+                                                                    style="
+                                                                    background-color: #005ad2;
+                                                                    color: #f2f3f5;
+                                                                    font-weight: bold;
+                                                                    max-height: 40px;
+                                                                    font-size: 13px;"
+                                                                    @click="guardardominio()"
+                                                                >
+                                                                Guardar
+                                                                </button>
+                                                            
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row" v-else>
+
+
+
+                                                        </div>
 
                                                     </div>
 
-                                                    <div class="col-md-12 col-12 text-center">
+                                                    <div class="col-md-12 col-12 text-center d-none">
                                                     
                                                         <small class="text-danger"><b>Debes ingresar algún dominio</b></small>
 
                                                     </div>
 
-                                                </div>
+                                                    <div class="row resultados mt-3" v-if="dominiosrecomendados.length>0">
+
+                                                        <div class="col-md-12 d-flex justify-content-center align-items-center">
+
+                                                            <div v-if="statusDominioBuscado">
+                                                            
+                                                                <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600"  >
+
+                                                                    {{dominiobuscado}} está disponible
+
+                                                                </h4>
+
+                                                                <div class="btn_hover0 d-flex justify-content-center opc_hover" style="width: auto;">
+                                                                    
+                                                                    <div class="item" style="cursor: pointer">
+                                                                    
+                                                                    <a class="btn-add btn-add" itemn="0">
+                                                                        
+                                                                        <span class="d-block">
+                                                                        
+                                                                            <i
+                                                                                style="font-size: 28px"
+                                                                                class="fas fa-cart-plus"
+                                                                            ></i>
+
+                                                                            <p
+                                                                                style="
+                                                                                font-size: 11px;
+                                                                                line-height: 1;
+                                                                                visibility: hidden;
+                                                                                "
+                                                                            >
+                                                                                &nbsp;
+                                                                            </p>
+                                                                        
+                                                                        </span>
+
+                                                                        
+                                                                        <span class="span-addcard px-1 d-none">
+
+                                                                            <i class="far fa-check-circle"></i>
+
+                                                                            <p style="font-size: 11px; line-height: 1">
+                                                                                Añadir al carrito
+                                                                            </p>
+
+                                                                        </span>
+                            <!-- 
+                                                                        <span class="px-1 d-block" style="padding: 20px 20px;height: 80px;"  
+                                                                            *ngIf="dominiopAgregado"
+                                                                        >
+                                                                            <i style="font-size:28px;" class="far fa-check-circle"></i>
+                                                                            <p style="font-size:11px;line-height: 1;">Añadido al carrito</p>
+                                                                        </span> -->
+                                                                    
+
+
+
+
+                                                                    </a>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div v-else>
+
+                                                                <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600">
+                                                                    <i class="far fa-times-circle" style="color: #c70d00"></i>
+                                                                    {{dominiobuscado}} no está disponible
+                                                                </h4>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-12">
+
+                                                            <h5 class="mt-1 text-center titulo-bold">
+                                                           
+                                                            Otras opciones disponibles
+
+                                                            </h5>
+                                                            
+                                                        </div>
+
+                                                        <div
+                                                            class="col-12 col-sm-12 col-md-6 d-none d-md-block d-lg-block card-newd"
+                                                        >
+                                                            &nbsp;
+                                                        </div>
+
+                                                        <div
+                                                            class="col-12 col-sm-12 col-md-6 d-sm-none d-md-block d-lg-block card-newd"
+                                                        >
+
+                                                            &nbsp;
+
+                                                        </div>
+
+
+                                                        <div
+                                                                class="col-12 col-sm-12 col-md-12"
+                                                                v-for="(item, i) in dominiosrecomendados" :key="i"
+                                                        >
+                                                            
+                                                            <div class="row d-flex align-items-center card-newd" v-if="item.status=='free' && item.domain!==dominiobuscado">
+                                                                
+                                                                <div class="col-md-6 col-12 col-sm-12">
+                                                            
+                                                                    <h6 class="d-none d-md-block d-lg-block">{{item.domain}}</h6>
+                                                            
+                                                                    <h3 class="d-sm-block d-md-none d-lg-none text-center">{{item.domain}}</h3>
+                                                            
+                                                                </div>
+                                                            
+                                                                <div class="col-md-6 col-12 col-sm-12">
+                                                                
+                                                                <div class="row d-flex align-items-center">
+                                                                    
+                                                                    <div class="col-6 col-sm-6 col-md-8 p-0">
+
+                                                                        <div class="precio-dominio-recomendacion float-right">
+                                                                            <p style="margin: 5px; text-align: right">
+                                                                            <b style="color: #005ad2"> CLP</b><br /><small
+                                                                                style="color: #afb0b2"
+                                                                                >Por el primer año</small
+                                                                            >
+                                                                            </p>
+                                                                        </div>
+
+                                                                    </div>
+                                                            
+                                                                    <div class="col-6 col-sm-6 col-md-4 p-0">
+                                                                    <div
+                                                                        class="btn_hover0 d-flex justify-content-center"
+                                                                        :class="{'opc_hover2': item.agregado == true, 'opc_hover' : item.agregado == false }"
+                                                                    >
+                                                                        <div class="item" style="cursor: pointer">
+                                                                        <a
+                                                                            class="btn-add"
+                                                                            :class="{'btn-delete': item.agregado == true, 'btn-add' : item.agregado == false }"
+                                                                            itemn="0"
+                                                                        >
+                                                                            <span :class="{
+                                                                            'd-none': item.agregado == true,
+                                                                            'd-block': !item.agregado
+                                                                            }">
+
+                                                                            <i 
+                                                                                style="font-size: 28px"
+                                                                                class="far fa-plus-square">
+                                                                            </i>
+                                                                            <p
+                                                                                style="
+                                                                                font-size: 11px;
+                                                                                line-height: 1;
+                                                                                visibility: hidden;
+                                                                                "
+                                                                            >
+                                                                                &nbsp;
+                                                                            </p>
+                                                                            </span>
+                                                            
+                                                                            <span class="span-addcard px-1"
+                                                            
+                                                                            :class="{
+                                                                            'd-none': item.agregado == true
+                                                                            }"
+                                                                            
+                                                            
+                                                                            >
+                                                                            <i class="far fa-check-circle"></i>
+                                                            
+                                                                            <p style="font-size: 11px; line-height: 1">
+                                                                                Añadir al carrito
+                                                                            </p>
+                                                                            </span>
+                                                            
+                                                            
+                                                                            
+                                                                            <span class="px-1 d-block" style="padding: 20px 20px;height: 80px;"  
+                                                                            v-if="item.agregado"
+                                                                            >
+                                                                            <i style="font-size:28px;" class="far fa-check-circle"></i>
+                                                                            <p style="font-size:11px;line-height: 1;">Añadido al carrito</p>
+                                                                            </span>
+                                                                            
+                                                            
+                                                            
+                                                            
+                                                                        </a>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                        
+                                
+
+                                                    </div>
+
+                                                    <div class="row resultados" v-else>
+
+                                                        <div v-if="loading" class="modal-body d-flex justify-content-center mb-5 mt-5">
+
+                                                            <div class="spinner-grow text-primary" role="status">
+                                                                <span class="visually-hidden">Loading...</span>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
 
                                             </form>
 
@@ -435,8 +579,7 @@
 
                                 </div>
 
-                            </div> -->
-                            
+                            </div>
 
                         </div>
 
