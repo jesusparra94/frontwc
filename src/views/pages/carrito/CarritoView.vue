@@ -305,15 +305,15 @@
                                                                     
                                                                         <option disabled value="">...</option>
                                                             
-                                                                        <option :value="cl">.cl</option>
+                                                                        <option value="cl">.cl</option>
                                                             
-                                                                        <option :value="com">.com</option>
+                                                                        <option value="com">.com</option>
                                                             
-                                                                        <option :value="net">.net</option>
+                                                                        <option value="net">.net</option>
                                                             
-                                                                        <option :value="info">.info</option>
+                                                                        <option value="info">.info</option>
                                                             
-                                                                        <option :value="org">.org</option>
+                                                                        <option value="org">.org</option>
                                                             
                                                                     </select>
                                                             
