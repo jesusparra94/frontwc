@@ -157,8 +157,6 @@
                                                                 type="radio" 
                                                                 name="opcdominio" 
                                                                 id="nuevodominio"
-                                                                :value="newdomain"
-                                                                v-model="optdomain"
                                                                 :checked="domainNew"
                                                                 @click="changeOption()"
                                                         />
@@ -180,8 +178,6 @@
                                                                 type="radio" 
                                                                 name="opcdominio" 
                                                                 id="nuevodominio"
-                                                                :value="olddomain"
-                                                                v-model="optdomain"
                                                                 :checked="domainOld"
                                                                 @click="changeOption()"
                                                         />
@@ -201,13 +197,13 @@
                                     </div>
 
 
-                                    <div class="row">
+                                    <div class="row" style="width: 100%">
 
                                         <div class="col-md-12">
 
                                             <form class="pt-3">
 
-                                                    <div class="row" v-if="domainNew">
+                                                    <div class="row d-flex justify-content-center" v-if="domainNew">
 
                                                         <div class="col-md-6 col-9 col-sm-9 px-md-0 pe-0">
                                                         
@@ -236,15 +232,15 @@
                                                                 
                                                                     <option disabled value="">...</option>
                                                         
-                                                                    <option :value="cl">.cl</option>
+                                                                    <option value="cl">.cl</option>
                                                         
-                                                                    <option :value="com">.com</option>
+                                                                    <option value="com">.com</option>
                                                         
-                                                                    <option :value="net">.net</option>
+                                                                    <option value="net">.net</option>
                                                         
-                                                                    <option :value="info">.info</option>
+                                                                    <option value="info">.info</option>
                                                         
-                                                                    <option :value="org">.org</option>
+                                                                    <option value="org">.org</option>
                                                         
                                                                 </select>
                                                         
@@ -275,8 +271,8 @@
                                                     </div>
 
                                                     <div class="row" v-else>
-
-                                                        <div class="row" v-if="dominioguardado!==''">
+                                                       
+                                                        <div class="row d-flex justify-content-center" v-if="dominioguardado==''">
 
                                                             <div class="col-md-6 col-9 col-sm-9 px-md-0 pe-0">
                                                             
@@ -287,7 +283,7 @@
                                                                     type="text"
                                                                     placeholder=" "
                                                                     id="dominio"
-                                                                    v-model="form.dominio"
+                                                                    v-model="form2.dominio2"
                                                                     />
                                                             
                                                                 </div>
@@ -300,7 +296,7 @@
                                                                 
                                                                     <select
                                                                     class="input__field_exten"
-                                                                    v-model="form.ext"
+                                                                    v-model="form2.ext2"
                                                                     >
                                                                     
                                                                         <option disabled value="">...</option>
@@ -341,159 +337,215 @@
 
                                                         </div>
 
-                                                        <div class="row" v-else>
-
-
+                                                        <div class="row d-flex justify-content-center" v-else>
+                                                            
+                                                            <div class="col-md-6 col-9 col-sm-9 px-md-0 pe-0">
+                                                            
+                                                                <div class="form-group">
+                                                                
+                                                                    <input
+                                                                    class="input__field_dominio"
+                                                                    type="text"
+                                                                    placeholder=" "
+                                                                    id="dominio"
+                                                                    v-model="form2.dominio2"
+                                                                    disabled
+                                                                    />
+                                                            
+                                                                </div>
+                                                            
+                                                            </div>
+                                                            
+                                                            <div class="col-md-2 col-3 col-sm-3 px-md-0 ps-0">
+                                                            
+                                                                <div class="form-group contenedor-extension-dominio">
+                                                                
+                                                                    <select
+                                                                    class="input__field_exten"
+                                                                    v-model="form2.ext2"
+                                                                    disabled
+                                                                    >
+                                                                    
+                                                                        <option disabled value="">...</option>
+                                                            
+                                                                        <option value="cl">.cl</option>
+                                                            
+                                                                        <option value="com">.com</option>
+                                                            
+                                                                        <option value="net">.net</option>
+                                                            
+                                                                        <option value="info">.info</option>
+                                                            
+                                                                        <option value="org">.org</option>
+                                                            
+                                                                    </select>
+                                                            
+                                                                </div>
+                                                            
+                                                            </div>
+                                                            
+                                                            <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+                                                            
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn"
+                                                                    style="
+                                                                    background-color: #005ad2;
+                                                                    color: #f2f3f5;
+                                                                    font-weight: bold;
+                                                                    max-height: 40px;
+                                                                    font-size: 13px;"
+                                                                    @click="cambiardominioguardado()"
+                                                                >
+                                                                Cambiar
+                                                                </button>
+                                                            
+                                                            </div>
 
                                                         </div>
 
                                                     </div>
 
-                                                    <div class="col-md-12 col-12 text-center d-none">
-                                                    
-                                                        <small class="text-danger"><b>Debes ingresar algún dominio</b></small>
+                                            </form>
 
-                                                    </div>
+                                            <div class="row mt-3" v-if="dominiosrecomendados.length>0">
 
-                                                    <div class="row resultados mt-3" v-if="dominiosrecomendados.length>0">
+                                                <div class="col-md-12" v-if="statusDominioBuscado">
 
-                                                        <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                    <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600" >
 
-                                                            <div v-if="statusDominioBuscado">
+                                                            {{dominiobuscado}} está disponible
+
+                                                    </h4>
+
+                                                    <div class="btn_hover0 opc_hover d-flex justify-content-center" 
+                                                        :class="{'opc_hover2': domainFirstAdd == true, 'opc_hover' : domainFirstAdd == false }"
+                                                    >
+                                                        
+                                                        
+                                                        <div class="item" style="cursor: pointer" @click="addFirstDomain(dominiobuscado)">
                                                             
-                                                                <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600"  >
-
-                                                                    {{dominiobuscado}} está disponible
-
-                                                                </h4>
-
-                                                                <div class="btn_hover0 d-flex justify-content-center opc_hover" style="width: auto;">
-                                                                    
-                                                                    <div class="item" style="cursor: pointer">
-                                                                    
-                                                                    <a class="btn-add btn-add" itemn="0">
-                                                                        
-                                                                        <span class="d-block">
-                                                                        
-                                                                            <i
-                                                                                style="font-size: 28px"
-                                                                                class="fas fa-cart-plus"
-                                                                            ></i>
-
-                                                                            <p
-                                                                                style="
-                                                                                font-size: 11px;
-                                                                                line-height: 1;
-                                                                                visibility: hidden;
-                                                                                "
+                                                            <a
+                                                                class="btn-add"
+                                                                :class="{'btn-delete': domainFirstAdd == true, 'btn-add' : domainFirstAdd == false }"
+                                                                itemn="0"
+                                                            >
+                                                                            <span class="d-flex align-items-center"
+                                                                            :class="{
+                                                                            'd-none': domainFirstAdd == true,
+                                                                            'd-block': !domainFirstAdd
+                                                                            }"
                                                                             >
+
+                                                                                <i 
+                                                                                    style="font-size: 28px"
+                                                                                    class="far fa-plus-square pe-1">
+                                                                                </i>
+
+                                                                                Comprar ahora
+                                                                                
+                                                                                <p
+                                                                                    style="
+                                                                                    font-size: 11px;
+                                                                                    line-height: 1;
+                                                                                    visibility: hidden;
+                                                                                    "
+                                                                                >
                                                                                 &nbsp;
-                                                                            </p>
-                                                                        
-                                                                        </span>
+                                                                                </p>
 
-                                                                        
-                                                                        <span class="span-addcard px-1 d-none">
-
-                                                                            <i class="far fa-check-circle"></i>
-
-                                                                            <p style="font-size: 11px; line-height: 1">
-                                                                                Añadir al carrito
-                                                                            </p>
-
-                                                                        </span>
-                            <!-- 
-                                                                        <span class="px-1 d-block" style="padding: 20px 20px;height: 80px;"  
-                                                                            *ngIf="dominiopAgregado"
-                                                                        >
-                                                                            <i style="font-size:28px;" class="far fa-check-circle"></i>
-                                                                            <p style="font-size:11px;line-height: 1;">Añadido al carrito</p>
-                                                                        </span> -->
-                                                                    
-
-
-
-
-                                                                    </a>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-
-                                                            <div v-else>
-
-                                                                <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600">
-                                                                    <i class="far fa-times-circle" style="color: #c70d00"></i>
-                                                                    {{dominiobuscado}} no está disponible
-                                                                </h4>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-md-12">
-
-                                                            <h5 class="mt-1 text-center titulo-bold">
-                                                           
-                                                            Otras opciones disponibles
-
-                                                            </h5>
+                                                                            </span>
                                                             
-                                                        </div>
-
-                                                        <div
-                                                            class="col-12 col-sm-12 col-md-6 d-none d-md-block d-lg-block card-newd"
-                                                        >
-                                                            &nbsp;
-                                                        </div>
-
-                                                        <div
-                                                            class="col-12 col-sm-12 col-md-6 d-sm-none d-md-block d-lg-block card-newd"
-                                                        >
-
-                                                            &nbsp;
-
-                                                        </div>
-
-
-                                                        <div
-                                                                class="col-12 col-sm-12 col-md-12"
-                                                                v-for="(item, i) in dominiosrecomendados" :key="i"
-                                                        >
-                                                            
-                                                            <div class="row d-flex align-items-center card-newd" v-if="item.status=='free' && item.domain!==dominiobuscado">
+                                                                            <span class="span-addcard px-1" 
+                                                                            :class="{'d-none': domainFirstAdd == true}">
+                                                                            
+                                                                                <i class="far fa-check-circle"></i>
                                                                 
-                                                                <div class="col-md-6 col-12 col-sm-12">
-                                                            
-                                                                    <h6 class="d-none d-md-block d-lg-block">{{item.domain}}</h6>
-                                                            
-                                                                    <h3 class="d-sm-block d-md-none d-lg-none text-center">{{item.domain}}</h3>
-                                                            
-                                                                </div>
-                                                            
-                                                                <div class="col-md-6 col-12 col-sm-12">
-                                                                
-                                                                <div class="row d-flex align-items-center">
-                                                                    
-                                                                    <div class="col-6 col-sm-6 col-md-8 p-0">
+                                                                                <p style="font-size: 11px; line-height: 1">
+                                                                                    Comprar ahora
+                                                                                </p>
 
-                                                                        <div class="precio-dominio-recomendacion float-right">
-                                                                            <p style="margin: 5px; text-align: right">
-                                                                            <b style="color: #005ad2"> CLP</b><br /><small
-                                                                                style="color: #afb0b2"
-                                                                                >Por el primer año</small
+                                                                            </span>
+
+                                                                            <span class="px-1 d-block" style="padding: 20px 20px;height: 80px;"  
+                                                                            v-if="domainFirstAdd"
                                                                             >
-                                                                            </p>
-                                                                        </div>
+                                                                            <i style="font-size:28px;" class="far fa-check-circle"></i>
+                                                                            <p style="font-size:11px;line-height: 1;">Agregado</p>
+                                                                            </span>
 
-                                                                    </div>
+                                                            </a>
+
+                                                        </div>
+                                                        
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-12" v-else>
+
+                                                    <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600" >
+
+                                                            {{dominiobuscado}} no está disponible
+
+                                                    </h4>
+
+                                                </div>                                  
+
+                                            </div>
+
+                                            <div class="row" v-if="dominiosrecomendados.length>0">
+
+                                                <div class="col-md-12">
+
+                                                    <h5 class="mt-1 text-center titulo-bold" style="font-weight: 600" >
+
+                                                            <u>Tenemos otras opciones para tí</u>
+
+                                                    </h5>
+
+                                                </div>
+
+                                                <div
+                                                        class="col-12 col-sm-12 col-md-12"
+                                                        v-for="(item, i) in dominiosrecomendados" :key="i"
+                                                >
                                                             
-                                                                    <div class="col-6 col-sm-6 col-md-4 p-0">
+                                                    <div class="row d-flex align-items-center card-newd" v-if="item.status=='free' && item.domain!==dominiobuscado">
+                                                        
+                                                        <div class="col-md-6 col-12 col-sm-12">
+                                                    
+                                                            <h6 class="d-none d-md-block d-lg-block">{{item.domain}}</h6>
+                                                    
+                                                            <h3 class="d-sm-block d-md-none d-lg-none text-center">{{item.domain}}</h3>
+                                                    
+                                                        </div>
+                                                    
+                                                        <div class="col-md-6 col-12 col-sm-12">
+                                                        
+                                                            <div class="row d-flex align-items-center">
+                                                                
+                                                                <div class="col-6 col-sm-6 col-md-8 p-0">
+
+                                                                    <div class="precio-dominio-recomendacion float-right">
+                                                                        <p style="margin: 5px; text-align: right">
+                                                                        <b style="color: #005ad2"> CLP</b><br /><small
+                                                                            style="color: #afb0b2"
+                                                                            >Por el primer año</small
+                                                                        >
+                                                                        </p>
+                                                                    </div>
+
+                                                                </div>
+                                                        
+                                                                <div class="col-6 col-sm-6 col-md-4 p-0">
+
                                                                     <div
                                                                         class="btn_hover0 d-flex justify-content-center"
                                                                         :class="{'opc_hover2': item.agregado == true, 'opc_hover' : item.agregado == false }"
                                                                     >
-                                                                        <div class="item" style="cursor: pointer">
+                                                                        <div class="item" style="cursor: pointer" @click="addcarro(item)">
+                                                                            
                                                                         <a
                                                                             class="btn-add"
                                                                             :class="{'btn-delete': item.agregado == true, 'btn-add' : item.agregado == false }"
@@ -508,6 +560,7 @@
                                                                                 style="font-size: 28px"
                                                                                 class="far fa-plus-square">
                                                                             </i>
+                                                                            
                                                                             <p
                                                                                 style="
                                                                                 font-size: 11px;
@@ -530,7 +583,7 @@
                                                                             <i class="far fa-check-circle"></i>
                                                             
                                                                             <p style="font-size: 11px; line-height: 1">
-                                                                                Añadir al carrito
+                                                                                Comprar ahora
                                                                             </p>
                                                                             </span>
                                                             
@@ -540,7 +593,7 @@
                                                                             v-if="item.agregado"
                                                                             >
                                                                             <i style="font-size:28px;" class="far fa-check-circle"></i>
-                                                                            <p style="font-size:11px;line-height: 1;">Añadido al carrito</p>
+                                                                            <p style="font-size:11px;line-height: 1;">Agregado</p>
                                                                             </span>
                                                                             
                                                             
@@ -549,29 +602,30 @@
                                                                         </a>
                                                                         </div>
                                                                     </div>
-                                                                    </div>
+
                                                                 </div>
-                                                                </div>
-                                                            </div>
-                                                            </div>
-                                                        
-                                
 
-                                                    </div>
-
-                                                    <div class="row resultados" v-else>
-
-                                                        <div v-if="loading" class="modal-body d-flex justify-content-center mb-5 mt-5">
-
-                                                            <div class="spinner-grow text-primary" role="status">
-                                                                <span class="visually-hidden">Loading...</span>
                                                             </div>
 
                                                         </div>
 
                                                     </div>
+                                                            
+                                                </div>
 
-                                            </form>
+                                            </div>
+
+                                            <div class="row resultados" style="width:100%;" v-else>
+
+                                                <div v-if="loading" class="modal-body d-flex justify-content-center mb-5 mt-5">
+
+                                                    <div class="spinner-grow text-primary" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
 
                                         </div>
 

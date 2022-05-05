@@ -23,7 +23,12 @@ export default {
                 dominio: "",
                 ext: ""
               },
+              form2: {
+                dominio2: "",
+                ext2: ""
+              },
             statusDominioBuscado:false,
+            domainFirstAdd:false,
             dominiobuscado:'',
             dominioguardado:'',
             dominioguardadostatus:false,
@@ -41,8 +46,10 @@ export default {
             this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
 
         }
+        
 
         console.log(this.jsoncarro);
+
         
     },
 
@@ -51,13 +58,13 @@ export default {
 
         buscardominio(){
 
-            console.log(this.form.dominio);
-
             this.loading = true;
 
             this.dominiosrecomendados = '';
 
             this.dominiobuscado = this.form.dominio+'.'+this.form.ext;
+
+            console.log("dominio buscado: "+this.dominiobuscado);
 
             const array1 = ['a', 'b', 'c'];
 
@@ -103,59 +110,39 @@ export default {
             
                 });
 
-                console.log(this.dominiosrecomendados);
+                //verificar items en el carro
+
+            let carrito = [];
+  
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+            carrito.forEach((element) => {
+
+                this.dominiosrecomendados.forEach((element2) =>{
+
+                    if(element.domain==element2.domain){
+                        element2.agregado = true;
+                    }
+
+                })
+
+        
+            });
+    
+    
+            console.log("dominiosrecomendados");
+            console.log(this.dominiosrecomendados);
 
 
-                // if (res.data) {
-                // if (this.form.id_producto == "") {
-                //     Swal.fire({
-                //     icon: "success",
-                //     title: "Producto",
-                //     text: "Producto creada exitosamente.",
-                //     timer: 1500,
-                //     showConfirmButton: false,
-                //     });
-                // } else {
-                //     Swal.fire({
-                //     icon: "success",
-                //     title: "Producto",
-                //     text: "Producto editada exitosamente.",
-                //     timer: 1500,
-                //     showConfirmButton: false,
-                //     });
-                // }
-                // this.modal = false;
-                // this.productoexist = false;
-                // this.btnCreate = false;
-
-                // this.$v.form.$reset();
-                // this.formcaracteristicas = [];
-                // this.traerProducto();
-                // }
+              
             })
             .catch((error) => {
                  console.log("error", error);
 
-            //     let title = "";
-            //     let message = "";
-            //     let type = "";
-
-            //     if (this.form.id_producto == "") {
-            //     title = "Crear Producto";
-            //     message = "Producto  creada con exito";
-            //     type = "error";
-            //     } else {
-            //     title = "Editar Producto";
-            //     message = "Producto editada con exito";
-            //     type = "error";
-            //     }
-
-            //     this.modal = false;
-            //     this.btnCreate = false;
-            //     this.$v.form.$reset();
-
-            //     this.successmsg(title, message, type);
+           
              });
+
+             
 
 
         },
@@ -174,9 +161,88 @@ export default {
 
         guardardominio(){
 
-            this.dominioguardado = this.form.dominio2+'.'+this.form.ext2;
+            this.dominioguardado = this.form2.dominio2+'.'+this.form2.ext2;
             this.dominioguardadostatus = true;
 
+        },
+
+        cambiardominioguardado(){
+
+            this.dominioguardado = '';
+            this.dominioguardadostatus = false;
+        },
+
+        addFirstDomain(domain){
+
+            let exisd = false;
+
+            let carrito = [];
+
+            let ItemNew = [];
+  
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+            carrito.forEach((element) => {
+
+                if(element.domain==domain){
+                    exisd = true;
+                }
+
+        
+            });
+
+            if(!exisd){
+
+                this.dominiosrecomendados.forEach((element2) =>{
+
+                    if(domain==element2.domain){
+                        carrito.push(element2);
+                        this.domainFirstAdd = true;
+                    }
+
+                })
+                localStorage.setItem('carrito',JSON.stringify(carrito));
+
+            }
+
+        },
+
+        addcarro(dataitem){
+
+            let carrito = [];
+  
+            if(localStorage.getItem('carrito')){
+  
+              carrito =  JSON.parse(localStorage.getItem('carrito'));
+  
+            }
+
+            console.log("item agregado");
+            console.log(dataitem.domain);
+
+            let existed = false;
+
+            carrito.forEach((element) => {
+
+                if(element.domain==dataitem.domain){
+                    element.agregado = true;
+                    existed = true;
+                }
+
+        
+            });
+
+            if(!existed){
+                dataitem.agregado = true;
+                carrito.push(dataitem);
+            }
+  
+            localStorage.setItem('carrito',JSON.stringify(carrito));
+           
+            console.log(carrito);
+  
+  
+  
         },
 
         continuaridentificacion(){
