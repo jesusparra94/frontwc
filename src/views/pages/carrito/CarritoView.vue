@@ -100,8 +100,7 @@
 
         <div class="container">
 
-
-            <div class="row" v-if="carrito">
+            <div class="row" v-if="jsoncarro.length>0">
 
                 <div class="col-md-7">
                     
@@ -109,7 +108,7 @@
 
                     <div class="card shadow-lg" v-for="(item, i) in jsoncarro" :key="i"  >
                         
-                        <div class="card-body p-md-4 p-0">
+                        <div class="card-body p-md-4 p-0" v-if="item.categoria_id==1">
 
                             <div class="col-md-12 mb-5">
 
@@ -117,9 +116,11 @@
 
                                     <div class="row" style="width: 100%">
                                     
-                                        <div class="col-md-5 col-12 col-sm-12 d-flex align-items-center">
+                                        <div class="col-md-5 col-12 col-sm-12">
 
                                             <h6>{{item.nombre}}</h6>
+
+                                            <small style="font-size:15px" v-if="dominioguardado[i]!=''">dominio: {{dominioguardado[i]}}</small>
 
                                         </div>
 
@@ -137,7 +138,7 @@
 
                                         <div class="col-md-2 col-2 col-sm-2 d-flex align-items-center">
 
-                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" style="cursor:pointer" width="22" alt="">
+                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" @click="eliminarcarro(item)" style="cursor:pointer" width="22" alt="">
 
                                         </div>
 
@@ -155,10 +156,10 @@
                                                         
                                                                 class="form-check-input" 
                                                                 type="radio" 
-                                                                name="opcdominio" 
-                                                                id="nuevodominio"
-                                                                :checked="domainNew"
-                                                                @click="changeOption()"
+                                                                :name="'opcdn'+i" 
+                                                                :id="'opcdn'+i"
+                                                                :checked="domainNew[i]"
+                                                                @click="changeOption(i)"
                                                         />
 
                                                         <label style="font-size:14px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
@@ -176,10 +177,10 @@
                                                         <input  
                                                                 class="form-check-input" 
                                                                 type="radio" 
-                                                                name="opcdominio" 
-                                                                id="nuevodominio"
-                                                                :checked="domainOld"
-                                                                @click="changeOption()"
+                                                                :name="'opcdo'+i" 
+                                                                :id="'opcdo'+i"
+                                                                :checked="domainOld[i]"
+                                                                @click="changeOption(i)"
                                                         />
 
                                                         <label style="font-size:14px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
@@ -203,7 +204,7 @@
 
                                             <form class="pt-3">
 
-                                                    <div class="row d-flex justify-content-center" v-if="domainNew">
+                                                    <div class="row d-flex justify-content-center" v-if="domainNew[i]">
 
                                                         <div class="col-md-6 col-9 col-sm-9 px-md-0 pe-0">
                                                         
@@ -213,8 +214,9 @@
                                                                 class="input__field_dominio"
                                                                 type="text"
                                                                 placeholder=" "
-                                                                id="dominio"
-                                                                v-model="form.dominio"
+                                                                :id="formvalores[i].dominio"
+                                                                :name="formvalores[i].dominio"
+                                                                v-model="formvalores[i].dominio"
                                                                 />
                                                         
                                                             </div>
@@ -227,7 +229,7 @@
                                                             
                                                                 <select
                                                                 class="input__field_exten"
-                                                                v-model="form.ext"
+                                                                v-model="formvalores[i].ext"
                                                                 >
                                                                 
                                                                     <option disabled value="">...</option>
@@ -260,8 +262,8 @@
                                                                 font-weight: bold;
                                                                 max-height: 40px;
                                                                 font-size: 13px;"
-                                                                @click="buscardominio()"
-                                                                v-if="domainNew"
+                                                                @click="buscardominio(i)"
+                                                                v-if="domainNew[i]"
                                                             >
                                                             Buscar
                                                             </button>
@@ -272,7 +274,7 @@
 
                                                     <div class="row" v-else>
                                                        
-                                                        <div class="row d-flex justify-content-center" v-if="dominioguardado==''">
+                                                        <div class="row d-flex justify-content-center" v-if="dominioguardado[i]==''">
 
                                                             <div class="col-md-6 col-9 col-sm-9 px-md-0 pe-0">
                                                             
@@ -282,8 +284,7 @@
                                                                     class="input__field_dominio"
                                                                     type="text"
                                                                     placeholder=" "
-                                                                    id="dominio"
-                                                                    v-model="form2.dominio2"
+                                                                    v-model="formvalores2[i].dominio"
                                                                     />
                                                             
                                                                 </div>
@@ -296,7 +297,7 @@
                                                                 
                                                                     <select
                                                                     class="input__field_exten"
-                                                                    v-model="form2.ext2"
+                                                                    v-model="formvalores2[i].ext"
                                                                     >
                                                                     
                                                                         <option disabled value="">...</option>
@@ -328,7 +329,7 @@
                                                                     font-weight: bold;
                                                                     max-height: 40px;
                                                                     font-size: 13px;"
-                                                                    @click="guardardominio()"
+                                                                    @click="guardardominio(i)"
                                                                 >
                                                                 Guardar
                                                                 </button>
@@ -348,7 +349,7 @@
                                                                     type="text"
                                                                     placeholder=" "
                                                                     id="dominio"
-                                                                    v-model="form2.dominio2"
+                                                                    v-model="formvalores2[i].dominio"
                                                                     disabled
                                                                     />
                                                             
@@ -362,7 +363,7 @@
                                                                 
                                                                     <select
                                                                     class="input__field_exten"
-                                                                    v-model="form2.ext2"
+                                                                    v-model="formvalores2[i].ext"
                                                                     disabled
                                                                     >
                                                                     
@@ -395,7 +396,7 @@
                                                                     font-weight: bold;
                                                                     max-height: 40px;
                                                                     font-size: 13px;"
-                                                                    @click="cambiardominioguardado()"
+                                                                    @click="cambiardominioguardado(i)"
                                                                 >
                                                                 Cambiar
                                                                 </button>
@@ -408,13 +409,13 @@
 
                                             </form>
 
-                                            <div class="row mt-3" v-if="dominiosrecomendados.length>0">
+                                            <div class="row mt-3" v-if="dominiosbuscados[i]">
 
-                                                <div class="col-md-12" v-if="statusDominioBuscado">
+                                                <div class="col-md-12" v-if="statusDominioBuscado[i]">
 
                                                     <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600" >
 
-                                                            {{dominiobuscado}} está disponible
+                                                            {{dominiobuscado[i]}} está disponible
 
                                                     </h4>
 
@@ -423,7 +424,7 @@
                                                     >
                                                         
                                                         
-                                                        <div class="item" style="cursor: pointer" @click="addFirstDomain(dominiobuscado)">
+                                                        <div class="item" style="cursor: pointer" @click="addFirstDomain(dominiobuscado[i])">
                                                             
                                                             <a
                                                                 class="btn-add"
@@ -486,15 +487,15 @@
 
                                                     <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600" >
 
-                                                            {{dominiobuscado}} no está disponible
+                                                            {{dominiobuscado[i]}} no está disponible
 
                                                     </h4>
 
                                                 </div>                                  
 
                                             </div>
-
-                                            <div class="row" v-if="dominiosrecomendados.length>0">
+                   
+                                            <div class="row" v-if="dominiosbuscados[i]">
 
                                                 <div class="col-md-12">
 
@@ -508,7 +509,7 @@
 
                                                 <div
                                                         class="col-12 col-sm-12 col-md-12"
-                                                        v-for="(item, i) in dominiosrecomendados" :key="i"
+                                                        v-for="(item, i) in dominiosbuscados[i]" :key="i"
                                                 >
                                                             
                                                     <div class="row d-flex align-items-center card-newd" v-if="item.status=='free' && item.domain!==dominiobuscado">
@@ -617,7 +618,7 @@
 
                                             <div class="row resultados" style="width:100%;" v-else>
 
-                                                <div v-if="loading" class="modal-body d-flex justify-content-center mb-5 mt-5">
+                                                <div v-if="loading[i]" class="modal-body d-flex justify-content-center mb-5 mt-5">
 
                                                     <div class="spinner-grow text-primary" role="status">
                                                         <span class="visually-hidden">Loading...</span>
@@ -626,6 +627,46 @@
                                                 </div>
 
                                             </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card-body p-md-4 p-0" v-else-if="item.categoria_id==2">
+
+                            <div class="col-md-12 mb-5">
+
+                                <div class="card pt-4 pb-5 d-flex justify-content-center align-items-center">
+
+                                    <div class="row" style="width: 100%">
+                                    
+                                        <div class="col-md-5 col-12 col-sm-12 d-flex align-items-center">
+
+                                            <h6>{{item.producto}}</h6>
+
+                                        </div>
+
+                                        <div class="col-md-5 col-8 col-sm-8 d-flex justify-content-center align-items-center">
+                                            
+                                            <select class="form-control selectperiododominio">
+
+                                                <option value="1" v-for="(item1, j) in item.periodosproducto" :key="j">
+                                                    {{item1.periodo.periodo}} {{$filters.currencyUSD(item1.periodo.precio)}}
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col-md-2 col-2 col-sm-2 d-flex align-items-center">
+
+                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" @click="eliminarcarro(item)" style="cursor:pointer" width="22" alt="">
 
                                         </div>
 
@@ -786,6 +827,50 @@
 
                 </div>
                 
+            </div>
+
+            <div class="row" v-else>
+
+                <div class="col-md-12 col-sm-12 col-12">
+                    <div class=" p-5">
+                    <div class="row">
+                        <div class="col-md-12 mb-2 text-center">
+                        <h2><b>Tu Carro esta Vacio</b></h2>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                        <div
+                            class="px-3 d-flex justify-content-center align-items-center"
+
+                        >
+
+                            <i class="fas fa-cart-arrow-down" style="font-size:60px"></i>
+                            <span class="badge bg-white" style="position: relative;top: -18px;left: -15px;color:black;font-size:18px;border:0.1px solid #000000;">0</span>
+
+                        </div>
+
+                        </div>
+                        <div class="col-12 mt-3 text-center">
+                        <a href="/"
+                            class="btn"
+                            style="
+                            background-color: #005ad2;
+                            color: #f2f3f5;
+                            font-weight: bold;
+                            "
+                        >
+                        Ir a Servicios
+
+                        </a>
+
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+
             </div>
 
             <div class="row d-flex justify-content-center" v-if="identificacion">

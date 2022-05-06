@@ -1,7 +1,8 @@
 import Nav from '@/components/Nav.vue'
 import DetallesServicio from '@/components/DetallesServicio.vue'
-import ModalDominios from '@/components/dominios/ModalDominios.vue';
+import ModalDominios from '@/components/dominios/ModalDominios.vue'
 import Footer from '@/components/Footer.vue'
+import Swal from "sweetalert2"
 
 export default {
     components: {
@@ -18,7 +19,11 @@ export default {
             confirmacion:false,
             isActive: true,
             jsoncarro:'',
+            periodosdominios:'',
             urlBackend: this.urlBackend,
+            formvalores: [],
+            formvalores2: [],
+            dominiosbuscados: [],
             form: {
                 dominio: "",
                 ext: ""
@@ -27,28 +32,78 @@ export default {
                 dominio2: "",
                 ext2: ""
               },
-            statusDominioBuscado:false,
+            statusDominioBuscado:[],
             domainFirstAdd:false,
-            dominiobuscado:'',
-            dominioguardado:'',
-            dominioguardadostatus:false,
+            dominiobuscado:[],
+            dominioguardado:[],
+            dominioguardadostatus:[],
             dominiosrecomendados:'',
-            loading:false,
-            domainOld:false,
-            domainNew:true
+            dominiosencarrito:[],
+            loading:[],
+            domainOld:[],
+            domainNew:[]
         };
     },
     mounted() {
-        this.statusDominioBuscado = false;
 
         if(localStorage.getItem('carrito')){
 
             this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
 
         }
-        
 
+        this.jsoncarro.forEach((element, i) => {
+
+                this.formvalores.push({
+                    dominio: '',
+                    ext: ''
+                });
+
+                this.formvalores2.push({
+                    dominio: '',
+                    ext: ''
+                });
+
+                this.statusDominioBuscado[i] = false;
+                this.loading[i] = false;
+                this.dominioguardado[i] = '';
+                this.dominioguardadostatus[i] = false;
+                this.domainOld[i] = false;
+                this.domainNew[i] = true;
+
+        })
+        console.log(this.domainNew);
+        /*
+        console.log("formvalores");
+        console.log(this.formvalores[0].dominio);
+
+        console.log("formvalores2");
+        console.log(this.formvalores2);
+        */
+        
+        //this.getperiodosdominios();
+
+        console.log("Carrito");
         console.log(this.jsoncarro);
+
+        //obtener dominios en carrito
+        let domicar = [];
+        this.jsoncarro.forEach((element) => {
+
+            if(element.categoria_id==2){
+
+                domicar.push(element);
+
+            }
+
+        })
+
+        if(domicar.length>0){
+            this.dominiosencarrito = domicar;
+        }
+
+        console.log("Dominios en el carro");
+        console.log(this.dominiosencarrito);
 
         
     },
@@ -56,20 +111,18 @@ export default {
 
     methods: {
 
-        buscardominio(){
+        buscardominio(index){
 
-            this.loading = true;
+            this.loading[index] = true;
 
             this.dominiosrecomendados = '';
 
-            this.dominiobuscado = this.form.dominio+'.'+this.form.ext;
+            this.dominiobuscado[index] = this.formvalores[index].dominio+'.'+this.formvalores[index].ext;
 
-            console.log("dominio buscado: "+this.dominiobuscado);
-
-            const array1 = ['a', 'b', 'c'];
+            console.log("dominio buscado: "+this.dominiobuscado[index]);
 
             this.axios
-            .post(`${this.urlBackend}/api/getdominio`, this.form)
+            .post(`${this.urlBackend}/api/getdominio`, this.formvalores[index])
             .then((res) => {
 
                 this.dominiosrecomendados = res.data.data.results;
@@ -78,17 +131,17 @@ export default {
 
                     console.log("dominio: "+element.domain+" ,estatus: "+element.status);
             
-                    if(element.domain==this.dominiobuscado){
+                    if(element.domain==this.dominiobuscado[index]){
 
                         
             
                         if(element.status=='free'){
             
-                            this.statusDominioBuscado = true;
+                            this.statusDominioBuscado[index] = true;
             
                         }else{
             
-                            this.statusDominioBuscado = false;
+                            this.statusDominioBuscado[index] = false;
             
                         }
 
@@ -110,7 +163,9 @@ export default {
             
                 });
 
-                //verificar items en el carro
+            this.dominiosbuscados[index] = this.dominiosrecomendados;
+
+            //verificar items en el carro
 
             let carrito = [];
   
@@ -131,7 +186,7 @@ export default {
     
     
             console.log("dominiosrecomendados");
-            console.log(this.dominiosrecomendados);
+            console.log(this.dominiosbuscados);
 
 
               
@@ -147,29 +202,64 @@ export default {
 
         },
 
-        changeOption(){
+        changeOption(i){
 
-            if(this.domainOld==true){
-                this.domainNew = true;
-                this.domainOld = false;
+            if(this.domainOld[i]==true){
+                this.domainNew[i] = true;
+                this.domainOld[i] = false;
+                this.dominioguardado[i] = '';
             }else{
-                this.domainOld = true;
-                this.domainNew = false;
+                this.domainOld[i] = true;
+                this.domainNew[i] = false;
+                this.dominiosencarrito[i] = [];
             }
 
         },
 
-        guardardominio(){
+        getperiodosdominios(){
 
-            this.dominioguardado = this.form2.dominio2+'.'+this.form2.ext2;
-            this.dominioguardadostatus = true;
+            let slug = 'dominio';
+
+            this.axios.get(`${this.urlBackend}/api/getproductoscategoriaslug/${slug}`).then((response) => {
+
+                console.log("dominios");
+
+                console.log(response);
+
+            });
 
         },
 
-        cambiardominioguardado(){
+        guardardominio(index){
 
-            this.dominioguardado = '';
-            this.dominioguardadostatus = false;
+            this.dominioguardado[index] = this.formvalores2[index].dominio+'.'+this.formvalores2[index].ext;
+            this.dominioguardadostatus[index] = true;
+
+            let carrito = [];
+  
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+            carrito.forEach((element) => {
+
+                if(element.categoria_id==1){
+                    element.push({
+                        'dominio':this.dominioguardado[index]
+                    });
+                }
+
+        
+            });
+
+            localStorage.setItem('carrito',JSON.stringify(carrito));
+
+
+
+        },
+
+        cambiardominioguardado(index){
+
+            this.dominioguardado[index] = '';
+            this.dominioguardadostatus[index] = false;
         },
 
         addFirstDomain(domain){
@@ -194,14 +284,24 @@ export default {
             if(!exisd){
 
                 this.dominiosrecomendados.forEach((element2) =>{
-
+                    console.log(element2);
                     if(domain==element2.domain){
-                        carrito.push(element2);
+
+                        carrito.push({
+                            categoria_id:2,
+                            producto: "Registro de dominio "+domain,
+                            periodo: 2,
+                            domain: domain,
+                            precio: element2.price.reseller.price,
+                            periodos: [],
+                        });
+
                         this.domainFirstAdd = true;
                     }
 
                 })
                 localStorage.setItem('carrito',JSON.stringify(carrito));
+                this.jsoncarro = carrito;
 
             }
 
@@ -234,15 +334,40 @@ export default {
 
             if(!existed){
                 dataitem.agregado = true;
-                carrito.push(dataitem);
+
+                carrito.push({
+                    categoria_id:2,
+                    producto: "Registro de dominio "+dataitem.domain,
+                    periodo: 2,
+                    domain: dataitem.domain,
+                    precio: dataitem.price.reseller.price,
+                    periodos: [],
+                });
+
+                //carrito.push(dataitem);
             }
   
             localStorage.setItem('carrito',JSON.stringify(carrito));
+
+            this.jsoncarro = carrito;
            
             console.log(carrito);
   
   
   
+        },
+
+        eliminarcarro(item){
+
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title:
+                    "Datos actualizados correctamente.",
+                showConfirmButton: false,
+                timer: 2000
+            });
+
         },
 
         continuaridentificacion(){
