@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import { onMounted, inject } from 'vue'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const app = createApp(App)
 
@@ -25,5 +28,8 @@ app.config.globalProperties.$filters = {
         return formatter.format(value);
     }
   }
+
+app.use(VueSweetalert2);
+window.Swal =  app.config.globalProperties.$swal;
 
 app.mount('#app')

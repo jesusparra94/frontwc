@@ -1,22 +1,25 @@
 import Nav from '@/components/Nav.vue'
 import DetallesServicio from '@/components/DetallesServicio.vue'
-import ModalDominios from '@/components/dominios/ModalDominios.vue'
+import DetallesCarrito from '../../../components/carrito/DetallesCarrito.vue'
+import IdentificacionCarrito from '@/components/carrito/IdentificacionCarrito.vue'
 import Footer from '@/components/Footer.vue'
-import Swal from "sweetalert2"
 
 export default {
     components: {
         Nav,
         DetallesServicio,
-        ModalDominios,
+        DetallesCarrito,
+        IdentificacionCarrito,
         Footer
       },
     data() {
         return {
-            carrito:true,
-            identificacion:false,
+            carritoView:true,
+            identificacionView:false,
             pago:false,
             confirmacion:false,
+            precioDolar:'',
+            arrayDolares:[],
             isActive: true,
             jsoncarro:'',
             periodosdominios:'',
@@ -32,6 +35,11 @@ export default {
                 dominio2: "",
                 ext2: ""
               },
+            totales: {
+                neto:0,
+                iva:0,
+                total:0
+            },
             statusDominioBuscado:[],
             domainFirstAdd:false,
             dominiobuscado:[],
@@ -87,23 +95,13 @@ export default {
         console.log(this.jsoncarro);
 
         //obtener dominios en carrito
-        let domicar = [];
-        this.jsoncarro.forEach((element) => {
-
-            if(element.categoria_id==2){
-
-                domicar.push(element);
-
-            }
-
-        })
-
-        if(domicar.length>0){
-            this.dominiosencarrito = domicar;
-        }
+        this.listarDomainsCarrito();
 
         console.log("Dominios en el carro");
         console.log(this.dominiosencarrito);
+
+        this.precioDolarHoy = this.getdolar();
+
 
         
     },
@@ -116,6 +114,8 @@ export default {
             this.loading[index] = true;
 
             this.dominiosrecomendados = '';
+            
+            this.dominiosbuscados[index] = '';
 
             this.dominiobuscado[index] = this.formvalores[index].dominio+'.'+this.formvalores[index].ext;
 
@@ -128,6 +128,8 @@ export default {
                 this.dominiosrecomendados = res.data.data.results;
 
                 res.data.data.results.forEach((element) => {
+
+                    console.log(element);
 
                     console.log("dominio: "+element.domain+" ,estatus: "+element.status);
             
@@ -204,6 +206,16 @@ export default {
 
         changeOption(i){
 
+            let carrito = [];
+  
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+            carrito[i].dominio = '';
+
+            localStorage.setItem('carrito',JSON.stringify(carrito));
+
+            this.jsoncarro = carrito;
+
             if(this.domainOld[i]==true){
                 this.domainNew[i] = true;
                 this.domainOld[i] = false;
@@ -233,33 +245,40 @@ export default {
         guardardominio(index){
 
             this.dominioguardado[index] = this.formvalores2[index].dominio+'.'+this.formvalores2[index].ext;
+
             this.dominioguardadostatus[index] = true;
 
             let carrito = [];
   
             carrito =  JSON.parse(localStorage.getItem('carrito'));
 
-            carrito.forEach((element) => {
-
-                if(element.categoria_id==1){
-                    element.push({
-                        'dominio':this.dominioguardado[index]
-                    });
-                }
-
-        
-            });
+            carrito[index].dominio = this.dominioguardado[index];
 
             localStorage.setItem('carrito',JSON.stringify(carrito));
 
+            this.jsoncarro = carrito;
 
+            console.log("carro actualizado");
+
+            console.log(carrito);
 
         },
 
         cambiardominioguardado(index){
 
             this.dominioguardado[index] = '';
+
             this.dominioguardadostatus[index] = false;
+
+            let carrito = [];
+  
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+            carrito[index].dominio = '';
+
+            localStorage.setItem('carrito',JSON.stringify(carrito));
+
+            this.jsoncarro = carrito;
         },
 
         addFirstDomain(domain){
@@ -304,6 +323,8 @@ export default {
                 this.jsoncarro = carrito;
 
             }
+
+            this.listarDomainsCarrito();
 
         },
 
@@ -351,7 +372,7 @@ export default {
 
             this.jsoncarro = carrito;
            
-            console.log(carrito);
+            this.listarDomainsCarrito();
   
   
   
@@ -359,23 +380,101 @@ export default {
 
         eliminarcarro(item){
 
+            let carrito = [];
+  
+            if(localStorage.getItem('carrito')){
+  
+              carrito =  JSON.parse(localStorage.getItem('carrito'));
+  
+            }
+
             Swal.fire({
-                position: "center",
-                icon: "success",
-                title:
-                    "Datos actualizados correctamente.",
-                showConfirmButton: false,
-                timer: 2000
+                position: 'center',
+                title: '¿Estás seguro de querer eliminar el producto?',
+                showConfirmButton: true,
+                confirmButtonColor: '#7B47CF',
+                showCancelButton: true,
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+                width: '350px',
+                customClass: {
+                    popup: 'alerta'
+                  }
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  
+                    carrito.splice(item, 1);
+
+                    localStorage.setItem('carrito',JSON.stringify(carrito));
+
+                    this.jsoncarro = carrito;
+                
+                    this.listarDomainsCarrito();
+
+                }
+              })
+
+        },
+
+        getdolar(){
+
+            let arrayDatos = [];
+
+            this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
+
+                //console.log(response.data.serie);
+
+                let cont = 0;
+
+                response.data.serie.forEach((element, i) => {
+                    cont++;
+                    if(cont==1){
+                        arrayDatos.push({
+
+                            fecha: element.fecha.split('T')[0],
+                            precio: element.valor
+
+                        });
+                    }
+
+                });
+
+                this.precioDolar = arrayDatos[0].precio;
+                console.log(this.precioDolar);
+
             });
+
+
+            
+
+        },
+
+        listarDomainsCarrito(){
+
+            //obtener dominios en carrito
+            let domicar = [];
+            this.jsoncarro.forEach((element) => {
+
+                if(element.categoria_id==2){
+
+                    domicar.push(element);
+
+                }
+
+            })
+
+            if(domicar.length>0){
+                this.dominiosencarrito = domicar;
+            }
 
         },
 
         continuaridentificacion(){
-            this.carrito = false;
-            this.identificacion = true;
+            this.carritoView = false;
+            this.identificacionView = true;
         },
         continuarpago(){
-            this.identificacion = false;
+            this.identificacionView = false;
             this.pago = true;
         },
         continuarconfirmacion(){

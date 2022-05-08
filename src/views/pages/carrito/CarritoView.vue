@@ -33,7 +33,7 @@
                     <h6>
 
                         <span class="icon btn btn-circle btn-lg disabled"
-                            :class="[carrito ? 'btn-primary' : 'btn-soft-primary']"
+                            :class="[carritoView ? 'btn-primary' : 'btn-soft-primary']"
                         >
 
                             <img class="rounded-0" src="@/assets/img/svg/cart-plus-solid.svg" width="22" alt="">
@@ -51,7 +51,7 @@
                     <h6>
                         
                         <span class="icon btn btn-circle btn-lg disabled"
-                            :class="[identificacion ? 'btn-primary' : 'btn-soft-primary']"
+                            :class="[identificacionView ? 'btn-primary' : 'btn-soft-primary']"
                         >
                             
                             <img class="rounded-0" src="@/assets/img/svg/user-gear-solid.svg" width="22" alt="">
@@ -100,9 +100,9 @@
 
         <div class="container">
 
-            <div class="row" v-if="jsoncarro.length>0">
+            <div class="row" v-if="carritoView">
 
-                <div class="col-md-7">
+                <div class="col-md-7" v-if="jsoncarro.length>0">
                     
                     <h5>Listado de productos:</h5>
 
@@ -120,16 +120,28 @@
 
                                             <h6>{{item.nombre}}</h6>
 
-                                            <small style="font-size:15px" v-if="dominioguardado[i]!=''">dominio: {{dominioguardado[i]}}</small>
+                                            <small style="font-size:15px" v-if="item.dominio!=''">dominio: {{item.dominio}}</small>
+
+                                            <select class="form-select">
+
+                                                <option disabled value="">Seleccione dominio</option>
+
+                                                <option v-for="(item2, i) in dominiosencarrito" :key="i" :value="item2.domain">
+                                                    {{item2.domain}}
+                                                </option>
+
+                                            </select>
 
                                         </div>
 
-                                        <div class="col-md-5 col-8 col-sm-8 d-flex justify-content-center align-items-center">
+                                        <div class="col-md-5 col-8 col-sm-8">
                                             
-                                            <select class="form-control selectperiododominio">
+                                            <h6>Periodo de renovación</h6>
+
+                                            <select class="form-select selectperiododominio">
 
                                                 <option value="1" v-for="(item1, j) in item.periodosproducto" :key="j">
-                                                    {{item1.periodo.periodo}} {{$filters.currencyUSD(item1.periodo.precio)}}
+                                                    {{$filters.currencyUSD(item1.precio)}} CLP por {{item1.periodo.periodo}}
                                                 </option>
 
                                             </select>
@@ -138,7 +150,7 @@
 
                                         <div class="col-md-2 col-2 col-sm-2 d-flex align-items-center">
 
-                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" @click="eliminarcarro(item)" style="cursor:pointer" width="22" alt="">
+                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" :dataid="{i}" @click="eliminarcarro(i)" style="cursor:pointer" width="22" alt="">
 
                                         </div>
 
@@ -509,16 +521,16 @@
 
                                                 <div
                                                         class="col-12 col-sm-12 col-md-12"
-                                                        v-for="(item, i) in dominiosbuscados[i]" :key="i"
+                                                        v-for="(itemt, t) in dominiosbuscados[i]" :key="t"
                                                 >
                                                             
-                                                    <div class="row d-flex align-items-center card-newd" v-if="item.status=='free' && item.domain!==dominiobuscado">
+                                                    <div class="row d-flex align-items-center card-newd" v-if="itemt.status=='free' && itemt.domain!==dominiobuscado[t]">
                                                         
                                                         <div class="col-md-6 col-12 col-sm-12">
                                                     
-                                                            <h6 class="d-none d-md-block d-lg-block">{{item.domain}}</h6>
+                                                            <h6 class="d-none d-md-block d-lg-block">{{itemt.domain}}</h6>
                                                     
-                                                            <h3 class="d-sm-block d-md-none d-lg-none text-center">{{item.domain}}</h3>
+                                                            <h3 class="d-sm-block d-md-none d-lg-none text-center">{{itemt.domain}}</h3>
                                                     
                                                         </div>
                                                     
@@ -543,18 +555,18 @@
 
                                                                     <div
                                                                         class="btn_hover0 d-flex justify-content-center"
-                                                                        :class="{'opc_hover2': item.agregado == true, 'opc_hover' : item.agregado == false }"
+                                                                        :class="{'opc_hover2': itemt.agregado == true, 'opc_hover' : itemt.agregado == false }"
                                                                     >
-                                                                        <div class="item" style="cursor: pointer" @click="addcarro(item)">
+                                                                        <div class="item" style="cursor: pointer" @click="addcarro(itemt)">
                                                                             
                                                                         <a
                                                                             class="btn-add"
-                                                                            :class="{'btn-delete': item.agregado == true, 'btn-add' : item.agregado == false }"
+                                                                            :class="{'btn-delete': itemt.agregado == true, 'btn-add' : itemt.agregado == false }"
                                                                             itemn="0"
                                                                         >
                                                                             <span :class="{
-                                                                            'd-none': item.agregado == true,
-                                                                            'd-block': !item.agregado
+                                                                            'd-none': itemt.agregado == true,
+                                                                            'd-block': !itemt.agregado
                                                                             }">
 
                                                                             <i 
@@ -576,7 +588,7 @@
                                                                             <span class="span-addcard px-1"
                                                             
                                                                             :class="{
-                                                                            'd-none': item.agregado == true
+                                                                            'd-none': itemt.agregado == true
                                                                             }"
                                                                             
                                                             
@@ -591,7 +603,7 @@
                                                             
                                                                             
                                                                             <span class="px-1 d-block" style="padding: 20px 20px;height: 80px;"  
-                                                                            v-if="item.agregado"
+                                                                            v-if="itemt.agregado"
                                                                             >
                                                                             <i style="font-size:28px;" class="far fa-check-circle"></i>
                                                                             <p style="font-size:11px;line-height: 1;">Agregado</p>
@@ -653,14 +665,12 @@
                                         </div>
 
                                         <div class="col-md-5 col-8 col-sm-8 d-flex justify-content-center align-items-center">
-                                            
-                                            <select class="form-control selectperiododominio">
 
-                                                <option value="1" v-for="(item1, j) in item.periodosproducto" :key="j">
-                                                    {{item1.periodo.periodo}} {{$filters.currencyUSD(item1.periodo.precio)}}
-                                                </option>
+                                           {{$filters.currencyUSD(
 
-                                            </select>
+                                               (item.precio*(precioDolar+10))*12
+                                               
+                                            )}} CLP por  1 año
 
                                         </div>
 
@@ -682,156 +692,27 @@
                         
                 </div>
 
-                <div class="col-md-5 mt-md-0 mt-3">
+                <div class="col-md-5 mt-md-0 mt-3" v-if="jsoncarro.length>0">
                     
                     <h5>Detalles del pedido:</h5>
 
-                    <div class="card shadow-lg">
-                        
-                        <div class="card-body p-0">
+                    <DetallesCarrito :carrito="jsoncarro" :precioDolar="precioDolar"/>
 
-                            <div class="row pt-2 px-5 d-flex align-items-center">
-                            
-                                <div class="col-md-7">
-                                    
-                                    <h6>Plan Hosting básico</h6>
+                    <hr class="mt-5 mb-3" />
 
-                                </div>
+                    <div class="row">
 
-                                <div class="col-md-5">
+                        <div class="col-md-12 d-flex justify-content-end p-5">
 
-                                    <div style="line-height:1;">
-
-                                        <h6>3.500 CLP</h6>
-
-                                        <small style="text-decoration: line-through">4.500 CLP</small>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <hr class="mt-5 mb-3" />
-
-                            <div class="row">
-
-                                <div class="col-md-12 px-4">
-
-                                    <form>
-
-                                        <div class="form-group d-flex justify-content-center">
-                                            
-                                            <label class="input">
-                                            
-                                                <input
-                                                    class="input__field"
-                                                    style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;max-height:40px"
-                                                    type="text"
-                                                    placeholder=" "
-                                                    id="cupon"
-                                                    name="cupon"
-                                                    required
-                                                />
-
-                                                <span class="input__label" style="font-size:12px">Cupón de descuento</span>
-
-                                            </label>
-
-                                                <button
-                                                type="button"
-                                                class="btn"
-
-                                                style="
-                                                    background-color: #005ad2; color: #f2f3f5; font-weight: bold; border-top-left-radius: 0px; border-bottom-left-radius: 0px;max-height:40px;font-size:13px;
-                                                "
-                                                >
-                                                Aplicar
-                                                </button>
-
-                                        </div>
-
-                                    </form>
-                                    
-                                </div>
-
-                            </div>
-
-                            <hr class="mt-5 mb-3" />
-
-                            <div class="row px-5 pb-1">
-
-                                <div class="col-md-6">
-
-                                    <h6 class=" pt-1"><b>Neto pedido</b></h6>
-
-                                </div>
-
-                                <div class="col-md-6">
-
-                                    <h6 class="pt-1 azul-crt"><b>7.500 CLP</b></h6>
-
-                                </div>
-
-                            </div>
-
-                            <div class="row px-5 pb-1">
-
-                                <div class="col-md-6">
-
-                                    <h6 class="pt-1"><b>IVA pedido</b></h6>
-
-                                </div>
-
-                                <div class="col-md-6">
-
-                                    <h6 class="pt-1 azul-crt"><b>8.750 CLP</b></h6>
-
-                                </div>
-
-                            </div>
-
-                            <div class="row px-5 pb-1">
-
-                                <div class="col-md-6">
-
-                                    <h6 class="pt-1"><b>Total pedido</b></h6>
-
-                                </div>
-
-                                <div class="col-md-6">
-
-                                    <h6 class="pt-1 azul-crt"><b>89.000 CLP</b></h6>
-
-                                    <small class="">Ahorra 2.600 CLP</small>
-
-                                </div>
-
-                            </div>
-
-                            <hr class="mt-5 mb-3" />
-
-                            <div class="row">
-
-                                <div class="col-md-12 d-flex justify-content-end p-5">
-
-                                    <a href="#" class="btn btn-primary" @click="continuaridentificacion()">Continuar</a>
-
-                                </div>
-
-                            </div>
+                            <a href="#" class="btn btn-primary" @click="continuaridentificacion()">Continuar</a>
 
                         </div>
-                        
+
                     </div>
 
                 </div>
-                
-            </div>
 
-            <div class="row" v-else>
-
-                <div class="col-md-12 col-sm-12 col-12">
+                <div class="col-md-12 col-sm-12 col-12" v-else>
                     <div class=" p-5">
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
@@ -870,76 +751,12 @@
                     </div>
 
                 </div>
-
+                
             </div>
 
-            <div class="row d-flex justify-content-center" v-if="identificacion">
+            <div class="row d-flex justify-content-center" v-if="identificacionView">
 
-                <div class="col-md-6 col-12 col-sm-12">
-                    
-                    <h5>Inicia sesión con tus datos:</h5>
-
-                    <div class="card shadow-lg">
-                        
-                        <div class="card-body">
-
-                            <div class="col-md-12 mb-5">
-
-                                <form>
-
-                                    <div class="mb-3">
-
-                                        <label for="email" class="form-label">Correo electrónico</label>
-                                        <input
-                                        type="email"
-                                        class="form-control"
-                                        
-                                        placeholder="Ingresa tu correo electrónico"
-                                        id="email"
-                                        
-
-                                        />
-                                        <div class="invalid-feedback" >
-                                        
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-
-                                        <label for="email" class="form-label">Contraseña</label>
-                                        
-                                            <input
-                                                type="password"
-                                                class="form-control"
-                                                placeholder="Ingresa tu contraseña"
-                                                id="pass"
-                                            />
-
-                                            <div class="invalid-feedback" >
-                                        
-                                            </div>
-
-                                    </div>
-
-                                    </form>
-
-                                    <div class="row">
-
-                                        <div class="col-md-12 d-flex justify-content-end p-2">
-
-                                            <button class="btn btn-primary" @click="continuarpago()">Iniciar Sesión</button>
-
-                                        </div>
-
-                                    </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                        
-                </div>
+                <IdentificacionCarrito/>
                 
             </div>
 
@@ -1302,6 +1119,7 @@
 </template>
 
 <style>
+
 .input__field_dominio {
 
 box-sizing: border-box;
@@ -1472,6 +1290,113 @@ line-height: 1.2;
 .card-border{
 border: 1px solid transparent!important;
 border-color: #D3CFCD!important;
+}
+
+.opc_hover{
+width: 100%;
+}
+.opc_hover .item span{
+width: 100%;
+text-align: center;
+}
+.opc_hover a {
+position: relative;
+display: block;
+overflow: hidden;
+}
+.opc_hover a span {
+transition: transform 0.2s ease-out;
+}
+.opc_hover a span:first-child {
+display: inline-block;
+padding: 20px 20px;
+height: 80px;
+}
+.opc_hover a span:last-child {
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+padding-right: 15px;
+padding-left: 15px;
+padding-top: 10px;
+text-align: center;
+transform: translateY(-200%);
+background-color: #005AD2;
+color:#FFF;
+}
+.opc_hover a span:last-child i{
+color: #FFF;
+}
+.opc_hover i {
+font-size: 30px;
+}
+.opc_hover a:hover span:first-child {
+transform: translateY(200%);
+}
+.opc_hover a:hover span:last-child,
+.opc_hover[data-animation] a:hover span:last-child {
+transform: none;
+}
+.opc_hover2{
+width: 100%;
+}
+.opc_hover2 .item span{
+width: 100%;
+text-align: center;
+}
+.opc_hover2 a {
+position: relative;
+display: block;
+overflow: hidden;
+}
+.opc_hover2 a span {
+transition: transform 0.2s ease-out;
+}
+.opc_hover2 a span:first-child {
+display: inline-block;
+padding: 20px 20px;
+height: 80px;
+}
+.opc_hover2 i {
+font-size: 30px;
+}
+.opc_hover2 a:hover span:first-child {
+transform: translateY(200%);
+}
+.opc_hover2 a:hover span:last-child,
+.opc_hover2[data-animation] a:hover span:last-child {
+transform: none;
+}
+.card-newd{
+box-shadow: rgb(0 0 0 / 2%) 0px 0px 0px 0px, rgb(27 31 35 / 15%) 0px 1px 0px 0px;
+}
+@media only screen and (max-width: 600px) {
+  .carousel-inner{
+    margin-top: 60px;
+    max-height: 288px!important;
+    min-height: 288px!important;
+  }
+  .title-section{
+    font-size: 2rem;
+  }
+.titulo-bold{
+font-weight: bold;
+}
+.card-newd{
+box-shadow: rgb(0 0 0 / 2%) 0px 0px 0px 0px, rgb(27 31 35 / 15%) 0px 1px 0px 0px;
+padding-right: 15px;
+padding-left: 15px;
+}
+.label-dominios{
+  font-size: 15px!important;
+}
+.btn-buscar{ margin-top: 5px; }
+}
+.alerta{
+  border:3px solid #7B47CF!important;
+  font-size:14px!important;
 }
 
 </style>
