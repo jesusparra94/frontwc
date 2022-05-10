@@ -104,7 +104,20 @@
 
                 <div class="col-md-7" v-if="jsoncarro.length>0">
                     
-                    <h5>Listado de productos:</h5>
+                    <h5 id="topListadoProductos">Listado de productos:</h5>
+
+                    <h6 class="text-danger" v-if="productosconerror" ><b>Verifique sus productos</b></h6>
+
+                    <!-- <div class="root">
+                        <h2>Create an Account</h2>
+                        <input type="text" placeholder="Email" v-model="email" />
+              
+                        <input type="password" placeholder="Password" v-model="password.password" />
+                    
+                        <input type="password" placeholder="Confirm Password" v-model="password.confirm" />
+           
+                    </div>
+                    <button @click="submitForm">Validar</button> -->
 
                     <div class="card shadow-lg" v-for="(item, i) in jsoncarro" :key="i"  >
                         
@@ -118,19 +131,9 @@
                                     
                                         <div class="col-md-5 col-12 col-sm-12">
 
-                                            <h6>{{item.nombre}}</h6>
+                                            <h6 :id="i" >{{item.nombre}}</h6>
 
                                             <small style="font-size:15px" v-if="item.dominio!=''">dominio: {{item.dominio}}</small>
-
-                                            <select class="form-select">
-
-                                                <option disabled value="">Seleccione dominio</option>
-
-                                                <option v-for="(item2, i) in dominiosencarrito" :key="i" :value="item2.domain">
-                                                    {{item2.domain}}
-                                                </option>
-
-                                            </select>
 
                                         </div>
 
@@ -138,11 +141,25 @@
                                             
                                             <h6>Periodo de renovación</h6>
 
-                                            <select class="form-select selectperiododominio">
+                                            <select class="form-select" v-model="selectperiodo[i].periodo_id" @change="PeriodoItem(i)">
 
-                                                <option value="1" v-for="(item1, j) in item.periodosproducto" :key="j">
-                                                    {{$filters.currencyUSD(item1.precio)}} CLP por {{item1.periodo.periodo}}
-                                                </option>
+                                                <template  v-for="(item1, j) in item.periodosproducto" :key="j">
+                                                
+                                                    <option v-if="item1.periodo_id==item.periodo"
+                                                            :value="item1.periodo_id"
+                                                            :selected="true"
+                                                    >
+                                                        {{$filters.currencyUSD(item1.precio)}} CLP por {{item1.periodo.periodo}}
+                                                    </option>
+
+                                                    <option v-else
+                                                            :value="item1.periodo_id"
+                                                            :selected="false"
+                                                    >
+                                                        {{$filters.currencyUSD(item1.precio)}} CLP por {{item1.periodo.periodo}}
+                                                    </option>
+
+                                                </template>
 
                                             </select>
 
@@ -229,6 +246,7 @@
                                                                 :id="formvalores[i].dominio"
                                                                 :name="formvalores[i].dominio"
                                                                 v-model="formvalores[i].dominio"
+                                                                
                                                                 />
                                                         
                                                             </div>
@@ -267,13 +285,12 @@
 
                                                             <button
                                                                 type="button"
-                                                                class="btn"
+                                                                class="btn d-flex align-items-center"
                                                                 style="
-                                                                background-color: #005ad2;
+                                                                background-color: #17A4F3;
                                                                 color: #f2f3f5;
                                                                 font-weight: bold;
-                                                                max-height: 40px;
-                                                                font-size: 13px;"
+                                                                max-height: 40px;"
                                                                 @click="buscardominio(i)"
                                                                 v-if="domainNew[i]"
                                                             >
@@ -419,6 +436,8 @@
 
                                                     </div>
 
+                                                    <small class="text-danger" v-if="mensajeerror[i].dominio" ><b>{{mensajeerror[i].dominio}}</b></small>
+
                                             </form>
 
                                             <div class="row mt-3" v-if="dominiosbuscados[i]">
@@ -436,7 +455,7 @@
                                                     >
                                                         
                                                         
-                                                        <div class="item" style="cursor: pointer" @click="addFirstDomain(dominiobuscado[i])">
+                                                        <div class="item" style="cursor: pointer" @click="addFirstDomain(dominiobuscado[i], i)">
                                                             
                                                             <a
                                                                 class="btn-add"
@@ -557,7 +576,7 @@
                                                                         class="btn_hover0 d-flex justify-content-center"
                                                                         :class="{'opc_hover2': itemt.agregado == true, 'opc_hover' : itemt.agregado == false }"
                                                                     >
-                                                                        <div class="item" style="cursor: pointer" @click="addcarro(itemt)">
+                                                                        <div class="item" style="cursor: pointer">
                                                                             
                                                                         <a
                                                                             class="btn-add"
@@ -586,7 +605,7 @@
                                                                             </span>
                                                             
                                                                             <span class="span-addcard px-1"
-                                                            
+                                                                            @click="addcarro(itemt, i)"
                                                                             :class="{
                                                                             'd-none': itemt.agregado == true
                                                                             }"
@@ -660,23 +679,19 @@
                                     
                                         <div class="col-md-5 col-12 col-sm-12 d-flex align-items-center">
 
-                                            <h6>{{item.producto}}</h6>
+                                            <h6 :id="i">{{item.producto}}</h6>
 
                                         </div>
 
                                         <div class="col-md-5 col-8 col-sm-8 d-flex justify-content-center align-items-center">
 
-                                           {{$filters.currencyUSD(
-
-                                               (item.precio*(precioDolar+10))*12
-                                               
-                                            )}} CLP por  1 año
+                                            {{$filters.currencyUSD(item.precio*(precioDolar+10))}} CLP por 1 año
 
                                         </div>
 
                                         <div class="col-md-2 col-2 col-sm-2 d-flex align-items-center">
 
-                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" @click="eliminarcarro(item)" style="cursor:pointer" width="22" alt="">
+                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" @click="eliminarcarro(i)" style="cursor:pointer" width="22" alt="">
 
                                         </div>
 
@@ -696,7 +711,7 @@
                     
                     <h5>Detalles del pedido:</h5>
 
-                    <DetallesCarrito :carrito="jsoncarro" :precioDolar="precioDolar"/>
+                    <DetallesCarrito :carrito="jsoncarro" :neto="this.totales.neto" :iva="this.totales.iva" :total="this.totales.total" />
 
                     <hr class="mt-5 mb-3" />
 
@@ -737,12 +752,12 @@
                         <a href="/"
                             class="btn"
                             style="
-                            background-color: #005ad2;
+                            background-color: #17A4F3;
                             color: #f2f3f5;
                             font-weight: bold;
                             "
                         >
-                        Ir a Servicios
+                        Agregar productos al Carrito
 
                         </a>
 
@@ -1397,6 +1412,9 @@ padding-left: 15px;
 .alerta{
   border:3px solid #7B47CF!important;
   font-size:14px!important;
+}
+span.btn-primary{
+    background-color:#17A4F3!important;
 }
 
 </style>

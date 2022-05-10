@@ -4,10 +4,11 @@ export default {
   data(){
     return {
         jsoncarro:'',
-        neto:'',
-        iva:'',
-        total:'',
-        precioDolar:'',
+        neto:0,
+        iva:0,
+        total:0,
+        precioDolar:0,
+        maspesos:10
     }
   },
     mounted() {
@@ -15,16 +16,58 @@ export default {
         if(localStorage.getItem('carrito')){
 
             this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
-            
-            this.jsoncarro.forEach((element, i) => {
 
-                this.neto = element.precio*(this.precioDolar+10);
+            this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
+
+                //console.log(response.data.serie);
+
+                let cont = 0;
+
+                let arrayDatos = [];
+
+                response.data.serie.forEach((element, i) => {
+
+                    cont++;
+
+                    if(cont==1){
+
+                        arrayDatos.push({
+
+                            fecha: element.fecha.split('T')[0],
+                            precio: element.valor
+
+                        });
+                    }
+
+                });
+
+                this.precioDolar = arrayDatos[0].precio;
+                
+                this.jsoncarro.forEach((element, i) => {
+
+                    if(element.categoria_id===2){
+
+                        this.neto = this.neto + element.precio * ( this.precioDolar + this.maspesos );
+
+                    }else{
+
+                        this.neto = this.neto + element.precio;
+
+                    }
+
+
+                });
+
+                this.iva = this.neto * 0.19;
+
+                this.total = this.neto + this.iva;
+
+                console.log("Neto: "+this.neto);
+                console.log("IVA: "+this.iva);
+                console.log("TOTAL: "+this.total);
+
 
             });
-
-            this.iva = this.neto * 0.19;
-
-            this.total = this.neto + this.iva;
 
         }
         
@@ -33,10 +76,40 @@ export default {
 
     methods: {
 
+        getdolar(){
+
+            let arrayDatos = [];
+
+            this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
+
+                //console.log(response.data.serie);
+
+                let cont = 0;
+
+                response.data.serie.forEach((element, i) => {
+                    cont++;
+                    if(cont==1){
+                        arrayDatos.push({
+
+                            fecha: element.fecha.split('T')[0],
+                            precio: element.valor
+
+                        });
+                    }
+
+                });
+
+                this.precioDolar = arrayDatos[0].precio;
+
+            });
+
+            return true;
+
+        }
 
     },
 
-    props: ['carrito','precioDolar']
+    props: ['carrito','neto','iva','total']
   
 }
 </script>
@@ -51,6 +124,8 @@ export default {
                      v-for="(item, i) in carrito" :key="i"
                 >   
                 
+                    <hr class="mb-1 mt-1">
+
                     <div class="col-md-7">
                         
                         <h6 v-if="item.categoria_id==2">
@@ -73,11 +148,11 @@ export default {
 
                         <div style="line-height:1;">
 
-                            <h6 v-if="item.categoria_id==2"> {{$filters.currencyUSD(item.precio*(precioDolar+10))}} CLP por 1 año</h6>
+                            <h6 style="font-size:16px" v-if="item.categoria_id==2"> {{$filters.currencyUSD(item.precio*(precioDolar+10))}} CLP por 1 año</h6>
 
-                            <h6 v-else> 
-
-                               3.500 CLP por 1 año
+                            <h6 style="font-size:16px" v-else> 
+                                
+                               {{$filters.currencyUSD(item.precio)}} CLP
 
                             </h6>
 
@@ -144,7 +219,7 @@ export default {
 
                     <div class="col-md-6">
 
-                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(this.neto)}} CLP</b></h6>
+                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(neto)}} CLP</b></h6>
 
                     </div>
 
@@ -160,7 +235,7 @@ export default {
 
                     <div class="col-md-6">
 
-                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(this.iva)}} CLP</b></h6>
+                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(iva)}} CLP</b></h6>
 
                     </div>
 
@@ -176,7 +251,7 @@ export default {
 
                     <div class="col-md-6">
 
-                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(this.total)}} CLP</b></h6>
+                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(total)}} CLP</b></h6>
 
                         <!-- <small class="">Ahorra 2.600 CLP</small> -->
 

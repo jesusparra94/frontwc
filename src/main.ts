@@ -6,6 +6,13 @@ import VueAxios from 'vue-axios'
 import { onMounted, inject } from 'vue'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import useValidate from "@vuelidate/core";
+import {
+    required,
+    email,
+    maxLength,
+    minLength
+} from "@vuelidate/validators";
 
 const app = createApp(App)
 
@@ -30,6 +37,9 @@ app.config.globalProperties.$filters = {
   }
 
 app.use(VueSweetalert2);
+
+app.use(useValidate);
+
 window.Swal =  app.config.globalProperties.$swal;
 
 app.mount('#app')

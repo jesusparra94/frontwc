@@ -3,6 +3,14 @@ import DetallesServicio from '@/components/DetallesServicio.vue'
 import DetallesCarrito from '../../../components/carrito/DetallesCarrito.vue'
 import IdentificacionCarrito from '@/components/carrito/IdentificacionCarrito.vue'
 import Footer from '@/components/Footer.vue'
+import useValidate from "@vuelidate/core";
+import {
+    required,
+    email,
+    maxLength,
+    minLength
+} from "@vuelidate/validators";
+import { idText } from 'typescript'
 
 export default {
     components: {
@@ -26,15 +34,10 @@ export default {
             urlBackend: this.urlBackend,
             formvalores: [],
             formvalores2: [],
+            mensajeerror: [],
+            selectperiodo: [],
+            productosconerror:false,
             dominiosbuscados: [],
-            form: {
-                dominio: "",
-                ext: ""
-              },
-              form2: {
-                dominio2: "",
-                ext2: ""
-              },
             totales: {
                 neto:0,
                 iva:0,
@@ -49,16 +52,39 @@ export default {
             dominiosencarrito:[],
             loading:[],
             domainOld:[],
-            domainNew:[]
+            domainNew:[],
+
+            v$: useValidate(),
+            email: "",
+            password: {
+                password: "",
+                confirm: "",
+            },
         };
     },
+
+    validations() {
+        return {
+            email: { required },
+            password: {
+                password: { required },
+                confirm: { required },
+            }
+        }
+    },
+
     mounted() {
 
         if(localStorage.getItem('carrito')){
 
             this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
+            this.calcularTotales();
 
         }
+
+        let carrito = [];
+  
+        carrito =  JSON.parse(localStorage.getItem('carrito'));
 
         this.jsoncarro.forEach((element, i) => {
 
@@ -72,6 +98,15 @@ export default {
                     ext: ''
                 });
 
+
+                this.selectperiodo.push({
+                    periodo_id: element.periodo
+                });
+
+                this.mensajeerror.push({
+                    dominio:''
+                });
+
                 this.statusDominioBuscado[i] = false;
                 this.loading[i] = false;
                 this.dominioguardado[i] = '';
@@ -80,28 +115,22 @@ export default {
                 this.domainNew[i] = true;
 
         })
-        console.log(this.domainNew);
-        /*
-        console.log("formvalores");
-        console.log(this.formvalores[0].dominio);
-
-        console.log("formvalores2");
-        console.log(this.formvalores2);
-        */
-        
-        //this.getperiodosdominios();
-
-        console.log("Carrito");
-        console.log(this.jsoncarro);
 
         //obtener dominios en carrito
         this.listarDomainsCarrito();
 
-        console.log("Dominios en el carro");
-        console.log(this.dominiosencarrito);
-
         this.precioDolarHoy = this.getdolar();
 
+
+        // this.v$.$validate() // checks all inputs
+  		// 		if (!this.v$.$error) { // if ANY fail validation
+  		// 			alert('Form successfully submitted.')
+  		// 		} else {
+  		// 			alert('Form failed validation')
+  		// 		}
+
+        console.log("detalles de carrito");
+        console.log(this.jsoncarro);
 
         
     },
@@ -109,97 +138,153 @@ export default {
 
     methods: {
 
+        submitFormNewDomain(){
+            this.v$.password.$validate() // checks all inputs
+  				if (!this.v$.password.$error) { // if ANY fail validation
+  					alert('Form successfully submitted.')
+  				} else {
+  					alert('Form failed validation')
+  				}
+        },
+
         buscardominio(index){
 
-            this.loading[index] = true;
+            if(this.formvalores[index].dominio!='' && this.formvalores[index].ext!=''){
 
-            this.dominiosrecomendados = '';
-            
-            this.dominiosbuscados[index] = '';
+                this.mensajeerror[index].dominio = '';
 
-            this.dominiobuscado[index] = this.formvalores[index].dominio+'.'+this.formvalores[index].ext;
+                this.loading[index] = true;
 
-            console.log("dominio buscado: "+this.dominiobuscado[index]);
+                this.dominiosrecomendados = '';
+                
+                this.dominiosbuscados[index] = '';
 
-            this.axios
-            .post(`${this.urlBackend}/api/getdominio`, this.formvalores[index])
-            .then((res) => {
+                this.dominiobuscado[index] = this.formvalores[index].dominio+'.'+this.formvalores[index].ext;
 
-                this.dominiosrecomendados = res.data.data.results;
+                this.axios
+                .post(`${this.urlBackend}/api/getdominio`, this.formvalores[index])
+                .then((res) => {
 
-                res.data.data.results.forEach((element) => {
+                    this.dominiosrecomendados = res.data.data.results;
 
-                    console.log(element);
+                    res.data.data.results.forEach((element) => {
 
-                    console.log("dominio: "+element.domain+" ,estatus: "+element.status);
-            
-                    if(element.domain==this.dominiobuscado[index]){
+                        console.log(element);
 
-                        
-            
-                        if(element.status=='free'){
-            
-                            this.statusDominioBuscado[index] = true;
-            
-                        }else{
-            
-                            this.statusDominioBuscado[index] = false;
-            
+                        console.log("dominio: "+element.domain+" ,estatus: "+element.status);
+                
+                        if(element.domain==this.dominiobuscado[index]){
+                
+                            if(element.status=='free'){
+                
+                                this.statusDominioBuscado[index] = true;
+                
+                            }else{
+                
+                                this.statusDominioBuscado[index] = false;
+                
+                            }
+                            
                         }
+                
+                        this.dominiosrecomendados.forEach((element2) => {
+                
+                        if(element.dominio===element2.domain){
+                
+                            element.agregado = true;
+                
+                        }else{
+                            element.agregado = false;
+                        }
+                
+                        });
+                
+                    });
 
-                        console.log("Status de dominio buscado: "+this.statusDominioBuscado);
-                        
-                    }
-            
-                    this.dominiosrecomendados.forEach((element2) => {
-            
-                       if(element.domain===element2.dominio){
-            
-                         element.agregado = true;
-            
-                       }else{
-                        element.agregado = false;
-                       }
-            
-                     });
+                    this.dominiosbuscados[index] = this.dominiosrecomendados;
+
+                    console.log("Dominios buscados");
+                    console.log(this.dominiosbuscados[index]);
+
+                    //verificar items en el carro
+
+                    let carrito = [];
+        
+                    carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+                    carrito.forEach((element) => {
+
+                        this.dominiosrecomendados.forEach((element2) =>{
+
+                            if(element.dominio==element2.domain){
+                                element2.agregado = true;
+                            }
+
+                        })
+
+                
+                    });
+                
+                })
+                .catch((error) => {
+                    
+                    console.log("error", error);
             
                 });
 
-            this.dominiosbuscados[index] = this.dominiosrecomendados;
+            }else{
 
-            //verificar items en el carro
+                this.mensajeerror[index].dominio = 'Debe ingresar un dominio y su extensión';
+
+            }
+
+        },
+
+        PeriodoItem(i){
 
             let carrito = [];
   
             carrito =  JSON.parse(localStorage.getItem('carrito'));
 
-            carrito.forEach((element) => {
+            let periodo_id = this.selectperiodo[i].periodo_id;
 
-                this.dominiosrecomendados.forEach((element2) =>{
+            let producto_id = carrito[i].id_producto;
 
-                    if(element.domain==element2.domain){
-                        element2.agregado = true;
-                    }
+            this.axios.get(`${this.urlBackend}/api/getperiodo/${producto_id}/${periodo_id}`).then((response) => {
 
-                })
+                console.log("respuesta de periodo");
+
+                console.log(response.data);
+
+                carrito[i].periodo = periodo_id;
+
+                carrito[i].precio = response.data.precio_descuento;
+
+                localStorage.setItem('carrito',JSON.stringify(carrito));
+
+            this.jsoncarro = carrito;
+           
+            this.listarDomainsCarrito();
+
+            this.calcularTotales();
+
+
+            });
+            
+
+
+            // carrito[i].periodosproducto.forEach((element) => {
+
+            //     if(element.domain==dataitem.domain){
+            //         element.agregado = true;
+            //         existed = true;
+            //     }
 
         
-            });
-    
-    
-            console.log("dominiosrecomendados");
-            console.log(this.dominiosbuscados);
+            // });
 
+            // console.log(carrito[i]);
 
-              
-            })
-            .catch((error) => {
-                 console.log("error", error);
-
-           
-             });
-
-             
 
 
         },
@@ -244,23 +329,27 @@ export default {
 
         guardardominio(index){
 
-            this.dominioguardado[index] = this.formvalores2[index].dominio+'.'+this.formvalores2[index].ext;
+            if(this.formvalores2[index].dominio!='' && this.formvalores2[index].ext!=''){
 
-            this.dominioguardadostatus[index] = true;
+                this.dominioguardado[index] = this.formvalores2[index].dominio+'.'+this.formvalores2[index].ext;
 
-            let carrito = [];
-  
-            carrito =  JSON.parse(localStorage.getItem('carrito'));
+                this.dominioguardadostatus[index] = true;
 
-            carrito[index].dominio = this.dominioguardado[index];
+                let carrito = [];
+    
+                carrito =  JSON.parse(localStorage.getItem('carrito'));
 
-            localStorage.setItem('carrito',JSON.stringify(carrito));
+                carrito[index].dominio = this.dominioguardado[index];
 
-            this.jsoncarro = carrito;
+                localStorage.setItem('carrito',JSON.stringify(carrito));
 
-            console.log("carro actualizado");
+                this.jsoncarro = carrito;
 
-            console.log(carrito);
+            }else{
+
+                this.mensajeerror[index].dominio = 'Debes ingresar un dominio para tu hosting';
+
+            }
 
         },
 
@@ -281,19 +370,17 @@ export default {
             this.jsoncarro = carrito;
         },
 
-        addFirstDomain(domain){
+        addFirstDomain(domain, index){
 
             let exisd = false;
 
             let carrito = [];
-
-            let ItemNew = [];
   
             carrito =  JSON.parse(localStorage.getItem('carrito'));
 
             carrito.forEach((element) => {
 
-                if(element.domain==domain){
+                if(element.dominio==domain){
                     exisd = true;
                 }
 
@@ -310,7 +397,7 @@ export default {
                             categoria_id:2,
                             producto: "Registro de dominio "+domain,
                             periodo: 2,
-                            domain: domain,
+                            dominio: domain,
                             precio: element2.price.reseller.price,
                             periodos: [],
                         });
@@ -324,11 +411,29 @@ export default {
 
             }
 
+            this.dominioguardado[index] = domain;
+
+            this.dominioguardadostatus[index] = true;
+  
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+            carrito[index].dominio = this.dominioguardado[index];
+
+            localStorage.setItem('carrito',JSON.stringify(carrito));
+
+            this.jsoncarro = carrito;
+
+            console.log("carro actualizado");
+
+            console.log(carrito);
+
             this.listarDomainsCarrito();
+
+            this.calcularTotales();
 
         },
 
-        addcarro(dataitem){
+        addcarro(dataitem, index){
 
             let carrito = [];
   
@@ -337,9 +442,6 @@ export default {
               carrito =  JSON.parse(localStorage.getItem('carrito'));
   
             }
-
-            console.log("item agregado");
-            console.log(dataitem.domain);
 
             let existed = false;
 
@@ -353,19 +455,23 @@ export default {
         
             });
 
-            if(!existed){
+            if(!existed){ //si no existe en carro se agrega
                 dataitem.agregado = true;
 
                 carrito.push({
                     categoria_id:2,
                     producto: "Registro de dominio "+dataitem.domain,
                     periodo: 2,
-                    domain: dataitem.domain,
+                    dominio: dataitem.domain,
                     precio: dataitem.price.reseller.price,
                     periodos: [],
                 });
 
                 //carrito.push(dataitem);
+            }
+
+            if(carrito[index].dominio==''){
+                carrito[index].dominio = dataitem.domain;
             }
   
             localStorage.setItem('carrito',JSON.stringify(carrito));
@@ -373,12 +479,14 @@ export default {
             this.jsoncarro = carrito;
            
             this.listarDomainsCarrito();
+
+            this.calcularTotales();
   
   
   
         },
 
-        eliminarcarro(item){
+        eliminarcarro(i){
 
             let carrito = [];
   
@@ -403,13 +511,15 @@ export default {
               }).then((result) => {
                 if (result.isConfirmed) {
                   
-                    carrito.splice(item, 1);
+                    carrito.splice(i, 1);
 
                     localStorage.setItem('carrito',JSON.stringify(carrito));
 
                     this.jsoncarro = carrito;
                 
                     this.listarDomainsCarrito();
+
+                    this.calcularTotales();
 
                 }
               })
@@ -469,17 +579,126 @@ export default {
 
         },
 
-        continuaridentificacion(){
-            this.carritoView = false;
-            this.identificacionView = true;
+        calcularTotales(){
+
+            this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
+
+            this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
+
+                //console.log(response.data.serie);
+
+                let cont = 0;
+
+                let arrayDatos = [];
+
+                this.totales.neto = 0;
+                this.totales.iva = 0;
+                this.totales.total = 0;
+
+                response.data.serie.forEach((element, i) => {
+
+                    cont++;
+
+                    if(cont==1){
+
+                        arrayDatos.push({
+
+                            fecha: element.fecha.split('T')[0],
+                            precio: element.valor
+
+                        });
+                    }
+
+                });
+
+                this.precioDolar = arrayDatos[0].precio;
+                
+                this.jsoncarro.forEach((element, i) => {
+
+                    if(element.categoria_id===2){
+
+                        this.totales.neto = this.totales.neto + element.precio * ( this.precioDolar + 10 );
+
+                    }else{
+
+                        this.totales.neto = this.totales.neto + element.precio;
+
+                    }
+
+
+                });
+
+                this.totales.iva = this.totales.neto * 0.19;
+
+                this.totales.total = this.totales.neto + this.totales.iva;
+
+
+            });
+
         },
+
+        continuaridentificacion(){
+
+            if(this.validarCarro()){
+
+                this.carritoView = false;
+                this.identificacionView = true;
+
+            }else{
+
+                this.productosconerror = true;
+                //this.scrollto('topListadoProductos');
+
+            }
+
+        },
+
         continuarpago(){
             this.identificacionView = false;
             this.pago = true;
         },
+
         continuarconfirmacion(){
             this.pago = false;
             this.confirmacion = true;
+        },
+
+        validarCarro(){
+
+            let carrito = [];
+
+            let aux = true;
+  
+            if(localStorage.getItem('carrito')){
+  
+              carrito =  JSON.parse(localStorage.getItem('carrito'));
+  
+            }
+
+            carrito.forEach((element, i) => {
+
+                if(element.categoria_id==1){
+                    
+                    if(element.dominio==''){
+
+                        this.mensajeerror[i].dominio = 'Debes ingresar un dominio para tu hosting';
+                        aux = false;
+
+                    }
+
+                }
+        
+            });
+
+            return aux;
+
+        },
+        scrollto(id){
+
+            var element = document.getElementById(idText);
+
+            element.scrollIntoView({behavior: "smooth"});
+    
         }
 
     }
