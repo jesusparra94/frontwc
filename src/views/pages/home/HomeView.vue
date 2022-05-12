@@ -9,6 +9,6 @@ import Footer from '@/components/Footer.vue';
 <template>
     <Nav />
     <Banner />
-    <Servicios />
+    <Servicios id="nuestrosServicios" />
     <Footer />
 </template>

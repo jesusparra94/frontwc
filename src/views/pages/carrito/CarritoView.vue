@@ -451,7 +451,7 @@
                                                     </h4>
 
                                                     <div class="btn_hover0 opc_hover d-flex justify-content-center" 
-                                                        :class="{'opc_hover2': domainFirstAdd == true, 'opc_hover' : domainFirstAdd == false }"
+                                                        :class="{'opc_hover2': domainFirstAdd[i] == true, 'opc_hover' : domainFirstAdd[i] == false }"
                                                     >
                                                         
                                                         
@@ -459,13 +459,13 @@
                                                             
                                                             <a
                                                                 class="btn-add"
-                                                                :class="{'btn-delete': domainFirstAdd == true, 'btn-add' : domainFirstAdd == false }"
+                                                                :class="{'btn-delete': domainFirstAdd[i] == true, 'btn-add' : domainFirstAdd[i] == false }"
                                                                 itemn="0"
                                                             >
                                                                             <span class="d-flex align-items-center"
                                                                             :class="{
-                                                                            'd-none': domainFirstAdd == true,
-                                                                            'd-block': !domainFirstAdd
+                                                                            'd-none': domainFirstAdd[i] == true,
+                                                                            'd-block': !domainFirstAdd[i]
                                                                             }"
                                                                             >
 
@@ -489,7 +489,7 @@
                                                                             </span>
                                                             
                                                                             <span class="span-addcard px-1" 
-                                                                            :class="{'d-none': domainFirstAdd == true}">
+                                                                            :class="{'d-none': domainFirstAdd[i] == true}">
                                                                             
                                                                                 <i class="far fa-check-circle"></i>
                                                                 
@@ -500,7 +500,7 @@
                                                                             </span>
 
                                                                             <span class="px-1 d-block" style="padding: 20px 20px;height: 80px;"  
-                                                                            v-if="domainFirstAdd"
+                                                                            v-if="domainFirstAdd[i]"
                                                                             >
                                                                             <i style="font-size:28px;" class="far fa-check-circle"></i>
                                                                             <p style="font-size:11px;line-height: 1;">Agregado</p>
@@ -671,7 +671,326 @@
 
                         <div class="card-body p-md-4 p-0" v-else-if="item.categoria_id==2">
 
-                            <div class="col-md-12 mb-5">
+                            <!--Registro de dominios independientes-->
+                            <div class="col-md-12 mb-5" v-if="item.id_producto==4">
+
+                                <form class="pt-3">
+
+                                    <div class="row mb-3" style="width: 100%">
+                                    
+                                        <div class="col-md-2 col-2 col-sm-12 d-flex align-items-center">
+
+                                            <h6></h6>
+
+                                        </div>
+
+                                        <div class="col-md-8 col-8 col-sm-8 d-flex justify-content-center align-items-center">
+
+                                            <h3 class="text-center">Busca el dominio que necesitas</h3>
+
+                                        </div>
+
+                                        <div class="col-md-2 col-2 col-sm-2 d-flex align-items-center">
+
+                                            <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" @click="eliminarcarro(i)" style="cursor:pointer" width="22" alt="">
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center">
+
+                                        <div class="col-md-6 col-9 col-sm-9 px-md-0 pe-0">
+                                        
+                                            <div class="form-group">
+                                            
+                                                <input
+                                                class="input__field_dominio"
+                                                type="text"
+                                                placeholder=" "
+                                                :id="formvalores3.dominio"
+                                                :name="formvalores3.dominio"
+                                                v-model="formvalores3.dominio"
+                                                
+                                                />
+                                        
+                                            </div>
+                                        
+                                        </div>
+                                        
+                                        <div class="col-md-2 col-3 col-sm-3 px-md-0 ps-0">
+                                        
+                                            <div class="form-group contenedor-extension-dominio">
+                                            
+                                                <select
+                                                class="input__field_exten"
+                                                v-model="formvalores3.ext"
+                                                >
+                                                
+                                                    <option disabled value="">...</option>
+                                        
+                                                    <option value="cl">.cl</option>
+                                        
+                                                    <option value="com">.com</option>
+                                        
+                                                    <option value="net">.net</option>
+                                        
+                                                    <option value="info">.info</option>
+                                        
+                                                    <option value="org">.org</option>
+                                        
+                                                </select>
+                                        
+                                            </div>
+                                        
+                                        </div>
+
+                                        
+                                        <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+
+                                            <button
+                                                type="button"
+                                                class="btn d-flex align-items-center"
+                                                style="
+                                                background-color: #17A4F3;
+                                                color: #f2f3f5;
+                                                font-weight: bold;
+                                                max-height: 40px;"
+                                                @click="buscardominio_page()"
+                                            >
+                                            Buscar
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- <small class="text-danger" v-if="mensajeerror[i].dominio" ><b>{{mensajeerror[i].dominio}}</b></small> -->
+
+                                </form>
+
+                                    <div class="row mt-3" v-if="dominiosbuscados_page">
+
+                                        <div class="col-md-12" v-if="statusDominioBuscado_page">
+
+                                            <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600" >
+
+                                                    {{dominiobuscado_page}} está disponible
+
+                                            </h4>
+
+                                            <div class="btn_hover0 opc_hover d-flex justify-content-center" 
+                                                :class="{'opc_hover2': domainFirstAdd_page == true, 'opc_hover' : domainFirstAdd_page == false }"
+                                            >
+                                                
+                                                
+                                                <div class="item" style="cursor: pointer" @click="addFirstDomain_page(dominiobuscado_page)">
+                                                    
+                                                    <a
+                                                        class="btn-add"
+                                                        :class="{'btn-delete': domainFirstAdd_page == true, 'btn-add' : domainFirstAdd_page == false }"
+                                                        itemn="0"
+                                                    >
+                                                                    <span class="d-flex align-items-center"
+                                                                    :class="{
+                                                                    'd-none': domainFirstAdd_page == true,
+                                                                    'd-block': !domainFirstAdd_page
+                                                                    }"
+                                                                    >
+
+                                                                        <i 
+                                                                            style="font-size: 28px"
+                                                                            class="far fa-plus-square pe-1">
+                                                                        </i>
+
+                                                                        Comprar ahora
+                                                                        
+                                                                        <p
+                                                                            style="
+                                                                            font-size: 11px;
+                                                                            line-height: 1;
+                                                                            visibility: hidden;
+                                                                            "
+                                                                        >
+                                                                        &nbsp;
+                                                                        </p>
+
+                                                                    </span>
+                                                    
+                                                                    <span class="span-addcard px-1" 
+                                                                    :class="{'d-none': domainFirstAdd_page == true}">
+                                                                    
+                                                                        <i class="far fa-check-circle"></i>
+                                                        
+                                                                        <p style="font-size: 11px; line-height: 1">
+                                                                            Comprar ahora
+                                                                        </p>
+
+                                                                    </span>
+
+                                                                    <span class="px-1 d-block" style="padding: 20px 20px;height: 80px;"  
+                                                                    v-if="domainFirstAdd_page"
+                                                                    >
+                                                                    <i style="font-size:28px;" class="far fa-check-circle"></i>
+                                                                    <p style="font-size:11px;line-height: 1;">Agregado</p>
+                                                                    </span>
+
+                                                    </a>
+
+                                                </div>
+                                                
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-12" v-else>
+
+                                            <h4 class="mt-1 text-center titulo-bold" style="font-weight: 600" >
+
+                                                    {{dominiobuscado_page}} no está disponible
+
+                                            </h4>
+
+                                        </div>                                  
+
+                                    </div>
+            
+                                    <div class="row" v-if="dominiosbuscados_page">
+
+                                        <div class="col-md-12">
+
+                                            <h5 class="mt-1 text-center titulo-bold" style="font-weight: 600" >
+
+                                                    <u>Tenemos otras opciones para tí</u>
+
+                                            </h5>
+
+                                        </div>
+
+                                        <div
+                                                class="col-12 col-sm-12 col-md-12"
+                                                v-for="(itemt, t) in dominiosbuscados_page" :key="t"
+                                        >
+                                                    
+                                            <div class="row d-flex align-items-center card-newd" v-if="itemt.status=='free' && itemt.domain!==dominiobuscado_page">
+                                                
+                                                <div class="col-md-6 col-12 col-sm-12">
+                                            
+                                                    <h6 class="d-none d-md-block d-lg-block">{{itemt.domain}}</h6>
+                                            
+                                                    <h3 class="d-sm-block d-md-none d-lg-none text-center">{{itemt.domain}}</h3>
+                                            
+                                                </div>
+                                            
+                                                <div class="col-md-6 col-12 col-sm-12">
+                                                
+                                                    <div class="row d-flex align-items-center">
+                                                        
+                                                        <div class="col-6 col-sm-6 col-md-8 p-0">
+
+                                                            <div class="precio-dominio-recomendacion float-right">
+                                                                <p style="margin: 5px; text-align: right">
+                                                                <b style="color: #005ad2"> CLP</b><br /><small
+                                                                    style="color: #afb0b2"
+                                                                    >Por el primer año</small
+                                                                >
+                                                                </p>
+                                                            </div>
+
+                                                        </div>
+                                                
+                                                        <div class="col-6 col-sm-6 col-md-4 p-0">
+
+                                                            <div
+                                                                class="btn_hover0 d-flex justify-content-center"
+                                                                :class="{'opc_hover2': itemt.agregado == true, 'opc_hover' : itemt.agregado == false }"
+                                                            >
+                                                                <div class="item" style="cursor: pointer">
+                                                                    
+                                                                <a
+                                                                    class="btn-add"
+                                                                    :class="{'btn-delete': itemt.agregado == true, 'btn-add' : itemt.agregado == false }"
+                                                                    itemn="0"
+                                                                >
+                                                                    <span :class="{
+                                                                    'd-none': itemt.agregado == true,
+                                                                    'd-block': !itemt.agregado
+                                                                    }">
+
+                                                                    <i 
+                                                                        style="font-size: 28px"
+                                                                        class="far fa-plus-square">
+                                                                    </i>
+                                                                    
+                                                                    <p
+                                                                        style="
+                                                                        font-size: 11px;
+                                                                        line-height: 1;
+                                                                        visibility: hidden;
+                                                                        "
+                                                                    >
+                                                                        &nbsp;
+                                                                    </p>
+                                                                    </span>
+                                                    
+                                                                    <span class="span-addcard px-1"
+                                                                    @click="addcarro(itemt, i)"
+                                                                    :class="{
+                                                                    'd-none': itemt.agregado == true
+                                                                    }"
+                                                                    
+                                                    
+                                                                    >
+                                                                    <i class="far fa-check-circle"></i>
+                                                    
+                                                                    <p style="font-size: 11px; line-height: 1">
+                                                                        Comprar ahora
+                                                                    </p>
+                                                                    </span>
+                                                    
+                                                    
+                                                                    
+                                                                    <span class="px-1 d-block" style="padding: 20px 20px;height: 80px;"  
+                                                                    v-if="itemt.agregado"
+                                                                    >
+                                                                    <i style="font-size:28px;" class="far fa-check-circle"></i>
+                                                                    <p style="font-size:11px;line-height: 1;">Agregado</p>
+                                                                    </span>
+                                                                    
+                                                    
+                                                    
+                                                    
+                                                                </a>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                                    
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row resultados" style="width:100%;" v-else>
+
+                                        <div v-if="loading_page" class="modal-body d-flex justify-content-center mb-5 mt-5">
+
+                                            <div class="spinner-grow text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                            </div>
+
+                            <div class="col-md-12 mb-5" v-else>
 
                                 <div class="card pt-4 pb-5 d-flex justify-content-center align-items-center">
 
@@ -1132,289 +1451,3 @@
     <Footer/>
 
 </template>
-
-<style>
-
-.input__field_dominio {
-
-box-sizing: border-box;
-
-display: block;
-
-width: 100%;
-
-max-height: 40px;
-
-border-left: 1px solid #005AD2;
-
-border-top: 1px solid #005AD2;
-
-border-bottom: 1px solid #005AD2;
-
-border-right: none!important;
-
-padding: 10px;
-
-background: transparent;
-
-border-bottom-left-radius: 5px;
-
-border-top-left-radius: 5px;
-
-}
-.input__field_dominio:focus{
-
-border: 1px solid #005AD2 !important;
-
-}
-
-.input__field_dominio:not(:-moz-placeholder-shown) + .input__label {
-
-transform: translate(0.25rem, -65%) scale(0.8);
-
-color: #005AD2;
-
-}
-
-.input__field_dominio:not(:-ms-input-placeholder) + .input__label {
-
-transform: translate(0.25rem, -65%) scale(0.8);
-
-color: #005AD2;
-
-}
-
-.input__field_dominio:focus + .input__label, .input__field_dominio:not(:placeholder-shown) + .input__label {
-
-transform: translate(0.25rem, -65%) scale(0.8);
-
-color: #005AD2;
-
-}
-.input__field_exten {
-
-box-sizing: border-box;
-
-display: block;
-
-width: 100%;
-
-max-height: 40px;
-
-padding: 10.5px;
-
-background: transparent;
-
-border-bottom-right-radius: 5px;
-
-border-top-right-radius: 5px;
-
-border-top: 1px solid #005AD2 !important;
-
-border-bottom: 1px solid #005AD2 !important;
-
-border-right: 1px solid #005AD2 !important;
-
-border-left: 1px solid #005AD2 !important;
-
-font-weight: bold;
-
-line-height: 1.2;
-
-}
-.input__field {
-
-box-sizing: border-box;
-
-display: block;
-
-width: 100%;
-
-padding: 9px;
-
-background: transparent;
-
-/*border-radius: 5px;*/
-
-border: 1px solid #005AD2 !important;
-
-}
-.input__field:focus{
-
-border: 1px solid #005AD2 !important;
-
-}
-.input {
-
-position: relative;
-
-
-}
-.input__field:not(:-moz-placeholder-shown) + .input__label {
-
-transform: translate(0.25rem, -65%) scale(0.8);
-
-color: #005AD2;
-
-}
-
-.input__field:not(:-ms-input-placeholder) + .input__label {
-
-transform: translate(0.25rem, -65%) scale(0.8);
-
-color: #005AD2;
-
-}
-
-.input__field:focus + .input__label, .input__field:not(:placeholder-shown) + .input__label {
-
-transform: translate(0.25rem, -65%) scale(0.8);
-
-color: #005AD2;
-
-}
-.input__label {
-
-position: absolute;
-
-left: 0;
-
-top: 0;
-
-padding: 7px;
-
-margin: 5px;
-
-background: #FFF;
-
-white-space: nowrap;
-
-transform: translate(0, 0);
-
-transform-origin: 0 0;
-
-transition: transform 120ms ease-in;
-
-font-weight: bold;
-
-line-height: 1.2;
-
-
-
-}
-.card-border{
-border: 1px solid transparent!important;
-border-color: #D3CFCD!important;
-}
-
-.opc_hover{
-width: 100%;
-}
-.opc_hover .item span{
-width: 100%;
-text-align: center;
-}
-.opc_hover a {
-position: relative;
-display: block;
-overflow: hidden;
-}
-.opc_hover a span {
-transition: transform 0.2s ease-out;
-}
-.opc_hover a span:first-child {
-display: inline-block;
-padding: 20px 20px;
-height: 80px;
-}
-.opc_hover a span:last-child {
-position: absolute;
-top: 0;
-right: 0;
-bottom: 0;
-left: 0;
-padding-right: 15px;
-padding-left: 15px;
-padding-top: 10px;
-text-align: center;
-transform: translateY(-200%);
-background-color: #005AD2;
-color:#FFF;
-}
-.opc_hover a span:last-child i{
-color: #FFF;
-}
-.opc_hover i {
-font-size: 30px;
-}
-.opc_hover a:hover span:first-child {
-transform: translateY(200%);
-}
-.opc_hover a:hover span:last-child,
-.opc_hover[data-animation] a:hover span:last-child {
-transform: none;
-}
-.opc_hover2{
-width: 100%;
-}
-.opc_hover2 .item span{
-width: 100%;
-text-align: center;
-}
-.opc_hover2 a {
-position: relative;
-display: block;
-overflow: hidden;
-}
-.opc_hover2 a span {
-transition: transform 0.2s ease-out;
-}
-.opc_hover2 a span:first-child {
-display: inline-block;
-padding: 20px 20px;
-height: 80px;
-}
-.opc_hover2 i {
-font-size: 30px;
-}
-.opc_hover2 a:hover span:first-child {
-transform: translateY(200%);
-}
-.opc_hover2 a:hover span:last-child,
-.opc_hover2[data-animation] a:hover span:last-child {
-transform: none;
-}
-.card-newd{
-box-shadow: rgb(0 0 0 / 2%) 0px 0px 0px 0px, rgb(27 31 35 / 15%) 0px 1px 0px 0px;
-}
-@media only screen and (max-width: 600px) {
-  .carousel-inner{
-    margin-top: 60px;
-    max-height: 288px!important;
-    min-height: 288px!important;
-  }
-  .title-section{
-    font-size: 2rem;
-  }
-.titulo-bold{
-font-weight: bold;
-}
-.card-newd{
-box-shadow: rgb(0 0 0 / 2%) 0px 0px 0px 0px, rgb(27 31 35 / 15%) 0px 1px 0px 0px;
-padding-right: 15px;
-padding-left: 15px;
-}
-.label-dominios{
-  font-size: 15px!important;
-}
-.btn-buscar{ margin-top: 5px; }
-}
-.alerta{
-  border:3px solid #7B47CF!important;
-  font-size:14px!important;
-}
-span.btn-primary{
-    background-color:#17A4F3!important;
-}
-
-</style>

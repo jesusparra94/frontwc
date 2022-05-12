@@ -10,9 +10,11 @@ export default {
 </script>
 
 <template>
-    <a class="card" :href="'servicio/'+categoria.slug" v-if="!categoria.cotizable">
+    <a class="card mx-0" :href="'servicio/'+categoria.slug" v-if="!categoria.cotizable">
 
-        <div class="front" >
+        <div 
+              :class="[categoria.id_categoria==1 ? 'front':'front2']"
+        >
           
             <p><slot name="nombre"></slot></p>
         
@@ -24,16 +26,33 @@ export default {
 
                 </slot>
 
-                <a class="button" :href="'servicio/'+categoria.slug">Ver Planes</a>
+                <a 
+                  class="button" 
+                  :href="'servicio/'+categoria.slug"
+                  v-if="categoria.id_categoria==2"
+                >
+                  Buscar Dominio
+                </a>
+
+                <a 
+                  class="button" 
+                  :href="'servicio/'+categoria.slug"
+                  v-else
+                >
+                  
+                  Ver Planes
+                </a>
+
             </div>
         </div>
 
     </a>
 
-    <a class="card" :href="'https://wa.me/5636298783/?text=/'+categoria.nombre" v-else>
+    <a class="card mx-0" :href="'https://wa.me/5636298783/?text=/'+categoria.nombre" v-else>
 
-        <div class="front" >
-          
+        <div 
+              :class="[categoria.id_categoria==3 ? 'front3':'']"
+        >
             <p><slot name="nombre"></slot></p>
         
         </div>
@@ -44,7 +63,7 @@ export default {
 
                 </slot>
 
-                <a class="button" :href="'servicio/'+categoria.slug">Cotizar</a>
+                <a class="button" :href="'servicio/'+categoria.slug" >Cotizar Desarrollo</a>
             </div>
         </div>
 
@@ -56,7 +75,9 @@ export default {
 
       <div class="col-md-12 text-center">
 
-        <a class="btn btn-outline-primary rounded-pill" :href="'servicio/'+categoria.slug">Ver Planes</a>
+        <a class="btn btn-outline-primary rounded-pill" :href="'servicio/'+categoria.slug" v-if="categoria.id_categoria==2">Buscar Dominio</a>
+
+        <a class="btn btn-outline-primary rounded-pill" :href="'servicio/'+categoria.slug" v-else>Ver Planes</a>
 
       </div>
 
@@ -66,7 +87,7 @@ export default {
 
       <div class="col-md-12 text-center">
 
-        <a class="btn btn-outline-primary rounded-pill" :href="'https://wa.me/5636298783/?text=/'+categoria.nombre">Cotizar</a>
+        <a class="btn btn-outline-primary rounded-pill" :href="'https://wa.me/5636298783/?text=/'+categoria.nombre">Cotizar Desarrollo</a>
 
       </div>
 
@@ -117,14 +138,13 @@ export default {
 }
 
 .front {
-  background-image: url("../assets/img/photos/b6.jpg");
+  background-image: url("../assets/imagenes/hosting.jpg");
   background-size: cover;
   padding: 2rem;
   font-size: 1.618rem;
   font-weight: 600;
   color: #fff;
   overflow: hidden;
-  font-family: Poppins, sans-serif;
 }
 .front:before {
   position: absolute;
@@ -145,13 +165,110 @@ export default {
   transform: rotateY(-180deg);
 }
 
+
+
+
+.front2,
+.back {
+  display: flex;
+  border-radius: 6px;
+  background-position: center;
+  background-size: cover;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: ease-in-out 600ms;
+}
+
+.front2 {
+  background-image: url("../assets/imagenes/dominios.jpg");
+  background-size: cover;
+  padding: 2rem;
+  font-size: 1.618rem;
+  font-weight: 600;
+  color: #fff;
+  overflow: hidden;
+}
+.front2:before {
+  position: absolute;
+  display: block;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #1a9be6, #1a57e6);
+  opacity: 0.25;
+  z-index: -1;
+}
+.card:hover .front2 {
+  transform: rotateY(180deg);
+}
+.card:nth-child(even):hover .front2 {
+  transform: rotateY(-180deg);
+}
+
+
+.front3,
+.back {
+  display: flex;
+  border-radius: 6px;
+  background-position: center;
+  background-size: cover;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: ease-in-out 600ms;
+}
+
+.front3 {
+  background-image: url("../assets/imagenes/desarrollo-web.jpg");
+  background-size: cover;
+  padding: 2rem;
+  font-size: 1.618rem;
+  font-weight: 600;
+  color: #fff;
+  overflow: hidden;
+}
+.front3:before {
+  position: absolute;
+  display: block;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #1a9be6, #1a57e6);
+  opacity: 0.25;
+  z-index: -1;
+}
+.card:hover .front3 {
+  transform: rotateY(180deg);
+}
+.card:nth-child(even):hover .front3 {
+  transform: rotateY(-180deg);
+}
+
+
 .back {
   background: #fff;
   transform: rotateY(-180deg);
   padding: 0 2em;
 }
 .back .button {
-  background: linear-gradient(135deg, #1a9be6, #1a57e6);
+  background: linear-gradient(135deg, #7B47CF, #17A4F3);
 }
 .back .button:before {
   box-shadow: 0 0 10px 10px rgba(26, 87, 230, 0.25);
@@ -184,6 +301,7 @@ export default {
   padding: 0.5em 1em;
   border-radius: 100px;
   font: inherit;
+  font-size: 22px;
   border: none;
   position: relative;
   transform-style: preserve-3d;

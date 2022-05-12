@@ -122,6 +122,7 @@ export default {
 
                 <div class="row pt-2 px-5 d-flex align-items-center"
                      v-for="(item, i) in carrito" :key="i"
+                     :class="{'d-none': item.id_producto==4}"
                 >   
                 
                     <hr class="mb-1 mt-1">

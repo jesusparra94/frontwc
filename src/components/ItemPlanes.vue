@@ -18,7 +18,8 @@ export default {
 
           }
 
-          carrito.push(item);
+
+         carrito.push(item);
 
          localStorage.setItem('carrito',JSON.stringify(carrito));
 
@@ -31,7 +32,7 @@ export default {
 </script>
 
 <template>
-    <div class="card" >
+    <div class="card mx-0" >
 
         <div class="front" >
           

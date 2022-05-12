@@ -52,13 +52,3 @@ export default {
     
 
 </template>
-
-<style>
-
-.banner-detalles{
-
-    background-image: url("../assets/img/photos/bg1.jpg");
-
-}
-
-</style>

@@ -31,9 +31,9 @@ export default {
     <div class="container pt-13 pb-16 pb-md-18">
       <div class="row">
         <div class="col-lg-8 col-xl-7 col-xxl-6">
-          <h2 class="fs-16 text-uppercase text-line text-primary mb-3">
-            ¿Que servicios ofrecemos?
-          </h2>
+          <h3 class="text-primary mb-3">
+            Elige la solución perfecta para ti
+          </h3>
           <h3 class="display-4 mb-9">
             Tenemos el servicio que necesitas para satisfacer tus necesidades.
           </h3>
@@ -41,7 +41,7 @@ export default {
         <!-- /column -->
       </div>
       <!-- /.row -->
-      <div class="row gx-md-8 gy-8 mb-14 mb-md-18">
+      <div class="row gx-md-8 gy-8 mb-2 mb-md-2">
         <div class="col-md-4" v-for="(item, i) in categorias" :key="i">
           <ItemServicio :categoria="item">
             <template #nombre>{{item.nombre}}</template>

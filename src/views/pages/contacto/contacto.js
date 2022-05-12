@@ -22,46 +22,14 @@ export default {
       },
     data() {
         return {
-            carritoView:true,
-            identificacionView:false,
-            pago:false,
-            confirmacion:false,
-            precioDolar:'',
-            arrayDolares:[],
-            isActive: true,
-            jsoncarro:'',
-            periodosdominios:'',
-            urlBackend: this.urlBackend,
-            formvalores: [],
-            formvalores2: [],
-            formvalores3: {
-                dominio: '',
-                ext: 'cl'
+            btnCargando:false,
+            mensajeenviado:false,
+            form: {
+                nombre:'',
+                email:'',
+                telefono:'',
+                mensaje:''
             },
-            mensajeerror: [],
-            selectperiodo: [],
-            productosconerror:false,
-            dominiosbuscados: [],
-            dominiosbuscados_page: '',
-            totales: {
-                neto:0,
-                iva:0,
-                total:0
-            },
-            statusDominioBuscado:[],
-            statusDominioBuscado_page:'',
-            domainFirstAdd:[],
-            domainFirstAdd_page:false,
-            dominiobuscado:[],
-            dominiobuscado_page: '',
-            dominioguardado:[],
-            dominioguardadostatus:[],
-            dominiosrecomendados:'',
-            dominiosencarrito:[],
-            loading:[],
-            loading_page:'',
-            domainOld:[],
-            domainNew:[],
 
             v$: useValidate(),
             email: "",
@@ -74,73 +42,16 @@ export default {
 
     validations() {
         return {
-            email: { required },
-            password: {
-                password: { required },
-                confirm: { required },
+            form: {
+                nombre:{required},
+                email:{required},
+                telefono:{required},
+                mensaje:{required}
             }
         }
     },
 
     mounted() {
-
-        if(localStorage.getItem('carrito')){
-
-            this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
-            this.calcularTotales();
-
-        }
-
-        let carrito = [];
-  
-        carrito =  JSON.parse(localStorage.getItem('carrito'));
-
-        this.jsoncarro.forEach((element, i) => {
-
-                this.formvalores.push({
-                    dominio: '',
-                    ext: ''
-                });
-
-                this.formvalores2.push({
-                    dominio: '',
-                    ext: ''
-                });
-
-
-                this.selectperiodo.push({
-                    periodo_id: element.periodo
-                });
-
-                this.mensajeerror.push({
-                    dominio:''
-                });
-
-                this.statusDominioBuscado[i] = false;
-                this.loading[i] = false;
-                this.dominioguardado[i] = '';
-                this.dominioguardadostatus[i] = false;
-                this.domainOld[i] = false;
-                this.domainNew[i] = true;
-                this.domainFirstAdd[i] = false;
-
-        })
-
-        //obtener dominios en carrito
-        this.listarDomainsCarrito();
-
-        this.precioDolarHoy = this.getdolar();
-
-
-        // this.v$.$validate() // checks all inputs
-  		// 		if (!this.v$.$error) { // if ANY fail validation
-  		// 			alert('Form successfully submitted.')
-  		// 		} else {
-  		// 			alert('Form failed validation')
-  		// 		}
-
-        console.log("detalles de carrito");
-        console.log(this.jsoncarro);
 
         
     },
@@ -148,13 +59,45 @@ export default {
 
     methods: {
 
-        submitFormNewDomain(){
-            this.v$.password.$validate() // checks all inputs
-  				if (!this.v$.password.$error) { // if ANY fail validation
+        submitForm(){
+
+
+            let nombre = this.form.nombre;
+            let email = this.form.email;
+            let telefono = this.form.telefono;
+            let mensaje = this.form.mensaje;
+
+            this.btnCargando = true;
+
+            this.axios
+            .post(`${this.urlBackend}/api/registrarconsulta`, this.form)
+            .then((res) => {
+
+                if(res.data==1){
+                    this.form.nombre = '';
+                    this.form.email = '';
+                    this.form.telefono = '';
+                    this.form.mensaje = '';
+                    this.btnCargando = false;
+                    this.mensajeenviado = true;
+                }
+            
+            })
+            .catch((error) => {
+                
+                console.log("error", error);
+        
+            });
+
+
+            //this.v$.form.$validate() // checks all inputs
+  				
+                /*
+            if (!this.v$.password.$error) { // if ANY fail validation
   					alert('Form successfully submitted.')
   				} else {
   					alert('Form failed validation')
-  				}
+  				}*/
         },
 
         buscardominio(index){

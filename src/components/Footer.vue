@@ -1,11 +1,12 @@
 <template>
-    <footer class="bg-dark text-inverse">
-    <div class="container pt-17 pt-md-19 pb-13 pb-md-15">
+    <footer class="bg-wc text-inverse">
+    <div class="container pt-10 pt-md-10 pb-13 pb-md-15">
       <div class="row gy-6 gy-lg-0">
         <div class="col-md-4 col-lg-3">
           <div class="widget">
-            <img class="mb-4" src="@/assets/img/logo-light.png" srcset="./assets/img/logo-light@2x.png 2x" alt="" />
-            <p class="mb-4">© 2021 Sandbox. <br class="d-none d-lg-block" />All rights reserved.</p>
+
+            <img class="mb-4" src="@/assets/imagenes/logoWeb.png" width="320px" alt="" />
+            <p class="mb-4">Web Company SpA. © 2022. <br class="d-none d-lg-block" />Todos los Derechos Reservados</p>
             <nav class="nav social social-white">
               <a href="#"><i class="uil uil-twitter"></i></a>
               <a href="#"><i class="uil uil-facebook-f"></i></a>
@@ -29,13 +30,13 @@
         <!-- /column -->
         <div class="col-md-4 col-lg-3">
           <div class="widget">
-            <h4 class="widget-title text-white mb-3">Learn More</h4>
+            <h4 class="widget-title text-white mb-3">WebCompany.cl</h4>
             <ul class="list-unstyled  mb-0">
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Our Story</a></li>
-              <li><a href="#">Projects</a></li>
-              <li><a href="#">Terms of Use</a></li>
-              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Sobre nostros</a></li>
+              <li><a href="#">Servicios</a></li>
+              <li><a href="#">Términos y condiciones</a></li>
+              <li><a href="#">Preguntas frecuentes</a></li>
+              <li><a href="#">Contáctanos</a></li>
             </ul>
           </div>
           <!-- /.widget -->
@@ -43,8 +44,8 @@
         <!-- /column -->
         <div class="col-md-12 col-lg-3">
           <div class="widget">
-            <h4 class="widget-title text-white mb-3">Our Newsletter</h4>
-            <p class="mb-5">Subscribe to our newsletter to get our news & deals delivered to you.</p>
+            <h4 class="widget-title text-white mb-3">Recibe nuestras últimas novedades</h4>
+            <p class="mb-5">Suscribete con tu Correo Electrónico</p>
             <div class="newsletter-wrapper">
               <!-- Begin Mailchimp Signup Form -->
               <div id="mc_embed_signup2">
@@ -52,8 +53,8 @@
                   <div id="mc_embed_signup_scroll2">
                     <div class="mc-field-group input-group form-floating">
                       <input type="email" value="" name="EMAIL" class="required email form-control" placeholder="Email Address" id="mce-EMAIL2">
-                      <label for="mce-EMAIL2">Email Address</label>
-                      <input type="submit" value="Join" name="subscribe" id="mc-embedded-subscribe2" class="btn btn-primary ">
+                      <label for="mce-EMAIL2">Correo Electrónico</label>
+                      <input type="submit" value="Suscribirme" name="subscribe" id="mc-embedded-subscribe2" class="btn btn-primary ">
                     </div>
                     <div id="mce-responses2" class="clear">
                       <div class="response" id="mce-error-response2" style="display:none"></div>

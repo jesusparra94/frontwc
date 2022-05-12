@@ -14,11 +14,15 @@ import {
     minLength
 } from "@vuelidate/validators";
 
+import VueScrollTo from 'vue-scrollto';
+
 const app = createApp(App)
 
 app.use(router)
 
 app.use(VueAxios, axios)
+
+app.use(VueScrollTo)
 
 app.config.globalProperties.urlBackend = 'http://127.0.0.1:8000';
 

@@ -20,22 +20,24 @@ export default {
     <div class="container pt-13 pb-16 pb-md-18">
       <div class="row">
         <div class="col-lg-8 col-xl-7 col-xxl-6">
-          <h2 class="fs-16 text-uppercase text-line text-primary mb-3">
-            ¿Que servicios ofrecemos?
-          </h2>
-          <h3 class="display-4 mb-9">
-            Tenemos el servicio que necesitas para satisfacer tus necesidades.
+          <h3 class="text-primary mb-3">
+            Elige la solución perfecta para ti
+          </h3>
+          <h3 class="display-5 mb-9">
+            ¡Escoge el plan de Hosting ideal para comenzar tu proyecto con nosotros!
           </h3>
         </div>
         <!-- /column -->
       </div>
       <!-- /.row -->
-      <div class="row gx-md-8 gy-8 mb-14 mb-md-18">
+      <div class="row gx-md-8 gy-8 mb-2 mb-md-2">
         <div class="col-md-4" v-for="(item, i) in planes" :key="i">
           <ItemPlanes :plan="item">
             <template #nombre>
+                
                 <p class="text-uppercase"> {{item.nombre}} </p>
-                            <p>{{$filters.currencyUSD(item.precio)}} / al Mes</p>
+                            
+                <p v-if="item.categoria_id!==2">{{$filters.currencyUSD(item.precio)}} / al Mes</p>
 
             </template>
 
@@ -48,7 +50,7 @@ export default {
 
               </ul>
 
-              <p> {{ $filters.currencyUSD(item.precio) }} al Mes</p>
+              <p v-if="item.categoria_id!==2"> {{ $filters.currencyUSD(item.precio) }} al Mes</p>
 
               
             </template>
