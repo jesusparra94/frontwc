@@ -2,6 +2,7 @@ import Nav from '@/components/Nav.vue'
 import DetallesServicio from '@/components/DetallesServicio.vue'
 import DetallesCarrito from '../../../components/carrito/DetallesCarrito.vue'
 import IdentificacionCarrito from '@/components/carrito/IdentificacionCarrito.vue'
+import DetallesFacturacion from  '@/components/carrito/DetallesFacturacion.vue'
 import Footer from '@/components/Footer.vue'
 import useValidate from "@vuelidate/core";
 import {
@@ -18,10 +19,12 @@ export default {
         DetallesServicio,
         DetallesCarrito,
         IdentificacionCarrito,
+        DetallesFacturacion,
         Footer
       },
     data() {
         return {
+            urlpago:"",
             carritoView:true,
             identificacionView:false,
             pago:false,
@@ -147,6 +150,32 @@ export default {
 
 
     methods: {
+
+        // emit 
+
+        nextdetallesfacturacion(data){
+            console.log(data)
+            // si data es distinto a null el formulario va a cargar con los datos
+            if(data){
+
+
+            }
+
+            console.log("no llega")
+
+            this.identificacionView = false;
+            this.pago = true;
+        },
+
+        nextconfirmacion(data){
+
+            this.urlpago = data;
+
+            this.pago = false;
+            this.confirmacion = true;
+
+
+        },
 
         submitFormNewDomain(){
             this.v$.password.$validate() // checks all inputs

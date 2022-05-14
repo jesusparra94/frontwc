@@ -24,7 +24,7 @@ app.use(VueAxios, axios)
 
 app.use(VueScrollTo)
 
-app.config.globalProperties.urlBackend = 'http://127.0.0.1:8000';
+app.config.globalProperties.urlBackend = 'http://apiwebcompany.cp';
 
 app.config.globalProperties.$filters = {
     currencyUSD(value) {
