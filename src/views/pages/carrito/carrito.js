@@ -134,6 +134,34 @@ export default {
 
         this.precioDolarHoy = this.getdolar();
 
+        let info =  JSON.parse(localStorage.getItem('info'));
+
+        if(info){
+
+            if(info.identificacion){
+                this.carritoView = false;
+                this.pago = false;
+                this.confirmacion = false
+                this.identificacionView = true;
+
+            }else if(info.detallesfacturacion){
+
+                this.carritoView = false;
+                this.confirmacion = false
+                this.identificacionView = false;
+                this.pago = true;
+
+            }else if(info.confirmacion){
+                this.carritoView = false;
+                this.identificacionView = false;
+                this.pago = false;
+                this.confirmacion = true;
+
+            }
+
+        }
+
+
 
         // this.v$.$validate() // checks all inputs
   		// 		if (!this.v$.$error) { // if ANY fail validation
@@ -172,6 +200,13 @@ export default {
             this.urlpago = data;
 
             this.pago = false;
+            let info =  JSON.parse(localStorage.getItem('info'));
+                        info.detallesfacturacion = false;
+                        info.identificacion = false;
+                        info.confirmacion = true;
+
+            localStorage.setItem('info',JSON.stringify(info));
+
             this.confirmacion = true;
 
 
@@ -828,6 +863,23 @@ export default {
         continuaridentificacion(){
 
             if(this.validarCarro()){
+
+                let info = {
+                    email:'',
+                    nombre:'',
+                    giro:'',
+                    rut:'',
+                    telefono:'',
+                    direccion:'',
+                    comuna:'',
+                    ciudad:'',
+                    identificacion: true,
+                    detallesfacturacion:false,
+                    confirmacion:false
+
+                };
+
+                localStorage.setItem('info',JSON.stringify(info));
 
                 this.carritoView = false;
                 this.identificacionView = true;

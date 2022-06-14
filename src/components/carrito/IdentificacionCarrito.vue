@@ -42,6 +42,12 @@ export default {
 
       this.total = this.neto + this.iva;
     }
+
+    let info =  JSON.parse(localStorage.getItem('info'));
+
+        if(info){
+         this.formsearchemail.email = info.email;
+        }
   },
 
   methods: {
@@ -52,6 +58,15 @@ export default {
       this.v$.formsearchemail.$touch();
 
       if (!this.v$.formsearchemail.$invalid) {
+
+        let info =  JSON.parse(localStorage.getItem('info'));
+
+        if(info){
+          info.email = this.formsearchemail.email;
+
+            localStorage.setItem('info',JSON.stringify(info));
+
+        }
         this.axios
           .get(`${this.urlBackend}/api/empresa/${this.formsearchemail.email}`)
           .then((response) => {
@@ -59,6 +74,15 @@ export default {
                 this.existe_email = true;
             }else{
                 this.datosempresa = response.data.data;
+
+                if(info){
+                        info.detallesfacturacion = true;
+                        info.identificacion = false;
+                        info.confirmacion = false;
+
+                    localStorage.setItem('info',JSON.stringify(info));
+
+                }
                 
                 this.$emit('avanzarregistro', this.datosempresa)
 

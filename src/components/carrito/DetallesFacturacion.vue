@@ -36,6 +36,19 @@ export default {
       },
     };
   },
+  mounted(){
+
+    let info =  JSON.parse(localStorage.getItem('info'));
+
+    this.form.email = info.email;
+    this.form.nombre = info.nombre;
+    this.form.giro = info.giro;
+    this.form.rut = info.rut;
+    this.form.telefono = info.telefono;
+    this.form.direccion = info.direccion;
+    this.form.comuna = info.comuna;
+    this.form.ciudad = info.ciudad;
+  },
 
   methods:{
       formSubmit() {
@@ -67,6 +80,21 @@ export default {
         
       }
     },
+
+    changeInput(){
+
+      let info =  JSON.parse(localStorage.getItem('info'));
+                        info.email = this.form.email;
+                        info.nombre = this.form.nombre;
+                        info.giro = this.form.giro;
+                        info.rut = this.form.rut;
+                        info.telefono = this.form.telefono;
+                        info.direccion = this.form.direccion;
+                        info.comuna = this.form.comuna;
+                        info.ciudad = this.form.ciudad;
+
+      localStorage.setItem('info',JSON.stringify(info));
+    }
   }
 };
 </script>
@@ -103,6 +131,7 @@ export default {
                           class="form-control"
                           placeholder="Jane"
                           v-model="form.nombre"
+                          @change="changeInput()"
                           :class="{
                             'is-invalid': submitted && v$.form.nombre.$invalid,
                           }"
@@ -122,7 +151,7 @@ export default {
                           class="form-control"
                           placeholder="Giro"
                           v-model="form.giro"
-
+                          @change="changeInput()"
                           
                         />
                         <label for="giro">Giro (opcional)</label>
@@ -140,7 +169,7 @@ export default {
                           class="form-control"
                           placeholder="RUT"
                           v-model="form.rut"
-                          
+                          @change="changeInput()"
                           :class="{
                             'is-invalid': submitted && v$.form.rut.$invalid,
                           }"
@@ -160,7 +189,7 @@ export default {
                           class="form-control"
                           placeholder="jane.doe@example.com"
                           v-model="form.email"
-                          
+                          @change="changeInput()"
                           :class="{
                             'is-invalid': submitted && v$.form.email.$invalid,
                           }"
@@ -180,7 +209,7 @@ export default {
                           class="form-control"
                           placeholder="99999999"
                           v-model="form.telefono"
-                          
+                          @change="changeInput()"
                           :class="{
                             'is-invalid':
                               submitted && v$.form.telefono.$invalid,
@@ -201,7 +230,7 @@ export default {
                           class="form-control"
                           placeholder="Santiago"
                           v-model="form.direccion"
-                          
+                          @change="changeInput()"
                           :class="{
                             'is-invalid':
                               submitted && v$.form.direccion.$invalid,
@@ -221,7 +250,7 @@ export default {
                             id="form-select"
                             name="comuna"
                           v-model="form.comuna"
-                            
+                            @change="changeInput()"
                             :class="{
                               'is-invalid':
                                 submitted && v$.form.comuna.$invalid,
@@ -245,7 +274,7 @@ export default {
                             id="form-select"
                             name="ciudad"
                           v-model="form.ciudad"
-                            
+                            @change="changeInput()"
                             :class="{
                               'is-invalid':
                                 submitted && v$.form.ciudad.$invalid,
