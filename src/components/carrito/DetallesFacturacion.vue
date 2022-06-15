@@ -7,6 +7,7 @@ export default {
       v$: useValidate(),
       urlBackend: this.urlBackend,
       submitted: false,
+      rutinvalido:false,
       form: {
         nombre: "",
         giro: "",
@@ -94,7 +95,37 @@ export default {
                         info.ciudad = this.form.ciudad;
 
       localStorage.setItem('info',JSON.stringify(info));
-    }
+    },
+    validaRut() {
+     this.rutinvalido = true;
+      var rutCompleto = this.form.rut.trim().replace(".", "");
+      rutCompleto = rutCompleto.replace("‐", "-");
+      
+      if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)){
+        
+        this.rutinvalido = true;
+      }
+      var tmp = rutCompleto.split("-");
+      var digv = tmp[1];
+      var rut = tmp[0];
+      console.log(this.rutinvalido) ;
+      
+      if (digv == "K") digv = "k";
+
+      if(this.dv(rut) == digv){
+         this.rutinvalido = false;
+         this.form.rut = rutCompleto;
+      }
+
+      console.log(this.rutinvalido) ;
+    },
+    dv(T) {
+      var M = 0,
+        S = 1;
+      for (; T; T = Math.floor(T / 10))
+        S = (S + (T % 10) * (9 - (M++ % 6))) % 11;
+      return S ? S - 1 : "k";
+    },
   }
 };
 </script>
@@ -170,8 +201,9 @@ export default {
                           placeholder="RUT"
                           v-model="form.rut"
                           @change="changeInput()"
+                          @keyup="validaRut()"
                           :class="{
-                            'is-invalid': submitted && v$.form.rut.$invalid,
+                            'is-invalid': (submitted && v$.form.rut.$invalid) || rutinvalido,
                           }"
                         />
                         <label for="rut">RUT</label>

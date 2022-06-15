@@ -186,6 +186,18 @@ export default {
             // si data es distinto a null el formulario va a cargar con los datos
             if(data){
 
+                let info =  JSON.parse(localStorage.getItem('info'));
+                        info.email = data.email;
+                        info.nombre = data.nombre;
+                        info.giro = data.giro;
+                        info.rut = data.rut;
+                        info.telefono = data.telefono;
+                        info.direccion = data.direccion;
+                        info.comuna = data.comuna;
+                        info.ciudad = data.ciudad;
+
+                localStorage.setItem('info',JSON.stringify(info));
+
 
             }
 
