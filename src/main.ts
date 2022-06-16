@@ -15,6 +15,9 @@ import {
 } from "@vuelidate/validators";
 
 import VueScrollTo from 'vue-scrollto';
+import { createMetaManager } from 'vue-meta'
+
+
 
 const app = createApp(App)
 
@@ -23,6 +26,8 @@ app.use(router)
 app.use(VueAxios, axios)
 
 app.use(VueScrollTo)
+
+app.use(createMetaManager())
 
 app.config.globalProperties.urlBackend = 'http://apiwebcompany.cp';
 

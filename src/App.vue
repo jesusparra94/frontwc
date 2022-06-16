@@ -7,6 +7,10 @@ import { RouterLink, RouterView } from 'vue-router'
 
 
 <template>
+
+  <metainfo>
+    <template v-slot:title="{ content }">{{ content ? `${content}` : `WEBCOMPANY` }}</template>
+  </metainfo>
   
     <div class="content-wrapper">
 

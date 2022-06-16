@@ -5,6 +5,8 @@ import CarritoView from '../views/pages/carrito/CarritoView.vue'
 import ContactoView from '../views/pages/contacto/ContactoView.vue'
 import PagoExitosoView from '../views/pages/pagos/PagoExitoso.vue'
 import PagoRechazadoView from '../views/pages/pagos/PagoRechazado.vue'
+import CuentaView from '../views/pages/cuenta/CuentaView.vue'
+import FacturasPendientes from '../views/pages/cuenta/FacturasPendientes.vue'
 
 
 const router = createRouter({
@@ -39,6 +41,16 @@ const router = createRouter({
       path: '/pago-rechazado/:code',
       name: 'pago-rechazado',
       component: PagoRechazadoView
+    },
+    {
+      path: '/cuenta',
+      name: 'cuenta',
+      component: CuentaView
+    },
+    {
+      path: '/cuenta/factura-pendiente',
+      name: 'cuenta-factura-pendiente',
+      component: FacturasPendientes
     },
   ]
 })
