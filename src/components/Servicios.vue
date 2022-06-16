@@ -44,10 +44,10 @@ export default {
       <div class="row gx-md-8 gy-8 mb-2 mb-md-2">
         <div class="col-md-4" v-for="(item, i) in categorias" :key="i">
           <ItemServicio :categoria="item">
-            <template #nombre>{{item.nombre}}</template>
+            <template #nombre ><span class="text-uppercase">{{item.nombre}}</span> </template>
 
             <template #contenido>
-              <p>{{item.nombre}}</p>
+              <p class="text-uppercase">{{item.nombre}}</p>
               <p>{{item.descripcion}}</p>
             </template>
           </ItemServicio>

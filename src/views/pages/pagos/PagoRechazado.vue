@@ -25,9 +25,13 @@ export default {
         )
         .then((response) => {
           console.log(response);
+          localStorage.removeItem('info');
+            localStorage.removeItem('carrito');
 
           if (response.data) {
             this.venta = response.data;
+            
+
           } else {
             this.$router.push("/");
           }

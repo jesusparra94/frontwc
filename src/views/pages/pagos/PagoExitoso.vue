@@ -23,6 +23,8 @@ export default {
         .get(`${this.urlBackend}/api/getventapagada/${this.$route.params.code}`)
         .then((response) => {
           console.log(response);
+          localStorage.removeItem('info');
+            localStorage.removeItem('carrito');
           if (response.data) {
             this.venta = response.data;
           } else {

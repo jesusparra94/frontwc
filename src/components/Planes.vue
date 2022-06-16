@@ -2,8 +2,8 @@
 import ItemPlanes from "./ItemPlanes.vue";
 
 export default {
-  components:{
-    ItemPlanes
+  components: {
+    ItemPlanes,
   },
   data() {
     return {
@@ -11,7 +11,7 @@ export default {
     };
   },
 
-  props:['planes']
+  props: ["planes"],
 };
 </script>
 
@@ -20,11 +20,10 @@ export default {
     <div class="container pt-13 pb-16 pb-md-18">
       <div class="row">
         <div class="col-lg-8 col-xl-7 col-xxl-6">
-          <h3 class="text-primary mb-3">
-            Elige la solución perfecta para ti
-          </h3>
+          <h3 class="text-primary mb-3">Elige la solución perfecta para ti</h3>
           <h3 class="display-5 mb-9">
-            ¡Escoge el plan de Hosting ideal para comenzar tu proyecto con nosotros!
+            ¡Escoge el plan de Hosting ideal para comenzar tu proyecto con
+            nosotros!
           </h3>
         </div>
         <!-- /column -->
@@ -34,25 +33,40 @@ export default {
         <div class="col-md-4" v-for="(item, i) in planes" :key="i">
           <ItemPlanes :plan="item">
             <template #nombre>
-                
-                <p class="text-uppercase"> {{item.nombre}} </p>
-                            
-                <p v-if="item.categoria_id!==2">{{$filters.currencyUSD(item.precio)}} / al Mes</p>
+              <button type="button" class="btn position-relative" style="background:#005AD2; color:#FFF">
+                50% Descuento
+                <span
+                  class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle"
+                >
+                  <span class="visually-hidden">New alerts</span>
+                </span>
+              </button>
 
+              <p class="text-uppercase">{{ item.nombre }}</p>
+
+              <p v-if="item.categoria_id !== 2">
+                {{ $filters.currencyUSD(item.precio) }} / al Mes
+              </p>
             </template>
 
             <template #contenido>
-              <p class="text-uppercase">{{item.nombre}}</p>
+              <p class="text-uppercase" style="color: #005ad2">
+                <strong>{{ item.nombre }} </strong>
+              </p>
 
-              <ul>
-
-                  <li v-for="(item1, j) in item.caracteristicas" :key="j"> {{item1.nombre}} {{item1.capacidad}}</li>
-
+              <ul style="color: #005ad2">
+                <li v-for="(item1, j) in item.caracteristicas" :key="j">
+                  <span style="color: #005ad2">
+                    {{ item1.nombre }} {{ item1.capacidad }}
+                  </span>
+                </li>
               </ul>
 
-              <p v-if="item.categoria_id!==2"> {{ $filters.currencyUSD(item.precio) }} al Mes</p>
-
-              
+              <p v-if="item.categoria_id !== 2">
+                <strong>
+                  {{ $filters.currencyUSD(item.precio) }} al Mes
+                </strong>
+              </p>
             </template>
           </ItemPlanes>
         </div>
