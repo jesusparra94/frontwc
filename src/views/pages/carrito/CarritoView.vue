@@ -351,13 +351,12 @@
                                                             
                                                                 <button
                                                                     type="button"
-                                                                    class="btn"
+                                                                    class="btn d-flex align-items-center"
                                                                     style="
-                                                                    background-color: #005ad2;
+                                                                    background-color: #17A4F3;
                                                                     color: #f2f3f5;
                                                                     font-weight: bold;
-                                                                    max-height: 40px;
-                                                                    font-size: 13px;"
+                                                                    max-height: 40px;"
                                                                     @click="guardardominio(i)"
                                                                 >
                                                                 Guardar

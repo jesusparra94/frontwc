@@ -46,14 +46,14 @@ export default {
           <div class="container flex-lg-row flex-nowrap align-items-center">
             <div class="navbar-brand w-100">
               <a href="/">
-                <img class="logo-dark" src="@/assets/imagenes/logoWeb.png" width="320px" alt="" />
-                <img class="logo-light" src="@/assets/imagenes/logoWeb.png" width="320px" alt="" />
+                <img class="logo-dark" src="@/assets/imagenes/logoWeb.png" style="width:320px;" alt="" />
+                <img class="logo-light" src="@/assets/imagenes/logoWeb.png" style="width:320px;" alt="" />
               </a>
             </div>
             <div class="navbar-collapse offcanvas-nav" :class="[mostrarMovil ? ['open']:'']">
       
              <div class="offcanvas-header d-lg-none d-xl-none">
-                <a href="/"><img src="@/assets/imagenes/logoWeb.png" width="320px" alt="" /></a>
+                <a href="/"><img src="@/assets/imagenes/logoWeb.png" style="width:320px;" alt="" /></a>
                 <button type="button" @click="mostrarNavMovil()" class="btn-close btn-close-white offcanvas-close offcanvas-nav-close" aria-label="Close"></button>
               </div>
               <ul class="navbar-nav">

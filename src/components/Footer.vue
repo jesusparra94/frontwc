@@ -5,7 +5,7 @@
         <div class="col-md-4 col-lg-3">
           <div class="widget">
 
-            <img class="mb-4" src="@/assets/imagenes/logoWeb.png" width="320px" alt="" />
+            <img class="mb-4" src="@/assets/imagenes/logoWeb.png" style="width:280px;" alt="" />
             <p class="mb-4">Web Company SpA. © 2022. <br class="d-none d-lg-block" />Todos los Derechos Reservados</p>
             <nav class="nav social social-white">
               <a href="#"><i class="uil uil-twitter"></i></a>

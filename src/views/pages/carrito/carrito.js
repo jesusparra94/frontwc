@@ -95,18 +95,15 @@ export default {
   
         carrito =  JSON.parse(localStorage.getItem('carrito'));
 
-        this.jsoncarro.forEach((element, i) => {
+        carrito.forEach((element, i) => {
+
+            console.log("elemento");
+            console.log(element);
 
                 this.formvalores.push({
                     dominio: '',
                     ext: ''
                 });
-
-                this.formvalores2.push({
-                    dominio: '',
-                    ext: ''
-                });
-
 
                 this.selectperiodo.push({
                     periodo_id: element.periodo
@@ -118,10 +115,35 @@ export default {
 
                 this.statusDominioBuscado[i] = false;
                 this.loading[i] = false;
-                this.dominioguardado[i] = '';
-                this.dominioguardadostatus[i] = false;
-                this.domainOld[i] = false;
-                this.domainNew[i] = true;
+
+                if(element.dominio!=''){
+
+                    let arrdomain = element.dominio.split('.');
+
+                    this.formvalores2.push({
+                        dominio: arrdomain[0],
+                        ext: arrdomain[1]
+                    });
+
+                    this.dominioguardado[i] = element.dominio;
+                    this.dominioguardadostatus[i] = true;
+                    this.domainOld[i] = true;
+                    this.domainNew[i] = false;
+
+                }else{
+
+                    this.formvalores2.push({
+                        dominio: '',
+                        ext: ''
+                    });
+
+                    this.dominioguardado[i] = '';
+                    this.dominioguardadostatus[i] = false;
+                    this.domainOld[i] = false;
+                    this.domainNew[i] = true;
+
+                }
+
                 this.domainFirstAdd[i] = false;
 
         })

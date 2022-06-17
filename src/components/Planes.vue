@@ -37,7 +37,7 @@ export default {
                 
                 <p class="text-uppercase"> {{item.nombre}} </p>
                             
-                <p v-if="item.categoria_id!==2">{{$filters.currencyUSD(item.precio)}} / al Mes</p>
+                <p v-if="item.categoria_id!==2">{{$filters.currencyUSD(item.precio)}} / al Mes*</p>
 
             </template>
 
@@ -50,7 +50,7 @@ export default {
 
               </ul>
 
-              <p v-if="item.categoria_id!==2"> {{ $filters.currencyUSD(item.precio) }} al Mes</p>
+              <p v-if="item.categoria_id!==2"> {{ $filters.currencyUSD(item.precio) }} al Mes*</p>
 
               
             </template>
