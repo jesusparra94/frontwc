@@ -138,7 +138,7 @@ export default {
 }
 
 .front {
-  background-image: url("../assets/imagenes/hosting.jpg");
+  background-image: url("../assets/imagenes/hosting.png");
   background-size: cover;
   padding: 2rem;
   font-size: 1.618rem;

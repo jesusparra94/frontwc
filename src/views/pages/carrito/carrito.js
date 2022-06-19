@@ -2,6 +2,7 @@ import Nav from '@/components/Nav.vue'
 import DetallesServicio from '@/components/DetallesServicio.vue'
 import DetallesCarrito from '../../../components/carrito/DetallesCarrito.vue'
 import IdentificacionCarrito from '@/components/carrito/IdentificacionCarrito.vue'
+import DetallesFacturacion from  '@/components/carrito/DetallesFacturacion.vue'
 import Footer from '@/components/Footer.vue'
 import useValidate from "@vuelidate/core";
 import {
@@ -18,10 +19,12 @@ export default {
         DetallesServicio,
         DetallesCarrito,
         IdentificacionCarrito,
+        DetallesFacturacion,
         Footer
       },
     data() {
         return {
+            urlpago:"",
             carritoView:true,
             identificacionView:false,
             pago:false,
@@ -153,6 +156,34 @@ export default {
 
         this.precioDolarHoy = this.getdolar();
 
+        let info =  JSON.parse(localStorage.getItem('info'));
+
+        if(info){
+
+            if(info.identificacion){
+                this.carritoView = false;
+                this.pago = false;
+                this.confirmacion = false
+                this.identificacionView = true;
+
+            }else if(info.detallesfacturacion){
+
+                this.carritoView = false;
+                this.confirmacion = false
+                this.identificacionView = false;
+                this.pago = true;
+
+            }else if(info.confirmacion){
+                this.carritoView = false;
+                this.identificacionView = false;
+                this.pago = false;
+                this.confirmacion = true;
+
+            }
+
+        }
+
+
 
         // this.v$.$validate() // checks all inputs
   		// 		if (!this.v$.$error) { // if ANY fail validation
@@ -169,6 +200,51 @@ export default {
 
 
     methods: {
+
+        // emit 
+
+        nextdetallesfacturacion(data){
+            console.log(data)
+            // si data es distinto a null el formulario va a cargar con los datos
+            if(data){
+
+                let info =  JSON.parse(localStorage.getItem('info'));
+                        info.email = data.email;
+                        info.nombre = data.nombre;
+                        info.giro = data.giro;
+                        info.rut = data.rut;
+                        info.telefono = data.telefono;
+                        info.direccion = data.direccion;
+                        info.comuna = data.comuna;
+                        info.ciudad = data.ciudad;
+
+                localStorage.setItem('info',JSON.stringify(info));
+
+
+            }
+
+            console.log("no llega")
+
+            this.identificacionView = false;
+            this.pago = true;
+        },
+
+        nextconfirmacion(data){
+
+            this.urlpago = data;
+
+            this.pago = false;
+            let info =  JSON.parse(localStorage.getItem('info'));
+                        info.detallesfacturacion = false;
+                        info.identificacion = false;
+                        info.confirmacion = true;
+
+            localStorage.setItem('info',JSON.stringify(info));
+
+            this.confirmacion = true;
+
+
+        },
 
         submitFormNewDomain(){
             this.v$.password.$validate() // checks all inputs
@@ -821,6 +897,23 @@ export default {
         continuaridentificacion(){
 
             if(this.validarCarro()){
+
+                let info = {
+                    email:'',
+                    nombre:'',
+                    giro:'',
+                    rut:'',
+                    telefono:'',
+                    direccion:'',
+                    comuna:'',
+                    ciudad:'',
+                    identificacion: true,
+                    detallesfacturacion:false,
+                    confirmacion:false
+
+                };
+
+                localStorage.setItem('info',JSON.stringify(info));
 
                 this.carritoView = false;
                 this.identificacionView = true;
