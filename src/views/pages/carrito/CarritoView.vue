@@ -24,7 +24,7 @@
     
     </section>
            
-    <section class="wrapper bg-light">
+    <section class="wrapper bg-light" id="body-carrito">
         <div class="container pt-5 pb-5">
             <div class="row process-wrapper line">
 
@@ -144,12 +144,13 @@
                                             <select class="form-select" v-model="selectperiodo[i].periodo_id" @change="PeriodoItem(i)">
 
                                                 <template  v-for="(item1, j) in item.periodosproducto" :key="j">
-                                                
-                                                    <option v-if="item1.periodo_id==item.periodo"
+
+                                                    <option v-if="item1.periodo_id===item.periodo"
                                                             :value="item1.periodo_id"
                                                             :selected="true"
                                                     >
-                                                        {{$filters.currencyUSD(item1.precio)}} CLP por {{item1.periodo.periodo}}
+                                                        
+                                                        {{$filters.currencyUSD(item1.precio)}} CLP por {{item1.periodo.periodo}} {{item.periodo_id}}
                                                     </option>
 
                                                     <option v-else
@@ -162,6 +163,7 @@
                                                 </template>
 
                                             </select>
+               
 
                                         </div>
 

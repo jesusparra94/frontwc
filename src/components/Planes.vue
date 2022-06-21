@@ -17,7 +17,7 @@ export default {
 
 <template>
   <section class="wrapper bg-light">
-    <div class="container pt-13 pb-16 pb-md-18">
+    <div class="container pt-13 pb-12 pb-md-12" id="body-planes">
       <div class="row">
         <div class="col-lg-8 col-xl-7 col-xxl-6">
           <h3 class="text-primary mb-3">Elige la solución perfecta para ti</h3>
@@ -33,8 +33,23 @@ export default {
         <div class="col-md-4" v-for="(item, i) in planes" :key="i">
           <ItemPlanes :plan="item">
             <template #nombre>
-              <button type="button" class="btn position-relative" style="background:#005AD2; color:#FFF">
-                50% Descuento
+
+              <button type="button" 
+                      class="btn position-relative" 
+                      data-cue="slideInDown" 
+                      data-group="page-title-buttons" 
+                      data-delay="900" 
+                      data-show="true" 
+                      style=" background:#005AD2; color:#FFF;
+                              animation-name: slideInDown; 
+                              animation-duration: 700ms; 
+                              animation-timing-function: ease; 
+                              animation-delay: 1200ms; 
+                              animation-direction: normal; 
+                              animation-fill-mode: both;"
+                >
+
+                {{item.periodosproducto[2].descuento}}% Descuento
                 <span
                   class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle"
                 >
@@ -44,31 +59,44 @@ export default {
 
               <p class="text-uppercase">{{ item.nombre }}</p>
 
-              <p v-if="item.categoria_id !== 2">
-                {{ $filters.currencyUSD(item.precio) }} / al Mes
+              <p class="precio-size" v-if="item.categoria_id !== 2">
+                {{ $filters.currencyUSD(item.periodosproducto[2].precio/item.periodosproducto[2].periodo.meses) }} / al Mes *
               </p>
             </template>
 
             <template #contenido>
-              <p class="text-uppercase" style="color: #005ad2">
-                <strong>{{ item.nombre }} </strong>
-              </p>
 
-              <ul style="color: #005ad2">
-                <li v-for="(item1, j) in item.caracteristicas" :key="j">
-                  <span style="color: #005ad2">
-                    {{ item1.nombre }} {{ item1.capacidad }}
-                  </span>
-                </li>
-              </ul>
+              <div class="card-content">
+                <h3 class="text-uppercase" style="color: #005ad2">
+                  <strong>{{ item.nombre }} </strong>
+                </h3>
+                
+                <div class="row">
+                  <div class="col-md-12 d-flex justify-content-between" v-for="(item1, j) in item.caracteristicas" :key="j">
+                    
+                      {{ item1.nombre }} <b>{{ item1.capacidad }}</b>
+                    
+                  </div>
+                </div>
+                
+                <p class="mt-4" v-if="item.categoria_id !== 2">
+                  <strong class="precio-size">
+                     {{ $filters.currencyUSD(item.periodosproducto[2].precio/item.periodosproducto[2].periodo.meses) }} / al Mes *
+                  </strong>
+                </p>
+              </div>
 
-              <p v-if="item.categoria_id !== 2">
-                <strong>
-                  {{ $filters.currencyUSD(item.precio) }} al Mes
-                </strong>
-              </p>
             </template>
           </ItemPlanes>
+        </div>
+        <div class="col-md-12 text-end">
+
+          <a 
+            class="text-primary"
+            style="cursor:pointer;" 
+            data-bs-toggle="modal" 
+            data-bs-target="#modalInfoContratacion"><b>* Condiciones del nuestros planes</b></a>
+
         </div>
       </div>
     </div>
@@ -216,5 +244,13 @@ export default {
 .button:active:before {
   transform: translateZ(-20px);
   top: 12px;
+}
+
+.card-content{
+  padding-left:20px;
+  padding-right:20px;
+}
+.precio-size{
+  font-size:29px;
 }
 </style>

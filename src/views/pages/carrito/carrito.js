@@ -5,6 +5,7 @@ import IdentificacionCarrito from '@/components/carrito/IdentificacionCarrito.vu
 import DetallesFacturacion from  '@/components/carrito/DetallesFacturacion.vue'
 import Footer from '@/components/Footer.vue'
 import useValidate from "@vuelidate/core";
+import Multiselect from "vue-multiselect";
 import {
     required,
     email,
@@ -20,10 +21,13 @@ export default {
         DetallesCarrito,
         IdentificacionCarrito,
         DetallesFacturacion,
-        Footer
+        Footer,
+        Multiselect
       },
     data() {
         return {
+            selected: 1,
+        options: [1, 2, 3],
             urlpago:"",
             carritoView:true,
             identificacionView:false,
@@ -89,72 +93,79 @@ export default {
 
         if(localStorage.getItem('carrito')){
 
-            this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
             this.calcularTotales();
 
-        }
-
-        let carrito = [];
+            let carrito = [];
   
-        carrito =  JSON.parse(localStorage.getItem('carrito'));
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
 
-        carrito.forEach((element, i) => {
+            console.log("detalles de productos");
+            console.log(carrito);
 
-            console.log("elemento");
-            console.log(element);
+            this.jsoncarro = carrito;
 
-                this.formvalores.push({
-                    dominio: '',
-                    ext: ''
-                });
+            carrito.forEach((element, i) => {
 
-                this.selectperiodo.push({
-                    periodo_id: element.periodo
-                });
+                console.log("elemento");
+                console.log(element);
 
-                this.mensajeerror.push({
-                    dominio:''
-                });
-
-                this.statusDominioBuscado[i] = false;
-                this.loading[i] = false;
-
-                if(element.dominio!=''){
-
-                    let arrdomain = element.dominio.split('.');
-
-                    this.formvalores2.push({
-                        dominio: arrdomain[0],
-                        ext: arrdomain[1]
-                    });
-
-                    this.dominioguardado[i] = element.dominio;
-                    this.dominioguardadostatus[i] = true;
-                    this.domainOld[i] = true;
-                    this.domainNew[i] = false;
-
-                }else{
-
-                    this.formvalores2.push({
+                    this.formvalores.push({
                         dominio: '',
                         ext: ''
                     });
 
-                    this.dominioguardado[i] = '';
-                    this.dominioguardadostatus[i] = false;
-                    this.domainOld[i] = false;
-                    this.domainNew[i] = true;
+                    this.selectperiodo.push({
+                        periodo_id: element.periodo
+                    });
 
-                }
+                    this.mensajeerror.push({
+                        dominio:''
+                    });
 
-                this.domainFirstAdd[i] = false;
+                    this.statusDominioBuscado[i] = false;
+                    this.loading[i] = false;
 
-        })
+                    if(element.dominio!=''){
 
-        //obtener dominios en carrito
-        this.listarDomainsCarrito();
+                        let arrdomain = element.dominio.split('.');
 
-        this.precioDolarHoy = this.getdolar();
+                        this.formvalores2.push({
+                            dominio: arrdomain[0],
+                            ext: arrdomain[1]
+                        });
+
+                        this.dominioguardado[i] = element.dominio;
+                        this.dominioguardadostatus[i] = true;
+                        this.domainOld[i] = true;
+                        this.domainNew[i] = false;
+
+                    }else{
+
+                        this.formvalores2.push({
+                            dominio: '',
+                            ext: ''
+                        });
+
+                        this.dominioguardado[i] = '';
+                        this.dominioguardadostatus[i] = false;
+                        this.domainOld[i] = false;
+                        this.domainNew[i] = true;
+
+                    }
+
+                    this.domainFirstAdd[i] = false;
+
+            })
+
+            //obtener dominios en carrito
+            this.listarDomainsCarrito();
+
+        }
+
+
+
+
+        // this.precioDolarHoy = this.getdolar();
 
         let info =  JSON.parse(localStorage.getItem('info'));
 
@@ -440,30 +451,50 @@ export default {
   
             carrito =  JSON.parse(localStorage.getItem('carrito'));
 
+            // console.log("Perido actual");
+
+            // console.log(carrito[i].periodo);
+
             let periodo_id = this.selectperiodo[i].periodo_id;
 
-            let producto_id = carrito[i].id_producto;
-
-            this.axios.get(`${this.urlBackend}/api/getperiodo/${producto_id}/${periodo_id}`).then((response) => {
-
-                console.log("respuesta de periodo");
-
-                console.log(response.data);
-
-                carrito[i].periodo = periodo_id;
-
-                carrito[i].precio = response.data.precio_descuento;
-
-                localStorage.setItem('carrito',JSON.stringify(carrito));
+            carrito[i].periodo = periodo_id;
 
             this.jsoncarro = carrito;
-           
-            this.listarDomainsCarrito();
+
+            //console.log("Periodo seleccionado");
+
+            //console.log(periodo_id);
+
+            localStorage.setItem('carrito',JSON.stringify(carrito));
+
+            //this.jsoncarro = carrito;
 
             this.calcularTotales();
 
+            // let periodo_id = this.selectperiodo[i].periodo_id;
 
-            });
+            // let producto_id = carrito[i].id_producto;
+
+            // this.axios.get(`${this.urlBackend}/api/getperiodo/${producto_id}/${periodo_id}`).then((response) => {
+
+            //     console.log("respuesta de periodo");
+
+            //     console.log(response.data);
+
+            //     carrito[i].periodo = periodo_id;
+
+            //     //carrito[i].precio = response.data.precio_descuento;
+
+            //     localStorage.setItem('carrito',JSON.stringify(carrito));
+
+            // this.jsoncarro = carrito;
+           
+            // this.listarDomainsCarrito();
+
+            // this.calcularTotales();
+
+
+            // });
             
 
 
@@ -791,22 +822,22 @@ export default {
 
                 //console.log(response.data.serie);
 
-                let cont = 0;
+                // let cont = 0;
 
-                response.data.serie.forEach((element, i) => {
-                    cont++;
-                    if(cont==1){
-                        arrayDatos.push({
+                // response.data.serie.forEach((element, i) => {
+                //     cont++;
+                //     if(cont==1){
+                //         arrayDatos.push({
 
-                            fecha: element.fecha.split('T')[0],
-                            precio: element.valor
+                //             fecha: element.fecha.split('T')[0],
+                //             precio: element.valor
 
-                        });
-                    }
+                //         });
+                //     }
 
-                });
+                // });
 
-                this.precioDolar = arrayDatos[0].precio;
+                this.precioDolar = response.data.precio;
                 console.log(this.precioDolar);
 
             });
@@ -842,33 +873,34 @@ export default {
 
             this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
 
-                //console.log(response.data.serie);
+                console.log(response.data.precio);
+                
 
-                let cont = 0;
+                // let cont = 0;
 
-                let arrayDatos = [];
+                // let arrayDatos = [];
 
-                this.totales.neto = 0;
-                this.totales.iva = 0;
-                this.totales.total = 0;
+                // this.totales.neto = 0;
+                // this.totales.iva = 0;
+                // this.totales.total = 0;
 
-                response.data.serie.forEach((element, i) => {
+                // response.data.serie.forEach((element, i) => {
 
-                    cont++;
+                //     cont++;
 
-                    if(cont==1){
+                //     if(cont==1){
 
-                        arrayDatos.push({
+                //         arrayDatos.push({
 
-                            fecha: element.fecha.split('T')[0],
-                            precio: element.valor
+                //             fecha: element.fecha.split('T')[0],
+                //             precio: element.valor
 
-                        });
-                    }
+                //         });
+                //     }
 
-                });
+                // });
 
-                this.precioDolar = arrayDatos[0].precio;
+                this.precioDolar = response.data.precio;
                 
                 this.jsoncarro.forEach((element, i) => {
 
@@ -878,7 +910,7 @@ export default {
 
                     }else{
 
-                        this.totales.neto = this.totales.neto + element.precio;
+                        this.totales.neto = this.totales.neto + element.periodosproducto[2].precio;
 
                     }
 
@@ -973,7 +1005,16 @@ export default {
 
             element.scrollIntoView({behavior: "smooth"});
     
-        }
+        },
+        traerPeriodos(id_producto) {
+
+            this.axios
+                .get(`${this.urlbackend}/api/admin/getperiodo/${id_producto}`)
+                .then((response) => {
+                console.log("Periodos producto");
+                console.log(response);
+            });
+        },
 
     }
 };

@@ -38,6 +38,8 @@ export default {
 
         this.axios.get(`${this.urlBackend}/api/getproductoscategoriaslug/${this.$route.params.nombre}`).then((response) => {
 
+          console.log("Planes");
+
           console.log(response);
 
           this.planes = response.data;

@@ -1,3 +1,12 @@
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+h1,h2,h3,h4,h5,h6,span,p,label,input,a,button,ul,li,section,div,form,textarea{
+    font-family: 'Lato', sans-serif!important;
+}
+
 .input__field_telefono{
     
     border-right: 1px solid #17A4F3;
@@ -336,6 +345,7 @@ span.btn-primary, .btn-primary{
     font-size: 22px;
 }
 .bg-wc{
-    background: rgb(123,71,207)!important;
-    background: linear-gradient(90deg, rgba(123,71,207,1) 30%, rgba(94,98,217,1) 64%, rgba(23,164,243,1) 100%)!important;
+    /* background: rgb(123,71,207)!important; */
+    /* background: linear-gradient(90deg, rgba(123,71,207,1) 30%, rgba(94,98,217,1) 64%, rgba(23,164,243,1) 100%)!important; */
+    background-color: #000!important;
 }

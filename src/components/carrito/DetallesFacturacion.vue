@@ -18,6 +18,8 @@ export default {
         ciudad: "",
         email: "",
       },
+      ciudades: [],
+      comunas:[]
     };
   },
   emits:['avanzarconfirm'],
@@ -34,7 +36,7 @@ export default {
           required,
           email,
         },
-      },
+      }
     };
   },
   mounted(){
@@ -49,6 +51,13 @@ export default {
     this.form.direccion = info.direccion;
     this.form.comuna = info.comuna;
     this.form.ciudad = info.ciudad;
+
+    if(this.form.ciudad){
+      this.getcomunas(this.form.ciudad);
+    }
+
+    this.getregiones();
+
   },
 
   methods:{
@@ -82,6 +91,25 @@ export default {
       }
     },
 
+    changeRegion(){
+
+      let info =  JSON.parse(localStorage.getItem('info'));
+                        info.email = this.form.email;
+                        info.nombre = this.form.nombre;
+                        info.giro = this.form.giro;
+                        info.rut = this.form.rut;
+                        info.telefono = this.form.telefono;
+                        info.direccion = this.form.direccion;
+                        info.comuna = this.form.comuna;
+                        info.ciudad = this.form.ciudad;
+
+      //obtener comunas
+      this.getcomunas(info.ciudad);
+
+      localStorage.setItem('info',JSON.stringify(info));
+
+    },
+
     changeInput(){
 
       let info =  JSON.parse(localStorage.getItem('info'));
@@ -96,6 +124,7 @@ export default {
 
       localStorage.setItem('info',JSON.stringify(info));
     },
+
     validaRut() {
      this.rutinvalido = true;
       var rutCompleto = this.form.rut.trim().replace(".", "");
@@ -126,6 +155,35 @@ export default {
         S = (S + (T % 10) * (9 - (M++ % 6))) % 11;
       return S ? S - 1 : "k";
     },
+
+    getregiones(){
+      
+      this.axios
+        .get(`${this.urlBackend}/api/getregiones`)
+        .then((res) => {
+
+          this.ciudades = res.data;
+          console.log("Ciudades");
+          console.log(res.data);
+      })
+    },
+
+    getcomunas(id_region){
+      
+      //obtener comunas
+      this.axios
+        .get(`${this.urlBackend}/api/getcomunas/${id_region}`)
+        .then((res) => {
+
+          this.comunas = res.data;
+          console.log("Comunas");
+          console.log(res.data);
+      })
+
+    }
+
+
+
   }
 };
 </script>
@@ -280,16 +338,37 @@ export default {
                           <select
                             class="form-select"
                             id="form-select"
-                            name="comuna"
-                          v-model="form.comuna"
-                            @change="changeInput()"
+                            name="ciudad"
+                            v-model="form.ciudad"
+                            @change="changeRegion()"
                             :class="{
                               'is-invalid':
-                                submitted && v$.form.comuna.$invalid,
+                                submitted && v$.form.ciudad.$invalid,
                             }"
                           >
-                            <option selected disabled value="">Comuna</option>
-                            <option value="comuna">...</option>
+
+                            <option selected disabled value="">Región</option>
+
+                            <template  v-for="(ciudad, i) in ciudades" :key="i">
+
+                              <option v-if="ciudad.REG_ID===form.ciudad"
+                                      :value="ciudad.REG_ID"
+                                      :selected="true"
+                              >
+                                  
+                                  {{ciudad.REG_NOMBRE}}
+                              </option>
+
+                              <option v-else
+                                      :value="ciudad.REG_ID"
+                                      :selected="false"
+                              >
+                                   {{ciudad.REG_NOMBRE}}
+                              </option>
+
+                          </template>
+
+
                           </select>
 
                           <div class="valid-feedback"></div>
@@ -304,16 +383,36 @@ export default {
                           <select
                             class="form-select"
                             id="form-select"
-                            name="ciudad"
-                          v-model="form.ciudad"
+                            name="comuna"
+                          v-model="form.comuna"
                             @change="changeInput()"
                             :class="{
                               'is-invalid':
-                                submitted && v$.form.ciudad.$invalid,
+                                submitted && v$.form.comuna.$invalid,
                             }"
                           >
-                            <option selected disabled value="">Ciudad</option>
-                            <option value="cuidad">...</option>
+                            
+                          <option selected disabled value="">Comuna</option>
+
+                          <template  v-for="(comuna, i) in comunas" :key="i">
+
+                              <option v-if="comuna.COM_ID===form.comuna"
+                                      :value="comuna.COM_ID"
+                                      :selected="true"
+                              >
+                                  
+                                  {{comuna.COM_NOMBRE}}
+                              </option>
+
+                              <option v-else
+                                      :value="comuna.COM_ID"
+                                      :selected="false"
+                              >
+                                   {{comuna.COM_NOMBRE}}
+                              </option>
+
+                          </template>
+
                           </select>
 
                           <div class="valid-feedback"></div>
@@ -321,6 +420,7 @@ export default {
                         </div>
                       </div>
                     </div>
+
                     <div class="col-md-12 mb-5">
                       <div
                         class="card pt-4 pb-5 d-flex justify-content-center align-items-center"
@@ -352,11 +452,11 @@ export default {
                                     for="periodo1"
                                   >
                                     <div class="container-img">
-                                      <img src="@/assets/img/icon-webpay.png" />
+                                      <img src="@/assets/imagenes/flow.svg" width="180px;" />
                                     </div>
 
                                     <p style="font-size: 13px">
-                                      Pago con Webpay
+                                      Pago con Flow
                                     </p>
                                   </label>
                                 </div>

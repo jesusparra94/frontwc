@@ -52,7 +52,44 @@ const router = createRouter({
       name: 'cuenta-factura-pendiente',
       component: FacturasPendientes
     },
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+
+    if(document.getElementById('body-carrito')){
+
+      return {
+        el: document.getElementById('body-carrito'),
+        top: 0,
+        behavior: 'smooth',
+      }
+
+    }else if(document.getElementById('body-planes')){
+
+      return {
+        el: document.getElementById('body-planes'),
+        top: 0,
+        behavior: 'smooth',
+      }
+
+    }else if(document.getElementById('nuestrosServicios')){
+
+      return {
+        el: document.getElementById('nuestrosServicios'),
+        top: 0,
+        behavior: 'smooth',
+      }
+
+    }else{
+
+      return {
+        // el: document.getElementById('nuestrosServicios'),
+        top: 0,
+        behavior: 'smooth',
+      }
+
+    }
+
+  }
 })
 
 export default router

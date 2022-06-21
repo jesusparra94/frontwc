@@ -62,6 +62,62 @@ export default {
 
     </div>
 
+
+
+<div
+  class="modal fade"
+  id="modalInfoContratacion"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="modalInfoContratacion"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+
+
+
+    <div class="modal-content" >
+
+      <div class="modal-header">
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="row resultados">
+
+          <div class="col-md-12">
+
+            <h3>
+              Descuento por el primer periodo de contratación
+            </h3>
+            <br>
+
+            <p>Los descuentos ofrecidos se aplican <b>solo en el primer periodo de pago</b>, 
+               y están disponibles en los periodos indicados en cada plan.</p>
+            
+            <p>Estos descuentos no estan incluidos en la renovación del plan y son válidos para <b>nuevos clientes</b>
+             y clientes actuales que quieran contratar un <b>nuevo de hosting</b>.</p>
+
+             <p>Los precios mostrados en cada plan <b>no incluyen el IVA</b>.</p>
+            
+            
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
 </template>
 
 <style scoped>
@@ -107,7 +163,8 @@ export default {
 }
 
 .front {
-  background-image: url("../assets/imagenes/hosting.png");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/imagenes/hosting.png");
+  background-repeat: no-repeat;
   background-size: cover;
   padding: 2rem;
   font-size: 1.618rem;

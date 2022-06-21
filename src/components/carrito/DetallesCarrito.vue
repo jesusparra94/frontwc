@@ -17,31 +17,32 @@ export default {
 
             this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
 
+            
             this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
 
                 //console.log(response.data.serie);
 
-                let cont = 0;
+                // let cont = 0;
 
-                let arrayDatos = [];
+                // let arrayDatos = [];
 
-                response.data.serie.forEach((element, i) => {
+                // response.data.serie.forEach((element, i) => {
 
-                    cont++;
+                //     cont++;
 
-                    if(cont==1){
+                //     if(cont==1){
 
-                        arrayDatos.push({
+                //         arrayDatos.push({
 
-                            fecha: element.fecha.split('T')[0],
-                            precio: element.valor
+                //             fecha: element.fecha.split('T')[0],
+                //             precio: element.valor
 
-                        });
-                    }
+                //         });
+                //     }
 
-                });
+                // });
 
-                this.precioDolar = arrayDatos[0].precio;
+                this.precioDolar = response.data.precio;
                 
                 this.jsoncarro.forEach((element, i) => {
 
@@ -76,36 +77,36 @@ export default {
 
     methods: {
 
-        getdolar(){
+        // getdolar(){
 
-            let arrayDatos = [];
+        //     let arrayDatos = [];
 
-            this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
+        //     this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
 
-                //console.log(response.data.serie);
+        //         //console.log(response.data.serie);
 
-                let cont = 0;
+        //         let cont = 0;
 
-                response.data.serie.forEach((element, i) => {
-                    cont++;
-                    if(cont==1){
-                        arrayDatos.push({
+        //         response.data.serie.forEach((element, i) => {
+        //             cont++;
+        //             if(cont==1){
+        //                 arrayDatos.push({
 
-                            fecha: element.fecha.split('T')[0],
-                            precio: element.valor
+        //                     fecha: element.fecha.split('T')[0],
+        //                     precio: element.valor
 
-                        });
-                    }
+        //                 });
+        //             }
 
-                });
+        //         });
 
-                this.precioDolar = arrayDatos[0].precio;
+        //         this.precioDolar = arrayDatos[0].precio;
 
-            });
+        //     });
 
-            return true;
+        //     return true;
 
-        }
+        // }
 
     },
 
@@ -152,8 +153,17 @@ export default {
                             <h6 style="font-size:16px" v-if="item.categoria_id==2"> {{$filters.currencyUSD(item.precio*(precioDolar+10))}} CLP por 1 año</h6>
 
                             <h6 style="font-size:16px" v-else> 
-                                
-                               {{$filters.currencyUSD(item.precio)}} CLP
+
+
+                                <b  v-for="(item1, j) in item.periodosproducto" :key="j">
+      
+                                    <h6 v-if="item1.periodo_id===item.periodo"
+                                    >
+                                        
+                                        {{$filters.currencyUSD(item1.precio)}} CLP
+                                    </h6>
+
+                                </b>
 
                             </h6>
 
@@ -212,15 +222,15 @@ export default {
 
                 <div class="row px-5 pb-1">
 
-                    <div class="col-md-6">
+                    <div class="col-md-7">
 
                         <h6 class=" pt-1"><b>Neto pedido</b></h6>
 
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-5">
 
-                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(neto)}} CLP</b></h6>
+                        <h6 class="pt-1"><b>{{$filters.currencyUSD(neto)}} CLP</b></h6>
 
                     </div>
 
@@ -228,15 +238,15 @@ export default {
 
                 <div class="row px-5 pb-1">
 
-                    <div class="col-md-6">
+                    <div class="col-md-7">
 
                         <h6 class="pt-1"><b>IVA pedido</b></h6>
 
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-5">
 
-                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(iva)}} CLP</b></h6>
+                        <h6 class="pt-1"><b>{{$filters.currencyUSD(iva)}} CLP</b></h6>
 
                     </div>
 
@@ -244,15 +254,15 @@ export default {
 
                 <div class="row px-5 pb-1">
 
-                    <div class="col-md-6">
+                    <div class="col-md-7">
 
                         <h6 class="pt-1"><b>Total pedido</b></h6>
 
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-5">
 
-                        <h6 class="pt-1 azul-crt"><b>{{$filters.currencyUSD(total)}} CLP</b></h6>
+                        <h6 class="pt-1"><b>{{$filters.currencyUSD(total)}} CLP</b></h6>
 
                         <!-- <small class="">Ahorra 2.600 CLP</small> -->
 

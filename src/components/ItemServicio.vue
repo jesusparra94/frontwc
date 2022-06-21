@@ -138,8 +138,11 @@ export default {
 }
 
 .front {
-  background-image: url("../assets/imagenes/hosting.png");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/imagenes/hosting.png");
+  background-repeat: no-repeat;
   background-size: cover;
+  /* background-image: url("../assets/imagenes/hosting.png");
+  background-size: cover; */
   padding: 2rem;
   font-size: 1.618rem;
   font-weight: 600;
