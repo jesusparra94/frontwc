@@ -7,7 +7,7 @@ import PagoExitosoView from '../views/pages/pagos/PagoExitoso.vue'
 import PagoRechazadoView from '../views/pages/pagos/PagoRechazado.vue'
 import CuentaView from '../views/pages/cuenta/CuentaView.vue'
 import FacturasPendientes from '../views/pages/cuenta/FacturasPendientes.vue'
-
+import LoginView from '../views/pages/login/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,12 +45,19 @@ const router = createRouter({
     {
       path: '/cuenta',
       name: 'cuenta',
-      component: CuentaView
+      component: CuentaView,
+      meta: { requiresAuth: true }
     },
     {
       path: '/cuenta/factura-pendiente',
       name: 'cuenta-factura-pendiente',
-      component: FacturasPendientes
+      component: FacturasPendientes,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
     },
   ],
   scrollBehavior(to, from, savedPosition) {
@@ -89,6 +96,20 @@ const router = createRouter({
 
     }
 
+  }
+})
+
+router.beforeEach((to, from) => {
+  // instead of having to check every route record with
+  // to.matched.some(record => record.meta.requiresAuth)
+  if (to.meta.requiresAuth && !localStorage.getItem('token')) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    return {
+      path: '/login',
+      // save the location we were at to come back later
+      query: { redirect: to.fullPath },
+    }
   }
 })
 

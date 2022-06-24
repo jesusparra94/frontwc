@@ -7,7 +7,47 @@ export default {
   components: {
     Sider,
     Nav,
-    ContactoSoporte
+    ContactoSoporte,
+  },
+
+  data() {
+    return {
+      urlBackend: this.urlBackend,
+      servicioscontratados: "",
+    };
+  },
+
+  mounted() {
+    if (localStorage.getItem("token")) {
+      this.axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${localStorage.getItem("token")}`;
+
+      this.axios.get(`${this.urlBackend}/api/validartoken`).then(
+        (response) => {},
+        (error) => {
+          localStorage.removeItem("token");
+          this.$router.push("/login");
+        }
+      );
+    }
+
+    this.servicios();
+  },
+
+  methods: {
+    servicios() {
+      this.axios.get(`${this.urlBackend}/api/servicoscontratados`).then(
+        (response) => {
+          console.log(response);
+
+          this.servicioscontratados = response.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
   },
 };
 </script>
@@ -23,123 +63,63 @@ export default {
           <div class="col-sm-12 col-md-9">
             <div class="card">
               <div class="card-body">
-                <h6 class="card-text">Servicios Contratados</h6>
+                <h4 class="card-text">Servicios Contratados</h4>
 
                 <div class="row mt-2">
                   <div class="col-12 mb-2">
-                    <button
-                      type="button"
-                      class="btn btn-primary btn-sm position-relative w-100 p-0"
-                    >
-                      <div class="table-responsive">
-                        <table class="table table-borderless text-light">
-                          <thead>
-                            <tr>
-                              <th scope="col">Servicio</th>
-                              <th scope="col">Fecha Renovación</th>
-                              <th scope="col">Acción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Hosting 5GB yuserly.cl</td>
-                              <td>12/05/2022</td>
-                              <td>
-                                <button
-                                  type="button"
-                                  class="btn btn-light btn-sm text-dark"
-                                >
-                                  Cpanel
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                    <div class="row " v-for="(item, i) in servicioscontratados" :key="i" >
+                      <div class="col-12 mb-2">
+                        <h6>Empresa: {{item.nombre}}</h6>
                       </div>
-                      <span
-                        class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle"
-                      >
-                      </span>
-                    </button>
-                  </div>
-                  <div class="col-12 mb-2">
-                    <button
-                      type="button"
-                      class="btn btn-primary btn-sm position-relative w-100 p-0"
-                    >
-                      <div class="table-responsive">
-                        <table class="table table-borderless text-light">
-                          <thead>
-                            <tr>
-                              <th scope="col">Servicio</th>
-                              <th scope="col">Fecha Renovación</th>
-                              <th scope="col">Acción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Hosting 5GB yuserly.cl</td>
-                              <td>12/05/2022</td>
-                              <td>
-                                <button
-                                  type="button"
-                                  class="btn btn-light btn-sm text-dark"
-                                >
-                                  Cpanel
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+
+                      <div class="col-12 mb-2" v-for="(item1, j) in item.serviciosempresa" :key="j">
+                        <button
+                          type="button"
+                          class="btn btn-primary btn-sm position-relative w-100 p-0"
+                           v-if="item1"
+                        >
+                          <div class="table-responsive">
+                            <table class="table table-borderless text-light">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Servicio</th>
+                                  <th scope="col">Fecha Renovación</th>
+                                  <th scope="col">Acción</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>{{item1.glosa}}</td>
+                                  <td>{{item1.fecha_renovacion}}</td>
+                                  <td>
+                                    <a
+                                      :href="'https://'+item1.dominio+'/cpanel'"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      class="btn btn-light btn-sm text-dark"
+                                      v-if="item1.productos.categoria_id == 1"
+                                    >
+                                      Cpanel
+                                    </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <span
+                            class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle"
+                          >
+                          </span>
+                        </button>
                       </div>
-                      <span
-                        class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"
-                      >
-                      </span>
-                    </button>
-                  </div>
-                  <div class="col-12 mb-2">
-                    <button
-                      type="button"
-                      class="btn btn-primary btn-sm position-relative w-100 p-0"
-                    >
-                      <div class="table-responsive">
-                        <table class="table table-borderless text-light">
-                          <thead>
-                            <tr>
-                              <th scope="col">Servicio</th>
-                              <th scope="col">Fecha Renovación</th>
-                              <th scope="col">Acción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Hosting 5GB yuserly.cl</td>
-                              <td>12/05/2022</td>
-                              <td>
-                                <button
-                                  type="button"
-                                  class="btn btn-light btn-sm text-dark"
-                                >
-                                  Cpanel
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <span
-                        class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"
-                      >
-                      </span>
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <ContactoSoporte/>
+          <ContactoSoporte />
         </div>
       </main>
     </div>
