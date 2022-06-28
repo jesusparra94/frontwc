@@ -31,7 +31,7 @@ export default {
     <div>
       <section class="wrapper image-wrapper bg-image bg-overlay text-white banner-detalles">
       
-        <div class="container pt-16 pt-md-16 pb-10 pb-md-10 text-center">
+        <div class="container pt-12 pt-md-12 pb-10 pb-md-10 text-center">
       
           <div class="row">
       

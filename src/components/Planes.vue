@@ -22,7 +22,7 @@ export default {
         <div class="col-lg-8 col-xl-7 col-xxl-6">
           <h3 class="text-primary mb-3">Elige la solución perfecta para ti</h3>
           <h3 class="display-5 mb-9">
-            ¡Escoge el plan de Hosting ideal para comenzar tu proyecto con
+            ¡Escoge el plan ideal para comenzar tu proyecto con
             nosotros!
           </h3>
         </div>
@@ -52,7 +52,8 @@ export default {
           <ItemPlanes :plan="item">
             <template #nombre>
 
-              <button type="button" 
+              <button v-if="item.categoria_id!=2"
+                      type="button" 
                       class="btn position-relative" 
                       data-cue="slideInDown" 
                       data-group="page-title-buttons" 

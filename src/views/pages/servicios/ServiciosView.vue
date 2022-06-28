@@ -82,7 +82,7 @@ export default {
 
 <template>
     <Nav />
-    <DetallesServicio />
+    <!-- <DetallesServicio /> -->
     <Planes :planes="planes" :isLoading="isLoading" /> 
     <Footer />
 </template>

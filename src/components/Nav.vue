@@ -5,13 +5,23 @@ export default {
       },
     data() {
         return {
-            mostrarMovil: false
+            mostrarMovil: false,
+            totalitems:0
         };
     },
 
     mounted() {
 
-        
+        if(localStorage.getItem('carrito')){
+
+            let carrito = [];
+  
+            carrito =  JSON.parse(localStorage.getItem('carrito'));
+
+            this.totalitems = carrito.length;
+        }else{
+          this.totalitems = 0;
+        }
 
         
     },
@@ -79,8 +89,11 @@ export default {
       
                   <a href="/carrito">
                   
-                    <span class="icon btn btn-circle btn-soft-primary disabled">
-                      <img class="rounded-0" src="@/assets/img/svg/cart-plus-solid.svg" width="22" alt="">
+                    <span>
+
+                      <i class="fa-solid fa-bag-shopping" style="font-size:36px;color:#FFF"></i>
+                      <span class="badge bg-white" style="position:relative;top:-12px;left:-8px;color:black;font-size:10px;border:0.8px solid #005AD2;">{{totalitems}}</span>
+
                     </span>
       
                   </a>
@@ -88,9 +101,11 @@ export default {
                 </li>
       
                 <li class="nav-item">
-      
-                  <span class="icon btn btn-circle btn-soft-primary disabled">
-                     <img class="rounded-0" src="@/assets/img/svg/user-gear-solid.svg" width="22" alt="">
+
+                  <span>
+
+                    <i class="fa-solid fa-circle-user" style="font-size:36px;color:#FFFF"></i>
+
                   </span>
       
                 </li>

@@ -991,6 +991,8 @@ export default {
             let carrito = [];
 
             let aux = true;
+
+            let cont = 0;
   
             if(localStorage.getItem('carrito')){
   
@@ -1009,9 +1011,24 @@ export default {
 
                     }
 
+                }else if(element.categoria_id==2){
+                    if(element.id_producto==4){
+                        cont++;
+                    }else{
+                        cont++;
+                    }
                 }
         
             });
+
+            if(cont==0){
+                aux = true;
+            }else if(cont==1){
+                this.mensajeerror[0].dominio = 'Debes ingresar al menos un dominio';
+                aux = false;
+            }else if(cont>1){
+                aux = true;
+            }
 
             return aux;
 
