@@ -63,8 +63,8 @@ export default {
 
                 this.total = this.neto + this.iva;
 
-                console.log("Neto: "+this.neto);
-                console.log("IVA: "+this.iva);
+                console.log("Neto neto: "+this.neto);
+                console.log("IVA iva: "+this.iva);
                 console.log("TOTAL: "+this.total);
 
 

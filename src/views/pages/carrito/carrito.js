@@ -1,4 +1,4 @@
-import Nav from '@/components/Nav.vue'
+import Nav from '@/components/Nav2.vue'
 import DetallesServicio from '@/components/DetallesServicio.vue'
 import DetallesCarrito from '../../../components/carrito/DetallesCarrito.vue'
 import IdentificacionCarrito from '@/components/carrito/IdentificacionCarrito.vue'
@@ -6,6 +6,7 @@ import DetallesFacturacion from  '@/components/carrito/DetallesFacturacion.vue'
 import Footer from '@/components/Footer.vue'
 import useValidate from "@vuelidate/core";
 import Multiselect from "vue-multiselect";
+import VueScrollTo from 'vue-scrollto';
 import {
     required,
     email,
@@ -26,8 +27,6 @@ export default {
       },
     data() {
         return {
-            selected: 1,
-        options: [1, 2, 3],
             urlpago:"",
             carritoView:true,
             identificacionView:false,
@@ -111,7 +110,7 @@ export default {
 
                     this.formvalores.push({
                         dominio: '',
-                        ext: ''
+                        ext: 'cl'
                     });
 
                     this.selectperiodo.push({
@@ -143,7 +142,7 @@ export default {
 
                         this.formvalores2.push({
                             dominio: '',
-                            ext: ''
+                            ext: 'cl'
                         });
 
                         this.dominioguardado[i] = '';
@@ -164,8 +163,8 @@ export default {
 
 
 
-
-        // this.precioDolarHoy = this.getdolar();
+        //get dolar hoy
+        this.getdolar();
 
         let info =  JSON.parse(localStorage.getItem('info'));
 
@@ -251,6 +250,8 @@ export default {
                         info.confirmacion = true;
 
             localStorage.setItem('info',JSON.stringify(info));
+
+            this.scrollto('body-carrito');
 
             this.confirmacion = true;
 
@@ -804,6 +805,9 @@ export default {
                     localStorage.setItem('carrito',JSON.stringify(carrito));
 
                     this.jsoncarro = carrito;
+
+                    console.log("nuevo carrito despies de eliminar");
+                    console.log(carrito);
                 
                     this.listarDomainsCarrito();
 
@@ -869,11 +873,15 @@ export default {
 
         calcularTotales(){
 
-            this.jsoncarro =  JSON.parse(localStorage.getItem('carrito'));
+            this.totales.neto = 0;
+            this.totales.iva = 0;
+            this.totales.total = 0;
 
-            this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
+            let carrito =  JSON.parse(localStorage.getItem('carrito'));
 
-                console.log(response.data.precio);
+            // this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
+
+            //     console.log(response.data.precio);
                 
 
                 // let cont = 0;
@@ -899,10 +907,8 @@ export default {
                 //     }
 
                 // });
-
-                this.precioDolar = response.data.precio;
                 
-                this.jsoncarro.forEach((element, i) => {
+                carrito.forEach((element, i) => {
 
                     if(element.categoria_id===2){
 
@@ -910,7 +916,13 @@ export default {
 
                     }else{
 
-                        this.totales.neto = this.totales.neto + element.periodosproducto[2].precio;
+                        element.periodosproducto.forEach((element2, j) => {
+
+                            if(element2.periodo_id==element.periodo){
+                                this.totales.neto = this.totales.neto + element2.precio;
+                            }
+                            
+                        });
 
                     }
 
@@ -921,13 +933,17 @@ export default {
 
                 this.totales.total = this.totales.neto + this.totales.iva;
 
+                console.log("neto de totales(): "+this.totales.neto);
+                console.log("Iva de totales(): "+this.totales.iva);
+                console.log("Total de totales(): "+this.totales.total);
 
-            });
+
+            // });
 
         },
 
         continuaridentificacion(){
-
+            
             if(this.validarCarro()){
 
                 let info = {
@@ -949,11 +965,12 @@ export default {
 
                 this.carritoView = false;
                 this.identificacionView = true;
+                this.scrollto('body-carrito');
 
             }else{
 
                 this.productosconerror = true;
-                //this.scrollto('topListadoProductos');
+                this.scrollto('body-carrito');
 
             }
 
@@ -1000,10 +1017,12 @@ export default {
 
         },
         scrollto(id){
+            //VueScrollTo.scrollTo(element, duration, options)
+            var element = document.getElementById(id);
 
-            var element = document.getElementById(idText);
+            VueScrollTo.scrollTo(element);
 
-            element.scrollIntoView({behavior: "smooth"});
+            //element.scrollIntoView({behavior: "smooth"});
     
         },
         traerPeriodos(id_producto) {

@@ -46,8 +46,8 @@ export default {
           <div class="container flex-lg-row flex-nowrap align-items-center">
             <div class="navbar-brand w-100">
               <a href="/">
-                <img class="logo-dark" src="@/assets/imagenes/logoWeb.png" style="width:320px;" alt="" />
-                <img class="logo-light" src="@/assets/imagenes/logoWeb.png" style="width:320px;" alt="" />
+                <img class="logo-dark" src="@/assets/imagenes/logoWeb.png" style="width:280px;" alt="" />
+                <img class="logo-light" src="@/assets/imagenes/logoWeb.png" style="width:280px;" alt="" />
               </a>
             </div>
             <div class="navbar-collapse offcanvas-nav" :class="[mostrarMovil ? ['open']:'']">

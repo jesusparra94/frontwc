@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       categorias: "",
+      isLoading: true,
       urlBackend: this.urlBackend,
     };
   },
@@ -15,6 +16,31 @@ export default {
   mounted() {
     this.traerCategorias();
   },
+
+   created() {
+    this.axios.interceptors.request.use(
+      (config) => {
+        this.isLoading = true;
+        return config;
+      },
+      (error) => {
+        this.isLoading = false;
+        return Promise.reject(error);
+      }
+    );
+
+    this.axios.interceptors.response.use(
+      (response) => {
+        this.isLoading = false;
+        return response;
+      },
+      (error) => {
+        this.isLoading = false;
+        return Promise.reject(error);
+      }
+    );
+  },
+
   methods: {
     traerCategorias() {
       this.axios.get(`${this.urlBackend}/api/getcategorias`).then((response) => {
@@ -42,16 +68,45 @@ export default {
       </div>
       <!-- /.row -->
       <div class="row gx-md-8 gy-8 mb-2 mb-md-2">
-        <div class="col-md-4" v-for="(item, i) in categorias" :key="i">
-          <ItemServicio :categoria="item">
-            <template #nombre ><span class="text-uppercase">{{item.nombre}}</span> </template>
 
-            <template #contenido>
-              <p class="text-uppercase">{{item.nombre}}</p>
-              <p>{{item.descripcion}}</p>
-            </template>
-          </ItemServicio>
-        </div>
+        <template v-if="this.isLoading">
+
+          <div class="d-flex justify-content-center">
+
+            <div class="d-flex align-items-center">
+
+              <span class="spinner-border spinner-border-sm color-webc" style="width: 3rem; height: 3rem;" role="status" aria-hidden="true"></span>
+              <b class="color-webc ms-3" style="font-size:25px">Cargando...</b>
+            
+            </div>
+            
+          </div>
+
+        </template>
+
+        <template v-else>
+
+          <div class="col-md-4" v-for="(item, i) in categorias" :key="i">
+
+            <ItemServicio :categoria="item">
+
+              <template #nombre >
+                <span class="text-uppercase">{{item.nombre}}</span> 
+              </template>
+
+              <template #contenido>
+
+                <p class="text-uppercase">{{item.nombre}}</p>
+                <p>{{item.descripcion}}</p>
+
+              </template>
+
+            </ItemServicio>
+
+          </div>
+
+        </template>
+
       </div>
     </div>
     <!-- /.container -->

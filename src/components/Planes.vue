@@ -11,7 +11,7 @@ export default {
     };
   },
 
-  props: ["planes"],
+  props: ["planes","isLoading"],
 };
 </script>
 
@@ -30,7 +30,25 @@ export default {
       </div>
       <!-- /.row -->
       <div class="row gx-md-8 gy-8 mb-2 mb-md-2">
-        <div class="col-md-4" v-for="(item, i) in planes" :key="i">
+
+        <template v-if="this.isLoading">
+
+          <div class="d-flex justify-content-center">
+
+            <div class="d-flex align-items-center">
+
+              <span class="spinner-border spinner-border-sm color-webc" style="width: 3rem; height: 3rem;" role="status" aria-hidden="true"></span>
+              <b class="color-webc ms-3" style="font-size:25px">Cargando...</b>
+            
+            </div>
+            
+          </div>
+
+        </template>
+
+        <template v-else>
+
+          <div class="col-md-4" v-for="(item, i) in planes" :key="i">
           <ItemPlanes :plan="item">
             <template #nombre>
 
@@ -67,28 +85,31 @@ export default {
             <template #contenido>
 
               <div class="card-content">
-                <h3 class="text-uppercase" style="color: #005ad2">
-                  <strong>{{ item.nombre }} </strong>
-                </h3>
-                
-                <div class="row">
-                  <div class="col-md-12 d-flex justify-content-between" v-for="(item1, j) in item.caracteristicas" :key="j">
-                    
-                      {{ item1.nombre }} <b>{{ item1.capacidad }}</b>
-                    
+                  <h3 class="text-uppercase" style="color: #005ad2">
+                    <strong>{{ item.nombre }} </strong>
+                  </h3>
+                  
+                  <div class="row">
+                    <div class="col-md-12 d-flex justify-content-between" v-for="(item1, j) in item.caracteristicas" :key="j">
+                      
+                        {{ item1.nombre }} <b>{{ item1.capacidad }}</b>
+                      
+                    </div>
                   </div>
+                  
+                  <p class="mt-4" v-if="item.categoria_id !== 2">
+                    <strong class="precio-size">
+                      {{ $filters.currencyUSD(item.periodosproducto[2].precio/item.periodosproducto[2].periodo.meses) }} / al Mes *
+                    </strong>
+                  </p>
                 </div>
-                
-                <p class="mt-4" v-if="item.categoria_id !== 2">
-                  <strong class="precio-size">
-                     {{ $filters.currencyUSD(item.periodosproducto[2].precio/item.periodosproducto[2].periodo.meses) }} / al Mes *
-                  </strong>
-                </p>
-              </div>
 
-            </template>
-          </ItemPlanes>
-        </div>
+              </template>
+            </ItemPlanes>
+          </div>
+
+        </template>
+
         <div class="col-md-12 text-end">
 
           <a 

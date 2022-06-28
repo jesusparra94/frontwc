@@ -29,11 +29,11 @@ width: 100%;
 
 max-height: 40px;
 
-border-left: 1px solid #005AD2;
+border-left: 2px solid #17A4F3;
 
-border-top: 1px solid #005AD2;
+border-top: 2px solid #17A4F3;
 
-border-bottom: 1px solid #005AD2;
+border-bottom: 2px solid #17A4F3;
 
 border-right: none!important;
 
@@ -48,7 +48,7 @@ border-top-left-radius: 5px;
 }
 .input__field_dominio:focus{
 
-border: 1px solid #005AD2 !important;
+border: 2px solid #17A4F3 !important;
 
 }
 
@@ -56,7 +56,7 @@ border: 1px solid #005AD2 !important;
 
 transform: translate(0.25rem, -65%) scale(0.8);
 
-color: #005AD2;
+color: #17A4F3;
 
 }
 
@@ -64,7 +64,7 @@ color: #005AD2;
 
 transform: translate(0.25rem, -65%) scale(0.8);
 
-color: #005AD2;
+color: #17A4F3;
 
 }
 
@@ -72,7 +72,7 @@ color: #005AD2;
 
 transform: translate(0.25rem, -65%) scale(0.8);
 
-color: #005AD2;
+color: #17A4F3;
 
 }
 .input__field_tele {
@@ -117,13 +117,13 @@ border-bottom-right-radius: 5px;
 
 border-top-right-radius: 5px;
 
-border-top: 1px solid #005AD2 !important;
+border-top: 1px solid #17A4F3 !important;
 
-border-bottom: 1px solid #005AD2 !important;
+border-bottom: 1px solid #17A4F3 !important;
 
-border-right: 1px solid #005AD2 !important;
+border-right: 1px solid #17A4F3 !important;
 
-border-left: 1px solid #005AD2 !important;
+border-left: 1px solid #17A4F3 !important;
 
 font-weight: bold;
 
@@ -149,7 +149,7 @@ border: 1px solid #17A4F3 !important;
 }
 .input__field:focus{
 
-border: 1px solid #005AD2 !important;
+border: 1px solid #17A4F3 !important;
 
 }
 .input {
@@ -163,7 +163,7 @@ border: 1px solid #005AD2 !important;
 
 transform: translate(0.25rem, -65%) scale(0.8);
 
-color: #005AD2;
+color: #17A4F3;
 
 }
 
@@ -171,7 +171,7 @@ color: #005AD2;
 
 transform: translate(0.25rem, -65%) scale(0.8);
 
-color: #005AD2;
+color: #17A4F3;
 
 }
 
@@ -179,7 +179,7 @@ color: #005AD2;
 
 transform: translate(0.25rem, -65%) scale(0.8);
 
-color: #005AD2;
+color: #17A4F3;
 
 }
 .input__label {
@@ -247,7 +247,7 @@ padding-left: 15px;
 padding-top: 10px;
 text-align: center;
 transform: translateY(-200%);
-background-color: #005AD2;
+background-color: #17A4F3;
 color:#FFF;
 }
 .opc_hover a span:last-child i{
@@ -348,4 +348,10 @@ span.btn-primary, .btn-primary{
     /* background: rgb(123,71,207)!important; */
     /* background: linear-gradient(90deg, rgba(123,71,207,1) 30%, rgba(94,98,217,1) 64%, rgba(23,164,243,1) 100%)!important; */
     background-color: #000!important;
+}
+.color-webc{
+    color:#17A4F3!important;
+}
+.bg-webc{
+    background-color: ##17A4F3!important;
 }

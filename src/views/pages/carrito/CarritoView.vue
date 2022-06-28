@@ -5,7 +5,7 @@
 <Nav />
 
 
-    <section class="wrapper image-wrapper bg-image bg-overlay text-white banner-detalles">
+    <!-- <section class="wrapper image-wrapper bg-image bg-overlay text-white banner-detalles">
       
         <div class="container pt-16 pt-md-16 pb-10 pb-md-10 text-center">
         
@@ -22,7 +22,7 @@
         
         </div>
     
-    </section>
+    </section> -->
            
     <section class="wrapper bg-light" id="body-carrito">
         <div class="container pt-5 pb-5">
@@ -104,7 +104,7 @@
 
                 <div class="col-md-7" v-if="jsoncarro.length>0">
                     
-                    <h5 id="topListadoProductos">Listado de productos:</h5>
+                    <h3 id="topListadoProductos">Listado de productos:</h3>
 
                     <h6 class="text-danger" v-if="productosconerror" ><b>Verifique sus productos</b></h6>
 
@@ -193,8 +193,8 @@
                                                                 @click="changeOption(i)"
                                                         />
 
-                                                        <label style="font-size:14px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
-                                                            Quiero registrar un nuevo dominio
+                                                        <label style="font-size:18px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
+                                                            Registrar un nuevo dominio
                                                         </label>
                                                         
                                                     </div>
@@ -214,8 +214,8 @@
                                                                 @click="changeOption(i)"
                                                         />
 
-                                                        <label style="font-size:14px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
-                                                            Quiero usar un dominio que ya tengo registrado
+                                                        <label style="font-size:18px;text-align:center" class="form-check-label label-dominios" for="nuevodominio">
+                                                            Usar un dominio ya registrado
                                                         </label>
                                                         
                                                     </div>
@@ -263,8 +263,6 @@
                                                                 class="input__field_exten"
                                                                 v-model="formvalores[i].ext"
                                                                 >
-                                                                
-                                                                    <option disabled value="">...</option>
                                                         
                                                                     <option value="cl">.cl</option>
                                                         
@@ -348,9 +346,9 @@
                                                                 </div>
                                                             
                                                             </div>
-                                                            
+
                                                             <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
-                                                            
+
                                                                 <button
                                                                     type="button"
                                                                     class="btn d-flex align-items-center"
@@ -363,7 +361,7 @@
                                                                 >
                                                                 Guardar
                                                                 </button>
-                                                            
+
                                                             </div>
 
                                                         </div>
@@ -414,23 +412,22 @@
                                                                 </div>
                                                             
                                                             </div>
-                                                            
+
                                                             <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
-                                                            
+
                                                                 <button
                                                                     type="button"
-                                                                    class="btn"
+                                                                    class="btn d-flex align-items-center"
                                                                     style="
-                                                                    background-color: #005ad2;
+                                                                    background-color: #17A4F3;
                                                                     color: #f2f3f5;
                                                                     font-weight: bold;
-                                                                    max-height: 40px;
-                                                                    font-size: 13px;"
+                                                                    max-height: 40px;"
                                                                     @click="cambiardominioguardado(i)"
                                                                 >
                                                                 Cambiar
                                                                 </button>
-                                                            
+
                                                             </div>
 
                                                         </div>
@@ -1062,7 +1059,7 @@
 
                         >
 
-                            <i class="fas fa-cart-arrow-down" style="font-size:60px"></i>
+                            <i class="fa-solid fa-bag-shopping" style="font-size:60px"></i>
                             <span class="badge bg-white" style="position: relative;top: -18px;left: -15px;color:black;font-size:18px;border:0.1px solid #000000;">0</span>
 
                         </div>
@@ -1106,28 +1103,56 @@
                 <div class="d-flex justify-content-center">
                     <div class="col-md-8 mt-md-0 mt-3">
                         
-                        <h5>Detalles del pedido:</h5>
+                        <h3>Detalles del pedido:</h3>
                     
                         <div class="card shadow-lg">
                             
                             <div class="card-body p-0">
                     
-                                <div class="row pt-2 px-5 d-flex align-items-center">
+                                <div class="row pt-2 px-5 d-flex align-items-center"
+                                    v-for="(item, i) in jsoncarro" :key="i"
+                                    :class="{'d-none': item.id_producto==4}"
+                                >
                                 
                                     <div class="col-md-7">
                                         
-                                        <h6>Plan Hosting básico</h6>
+                                        <h6 v-if="item.categoria_id==2">
+                            
+                                            {{item.producto}}
+
+                                        </h6>
+
+                                        <h6 v-else>
+
+                                            {{item.nombre}}
+
+                                            <span v-if="item.dominio!=''">para {{item.dominio}}</span>
+
+                                        </h6>
                     
                                     </div>
                     
                                     <div class="col-md-5">
                     
                                         <div style="line-height:1;">
+
+                                            <h6 style="font-size:16px" v-if="item.categoria_id==2"> {{$filters.currencyUSD(item.precio*(precioDolar+10))}} CLP por 1 año</h6>
+
+                                            <h6 style="font-size:16px" v-else> 
+
+
+                                                <b  v-for="(item1, j) in item.periodosproducto" :key="j">
                     
-                                            <h6>3.500 CLP</h6>
-                    
-                                            <small style="text-decoration: line-through">4.500 CLP</small>
-                    
+                                                    <h6 v-if="item1.periodo_id===item.periodo"
+                                                    >
+                                                        
+                                                        {{$filters.currencyUSD(item1.precio)}} CLP
+                                                    </h6>
+
+                                                </b>
+
+                                            </h6>
+
                                         </div>
                     
                                     </div>
@@ -1138,53 +1163,53 @@
                                 <hr class="mt-5 mb-3" />
                     
                                 <div class="row px-5 pb-1">
-                    
-                                    <div class="col-md-6">
-                    
+
+                                    <div class="col-md-7">
+
                                         <h6 class=" pt-1"><b>Neto pedido</b></h6>
-                    
+
                                     </div>
-                    
-                                    <div class="col-md-6">
-                    
-                                        <h6 class="pt-1 azul-crt"><b>7.500 CLP</b></h6>
-                    
+
+                                    <div class="col-md-5">
+
+                                        <h6 class="pt-1"><b>{{$filters.currencyUSD(this.totales.neto)}} CLP</b></h6>
+
                                     </div>
-                    
+
                                 </div>
                     
                                 <div class="row px-5 pb-1">
-                    
-                                    <div class="col-md-6">
-                    
+
+                                    <div class="col-md-7">
+
                                         <h6 class="pt-1"><b>IVA pedido</b></h6>
-                    
+
                                     </div>
-                    
-                                    <div class="col-md-6">
-                    
-                                        <h6 class="pt-1 azul-crt"><b>8.750 CLP</b></h6>
-                    
+
+                                    <div class="col-md-5">
+
+                                        <h6 class="pt-1"><b>{{$filters.currencyUSD(this.totales.iva)}} CLP</b></h6>
+
                                     </div>
-                    
+
                                 </div>
                     
                                 <div class="row px-5 pb-1">
-                    
-                                    <div class="col-md-6">
-                    
+
+                                    <div class="col-md-7">
+
                                         <h6 class="pt-1"><b>Total pedido</b></h6>
-                    
+
                                     </div>
-                    
-                                    <div class="col-md-6">
-                    
-                                        <h6 class="pt-1 azul-crt"><b>89.000 CLP</b></h6>
-                    
-                                        <small class="">Ahorra 2.600 CLP</small>
-                    
+
+                                    <div class="col-md-5">
+
+                                        <h6 class="pt-1"><b>{{$filters.currencyUSD(this.totales.total)}} CLP</b></h6>
+
+                                        <!-- <small class="">Ahorra 2.600 CLP</small> -->
+
                                     </div>
-                    
+
                                 </div>
                     
                                 <hr class="mt-5 mb-3" />

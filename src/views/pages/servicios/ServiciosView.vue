@@ -15,6 +15,7 @@ export default {
       nombreServicio: "",
       planes:'',
       urlBackend: this.urlBackend,
+      isLoading: true
     };
   },
 
@@ -31,6 +32,31 @@ export default {
 
       this.traerInformacion();
     },
+
+   created() {
+    this.axios.interceptors.request.use(
+      (config) => {
+        this.isLoading = true;
+        return config;
+      },
+      (error) => {
+        this.isLoading = false;
+        return Promise.reject(error);
+      }
+    );
+
+    this.axios.interceptors.response.use(
+      (response) => {
+        this.isLoading = false;
+        return response;
+      },
+      (error) => {
+        this.isLoading = false;
+        return Promise.reject(error);
+      }
+    );
+  },
+
   methods:{
       traerInformacion() {
 
@@ -57,6 +83,6 @@ export default {
 <template>
     <Nav />
     <DetallesServicio />
-    <Planes :planes="planes" /> 
+    <Planes :planes="planes" :isLoading="isLoading" /> 
     <Footer />
 </template>

@@ -180,14 +180,15 @@ export default {
 
 <template>
   <div class="col-md-6 col-12 col-sm-12">
-    <h5>Inicia sesión con tus datos:</h5>
+    <h3>Inicia sesión con tus datos:</h3>
 
     <div class="card shadow-lg">
       <div class="card-body">
-        <div class="col-md-12 mb-5">
-          <form @submit.prevent="formSearchSubmit" v-if="!existe_email">
-            <div class="mb-3">
-              <label for="email" class="form-label">Correo electrónico</label>
+        <div class="col-md-12 mt-3 mb-3">
+          <form class="row g-3" @submit.prevent="formSearchSubmit" v-if="!existe_email">
+            
+            <div class="col-12 col-sm-12 col-md-8">
+
               <input
                 type="email"
                 class="form-control"
@@ -199,13 +200,15 @@ export default {
                     submittedsearch && v$.formsearchemail.email.$invalid,
                 }"
               />
+
               <div class="invalid-feedback"></div>
+
             </div>
 
-            <div class="row">
-              <div class="col-md-12 d-flex justify-content-end p-2">
-                <button type="submit" class="btn btn-primary">Continuar</button>
-              </div>
+            <div class="col-12 col-sm-12 col-md-4">
+            
+              <button type="submit" class="btn btn-primary">Continuar</button>
+            
             </div>
           </form>
 

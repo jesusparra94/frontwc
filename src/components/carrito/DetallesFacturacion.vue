@@ -8,6 +8,7 @@ export default {
       urlBackend: this.urlBackend,
       submitted: false,
       rutinvalido:false,
+      isLoading: true,
       form: {
         nombre: "",
         giro: "",
@@ -60,6 +61,30 @@ export default {
 
   },
 
+  created() {
+    this.axios.interceptors.request.use(
+      (config) => {
+        this.isLoading = true;
+        return config;
+      },
+      (error) => {
+        this.isLoading = false;
+        return Promise.reject(error);
+      }
+    );
+
+    this.axios.interceptors.response.use(
+      (response) => {
+        this.isLoading = false;
+        return response;
+      },
+      (error) => {
+        this.isLoading = false;
+        return Promise.reject(error);
+      }
+    );
+  },
+
   methods:{
       formSubmit() {
       this.submitted = true;
@@ -76,7 +101,8 @@ export default {
                 .then((res) => {
 
                     if(res.data){
-                        this.$emit('avanzarconfirm', res.data)
+                        this.$emit('avanzarconfirm', res.data);
+                        this.scrollto('body-carrito');
                     }
 
                     console.log(res)
@@ -85,6 +111,7 @@ export default {
                 .catch((error) => {
                     
                     console.log("error", error);
+                    console.log(error.response.data);
             
                 });
         
@@ -190,7 +217,7 @@ export default {
 
 <template>
   <div class="col-md-12">
-    <h5>Detalles para facturación:</h5>
+    <h3>Detalles para facturación:</h3>
 
     <div class="card shadow-lg">
       <div class="card-body">
@@ -468,9 +495,24 @@ export default {
                     </div>
 
                     <div class="col-md-12 d-flex justify-content-end p-5">
-                      <button type="submit" class="btn btn-primary">
-                        Continuar
-                      </button>
+
+                      <template v-if="this.isLoading">
+                      
+                        <button class="btn btn-primary" type="button" disabled>
+                          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                          Espere...
+                        </button>
+
+                      </template>
+
+                      <template v-else>
+
+                        <button type="submit" class="btn btn-primary">
+                          Continuar
+                        </button>
+
+                      </template>
+
                     </div>
                   </div>
                 </form>
