@@ -541,7 +541,7 @@
                                                         v-for="(itemt, t) in dominiosbuscados[i]" :key="t"
                                                 >
                                                             
-                                                    <div class="row d-flex align-items-center card-newd" v-if="itemt.status=='free' && itemt.domain!==dominiobuscado[t]">
+                                                    <div class="row d-flex align-items-center card-newd" v-if="itemt.status=='free' && itemt.domain!==dominiobuscado[i]">
                                                         
                                                         <div class="col-md-6 col-12 col-sm-12">
                                                     
@@ -559,7 +559,7 @@
 
                                                                     <div class="precio-dominio-recomendacion float-right">
                                                                         <p style="margin: 5px; text-align: right">
-                                                                        <b style="color: #005ad2"> CLP</b><br /><small
+                                                                        <b style="color: #005ad2">{{$filters.currencyUSD(itemt.price.reseller.price * precioDolar)}} CLP</b><br /><small
                                                                             style="color: #afb0b2"
                                                                             >Por el primer año</small
                                                                         >
@@ -888,7 +888,7 @@
 
                                                             <div class="precio-dominio-recomendacion float-right">
                                                                 <p style="margin: 5px; text-align: right">
-                                                                <b style="color: #005ad2"> CLP</b><br /><small
+                                                                <b style="color: #005ad2">{{$filters.currencyUSD(itemt.price.reseller.price * precioDolar)}} CLP</b><br /><small
                                                                     style="color: #afb0b2"
                                                                     >Por el primer año</small
                                                                 >
@@ -1002,7 +1002,7 @@
 
                                         <div class="col-md-5 col-8 col-sm-8 d-flex justify-content-center align-items-center">
 
-                                            {{$filters.currencyUSD(item.precio*(precioDolar+10))}} CLP por 1 año
+                                            {{$filters.currencyUSD(item.precio*precioDolar)}} CLP por 1 año
 
                                         </div>
 

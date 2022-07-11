@@ -287,6 +287,9 @@ export default {
 
                     this.dominiosrecomendados = res.data.data.results;
 
+                    console.log("Dominios");
+                    console.log(this.dominiosrecomendados);
+
                     res.data.data.results.forEach((element) => {
 
                         console.log(element);
@@ -841,7 +844,7 @@ export default {
 
                 // });
 
-                this.precioDolar = response.data.precio;
+                this.precioDolar = response.data.precio+10;
                 console.log(this.precioDolar);
 
             });
@@ -991,8 +994,6 @@ export default {
             let carrito = [];
 
             let aux = true;
-
-            let cont = 0;
   
             if(localStorage.getItem('carrito')){
   
@@ -1011,23 +1012,13 @@ export default {
 
                     }
 
-                }else if(element.categoria_id==2){
-                    if(element.id_producto==4){
-                        cont++;
-                    }else{
-                        cont++;
-                    }
                 }
         
             });
 
-            if(cont==0){
-                aux = true;
-            }else if(cont==1){
-                this.mensajeerror[0].dominio = 'Debes ingresar al menos un dominio';
+            if(this.totales.total<=0){
+                this.mensajeerror[0].dominio = 'Debes agregar al menos un producto para continuar';
                 aux = false;
-            }else if(cont>1){
-                aux = true;
             }
 
             return aux;
