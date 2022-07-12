@@ -1,4 +1,4 @@
-<script >
+<script lang="ts">
 import Nav from '@/components/Nav2.vue'
 import DetallesServicio from '@/components/DetallesServicio.vue'
 import Planes from '@/components/Planes.vue'

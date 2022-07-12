@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { required, email, minLength, sameAs } from "@vuelidate/validators";
 import useValidate from "@vuelidate/core";
 export default {

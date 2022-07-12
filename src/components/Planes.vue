@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import ItemPlanes from "./ItemPlanes.vue";
 
 export default {

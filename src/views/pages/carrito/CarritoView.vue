@@ -1,5 +1,5 @@
 
-<script src="./carrito.js"></script>
+<script lang="ts" src="./carrito.js"></script>
 
 <template>
 <Nav />

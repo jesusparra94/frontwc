@@ -994,12 +994,16 @@ export default {
             let carrito = [];
 
             let aux = true;
+
   
             if(localStorage.getItem('carrito')){
   
               carrito =  JSON.parse(localStorage.getItem('carrito'));
   
             }
+
+            console.log("Datos del carrito");
+            console.log(carrito);
 
             carrito.forEach((element, i) => {
 
