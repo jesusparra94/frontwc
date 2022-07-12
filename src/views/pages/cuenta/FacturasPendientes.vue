@@ -3,12 +3,61 @@ import Sider from "@/components/cuenta/Sider.vue";
 import Nav from "@/components/cuenta/Nav.vue";
 import ContactoSoporte from "@/components/cuenta/ContactoSoporte.vue";
 
-
 export default {
   components: {
     Sider,
     Nav,
-    ContactoSoporte
+    ContactoSoporte,
+  },
+  data() {
+    return {
+      urlBackend: this.urlBackend,
+      ventaspend: "",
+    };
+  },
+
+  mounted() {
+    if (localStorage.getItem("token")) {
+      this.axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${localStorage.getItem("token")}`;
+
+      this.axios.get(`${this.urlBackend}/api/validartoken`).then(
+        (response) => {},
+        (error) => {
+          localStorage.removeItem("token");
+          this.$router.push("/login");
+        }
+      );
+    }
+
+    this.ventaspendiente();
+  },
+
+  methods: {
+    ventaspendiente() {
+      this.axios.get(`${this.urlBackend}/api/pendientepago`).then(
+        (response) => {
+          this.ventaspend = response.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    pagar(code) {
+      this.axios.get(`${this.urlBackend}/api/pagarventa/${code}`).then(
+        (response) => {
+          if(response.data){
+            // console.log(response.data)
+            window.location.href = response.data;
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
   },
 };
 </script>
@@ -28,110 +77,57 @@ export default {
 
                 <div class="row mt-2">
                   <div class="col-12 mb-2">
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm position-relative w-100 p-0"
-                    >
-                      <div class="table-responsive">
-                        <table class="table table-borderless text-light">
-                          <thead>
-                            <tr>
-                              <th scope="col">Código</th>
-                              <th scope="col">Monto</th>
-                              <th scope="col">Acción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>10003</td>
-                              <td>{{ $filters.currencyUSD(86000) }}</td>
-                              <td>
-                                <button
-                                  type="button"
-                                  class="btn btn-light btn-sm text-dark"
-                                >
-                                  Pagar
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                    <div class="row" v-for="(item, i) in ventaspend" :key="i">
+                      <div class="col-12 mb-2">
+                        <h6>Empresa: {{ item.nombre }}</h6>
                       </div>
-                      
-                    </button>
-                  </div>
-                  <div class="col-12 mb-2">
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm position-relative w-100 p-0"
-                    >
-                      <div class="table-responsive">
-                        <table class="table table-borderless text-light">
-                          <thead>
-                            <tr>
-                              <th scope="col">Código</th>
-                              <th scope="col">Monto</th>
-                              <th scope="col">Acción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>10002</td>
-                              <td>{{ $filters.currencyUSD(86000) }}</td>
-                              <td>
-                                <button
-                                  type="button"
-                                  class="btn btn-light btn-sm text-dark"
-                                >
-                                  Pagar
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+
+                      <div
+                        class="col-12 mb-2"
+                        v-for="(item1, j) in item.ventasempresa"
+                        :key="j"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-danger btn-sm position-relative w-100 p-0"
+                        >
+                          <div class="table-responsive">
+                            <table class="table table-borderless text-light">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Código</th>
+                                  <th scope="col">Monto</th>
+                                  <th scope="col">Acción</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>{{ item1.codigo }}</td>
+                                  <td>
+                                    {{ $filters.currencyUSD(item1.total_peso) }}
+                                  </td>
+                                  <td>
+                                    <button
+                                      @click="pagar(item1.codigo)"
+                                      class="btn btn-light btn-sm text-dark"
+                                    >
+                                      Pagar
+                                    </button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </button>
                       </div>
-                    </button>
-                  </div>
-                  <div class="col-12 mb-2">
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm position-relative w-100 p-0"
-                    >
-                      <div class="table-responsive">
-                        <table class="table table-borderless text-light">
-                          <thead>
-                            <tr>
-                              <th scope="col">Código</th>
-                              <th scope="col">Monto</th>
-                              <th scope="col">Acción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>10001</td>
-                              <td> {{ $filters.currencyUSD(86000) }}</td>
-                              <td>
-                                <button
-                                  type="button"
-                                  class="btn btn-light btn-sm text-dark"
-                                >
-                                  Pagar
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          
-        <ContactoSoporte/>
-
+          <ContactoSoporte />
         </div>
       </main>
     </div>
