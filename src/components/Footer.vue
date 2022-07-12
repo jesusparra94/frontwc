@@ -32,11 +32,11 @@
           <div class="widget">
             <h4 class="widget-title text-white mb-3">WebCompany.cl</h4>
             <ul class="list-unstyled  mb-0">
-              <li><a href="#">Sobre nostros</a></li>
-              <li><a href="#">Servicios</a></li>
-              <li><a href="#">Términos y condiciones</a></li>
-              <li><a href="#">Preguntas frecuentes</a></li>
-              <li><a href="#">Contáctanos</a></li>
+              <li><a href="/sobre-nosotros">Sobre nostros</a></li>
+              <li><a href="/#nuestrosServicios">Servicios</a></li>
+              <li><a href="/terminos-condiciones">Términos y condiciones</a></li>
+              <li><a href="/preguntas-frecuentes">Preguntas frecuentes</a></li>
+              <li><a href="/contacto">Contáctanos</a></li>
             </ul>
           </div>
           <!-- /.widget -->

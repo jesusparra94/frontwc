@@ -4,6 +4,7 @@ import DetallesCarrito from '../../../components/carrito/DetallesCarrito.vue'
 import IdentificacionCarrito from '@/components/carrito/IdentificacionCarrito.vue'
 import Footer from '@/components/Footer.vue'
 import useValidate from "@vuelidate/core";
+import VueScrollTo from 'vue-scrollto';
 import {
     required,
     email,
@@ -37,6 +38,7 @@ export default {
                 password: "",
                 confirm: "",
             },
+            submitted: false,
         };
     },
 
@@ -61,33 +63,42 @@ export default {
 
         submitForm(){
 
+            this.submitted = true;
 
-            let nombre = this.form.nombre;
-            let email = this.form.email;
-            let telefono = this.form.telefono;
-            let mensaje = this.form.mensaje;
+            this.v$.form.$touch();
 
-            this.btnCargando = true;
+            if (!this.v$.form.$invalid) {
 
-            this.axios
-            .post(`${this.urlBackend}/api/registrarconsulta`, this.form)
-            .then((res) => {
+                let nombre = this.form.nombre;
+                let email = this.form.email;
+                let telefono = this.form.telefono;
+                let mensaje = this.form.mensaje;
 
-                if(res.data==1){
-                    this.form.nombre = '';
-                    this.form.email = '';
-                    this.form.telefono = '';
-                    this.form.mensaje = '';
-                    this.btnCargando = false;
-                    this.mensajeenviado = true;
-                }
-            
-            })
-            .catch((error) => {
+                this.btnCargando = true;
+
+                this.axios
+                .post(`${this.urlBackend}/api/registrarconsulta`, this.form)
+                .then((res) => {
+
+                    if(res.data==1){
+                        this.form.nombre = '';
+                        this.form.email = '';
+                        this.form.telefono = '';
+                        this.form.mensaje = '';
+                        this.btnCargando = false;
+                        this.mensajeenviado = true;
+                    }
+                    this.scrollto('TopContacto');
                 
-                console.log("error", error);
-        
-            });
+                })
+                .catch((error) => {
+                    
+                    console.log("error", error);
+            
+                });
+
+
+            }
 
 
             //this.v$.form.$validate() // checks all inputs

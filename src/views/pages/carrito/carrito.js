@@ -75,6 +75,7 @@ export default {
                 password: "",
                 confirm: "",
             },
+            maspesos:10
         };
     },
 
@@ -882,40 +883,19 @@ export default {
 
             let carrito =  JSON.parse(localStorage.getItem('carrito'));
 
-            // this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
+            this.axios.get(`${this.urlBackend}/api/getpreciodolar`).then((response) => {
 
-            //     console.log(response.data.precio);
-                
-
-                // let cont = 0;
-
-                // let arrayDatos = [];
-
-                // this.totales.neto = 0;
-                // this.totales.iva = 0;
-                // this.totales.total = 0;
-
-                // response.data.serie.forEach((element, i) => {
-
-                //     cont++;
-
-                //     if(cont==1){
-
-                //         arrayDatos.push({
-
-                //             fecha: element.fecha.split('T')[0],
-                //             precio: element.valor
-
-                //         });
-                //     }
-
-                // });
+                this.precioDolar = response.data.precio;
                 
                 carrito.forEach((element, i) => {
 
                     if(element.categoria_id===2){
 
-                        this.totales.neto = this.totales.neto + element.precio * ( this.precioDolar + 10 );
+                        console.log("Entro");
+
+                        this.totales.neto = this.totales.neto + element.precio * ( this.precioDolar + this.maspesos );
+
+                        console.log(element.precio * ( this.precioDolar + this.maspesos ));
 
                     }else{
 
@@ -941,7 +921,7 @@ export default {
                 console.log("Total de totales(): "+this.totales.total);
 
 
-            // });
+            });
 
         },
 

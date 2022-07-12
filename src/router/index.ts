@@ -8,6 +8,9 @@ import PagoRechazadoView from '../views/pages/pagos/PagoRechazado.vue'
 import CuentaView from '../views/pages/cuenta/CuentaView.vue'
 import FacturasPendientes from '../views/pages/cuenta/FacturasPendientes.vue'
 import LoginView from '../views/pages/login/LoginView.vue'
+import SobreNosotrosView from '../views/pages/sobre-nosotros/SobreNosotrosView.vue'
+import TerminosCondicionesView from '../views/pages/terminos-condiciones/TerminosCondicionesView.vue'
+import PreguntasFrecuentesView from '../views/pages/preguntas-frecuentes/PreguntasFrecuentesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,6 +61,21 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+    },
+    {
+      path: '/sobre-nosotros',
+      name: 'sobre-nosotros',
+      component: SobreNosotrosView,
+    },
+    {
+      path: '/terminos-condiciones',
+      name: 'terminos-condicione',
+      component: TerminosCondicionesView,
+    },
+    {
+      path: '/preguntas-frecuentes',
+      name: 'preguntas-frecuentes',
+      component: PreguntasFrecuentesView,
     },
   ],
   scrollBehavior(to, from, savedPosition) {

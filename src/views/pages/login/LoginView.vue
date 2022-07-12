@@ -3,6 +3,7 @@ import Nav from "@/components/Nav2.vue";
 import Footer from "@/components/Footer.vue";
 import { required, email } from "@vuelidate/validators";
 import useValidate from "@vuelidate/core";
+import VueScrollTo from 'vue-scrollto';
 export default {
   components: {
     Nav,
@@ -17,6 +18,8 @@ export default {
       },
       v$: useValidate(),
       urlBackend: this.urlBackend,
+      mensajeerror:"",
+      submittedlogin:false
     };
   },
 
@@ -64,16 +67,34 @@ export default {
         this.axios
           .post(`${this.urlBackend}/api/login`, this.formlogin)
           .then((response) => {
+            console.log("Respuesta");
+            console.log(response);
+
             if (response.data.data.token) {
               localStorage.setItem("token", response.data.data.token);
 
               this.$router.push("/cuenta");
+
+            }else if(response.data.data==''){
+
+              this.mensajeerror = 'Inicio de sesión inválido.';
+              this.scrollto('LoginPortal');
+
             }
 
             //   aqui alerta de error
           });
       }
     },
+    scrollto(id){
+            //VueScrollTo.scrollTo(element, duration, options)
+            var element = document.getElementById(id);
+
+            VueScrollTo.scrollTo(element);
+
+            //element.scrollIntoView({behavior: "smooth"});
+    
+        },
   },
 };
 </script>
@@ -85,7 +106,7 @@ export default {
   <section class="wrapper bg-light mb-5">
     <div class="container pt-5 pb-5">
       <div class="row mt-5 d-flex justify-content-center">
-        <div class="col-12 col-sm-12 col-md-5">
+        <div class="col-12 col-sm-12 col-md-5" id="LoginPortal">
           <div class="card shadow-lg">
             <div class="card-body">
               <div class="col-12 mb-5">
@@ -93,11 +114,11 @@ export default {
                 <p class="text-center">
                   <i class="fa-solid fa-circle-user text-primary" style="font-size:50px;"></i>
                 </p>
-                <h3 class="text-primary mb-3 text-center">Portal del nuestros clientes</h3>
+                <h3 class="text-primary mb-3 text-center">Portal del Cliente</h3>
 
                 <form @submit.prevent="formloginSubmit">
                   <div class="mb-3">
-                    <h6 class="text-danger" v-if="mensajeerror != ''">
+                    <h6 class="text-danger text-center" v-if="mensajeerror != ''">
                       {{ mensajeerror }}
                     </h6>
                   </div>
