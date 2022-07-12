@@ -102,15 +102,19 @@ export default {
       
                 <li class="nav-item d-none d-md-block">
       
-                  <span>
+                  <a href="/login">
 
-                    <i class="fa-solid fa-circle-user" style="font-size:36px;color:#FFFF"></i>
+                    <span>
 
-                  </span>
+                      <i class="fa-solid fa-circle-user" style="font-size:36px;color:#FFFF"></i>
+
+                    </span>
+
+                  </a>
       
                 </li>
 
-                <li class="nav-item"><a class="nav-link" data-toggle="offcanvas-info"><i class="uil uil-info-circle"></i></a></li>
+                <!-- <li class="nav-item"><a class="nav-link" data-toggle="offcanvas-info"><i class="uil uil-info-circle"></i></a></li> -->
 
                 <li class="nav-item d-lg-none">
                   <div class="navbar-hamburger">

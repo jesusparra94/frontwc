@@ -1,4 +1,4 @@
-import Nav from '@/components/Nav.vue'
+import Nav from '@/components/Nav2.vue'
 import DetallesServicio from '@/components/DetallesServicio.vue'
 import DetallesCarrito from '../../../components/carrito/DetallesCarrito.vue'
 import IdentificacionCarrito from '@/components/carrito/IdentificacionCarrito.vue'

@@ -1016,6 +1016,8 @@ export default {
 
                     }
 
+                }else if(element.categoria_id==2){
+                    
                 }
         
             });

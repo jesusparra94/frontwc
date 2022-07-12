@@ -1,5 +1,5 @@
 <script lang="ts">
-import Nav from "@/components/Nav.vue";
+import Nav from "@/components/Nav2.vue";
 import Footer from "@/components/Footer.vue";
 import { required, email } from "@vuelidate/validators";
 import useValidate from "@vuelidate/core";
@@ -81,29 +81,20 @@ export default {
 <template>
   <Nav />
 
-  <section
-    class="wrapper image-wrapper bg-image bg-overlay text-white banner-detalles"
-  >
-    <div class="container pt-16 pt-md-16 pb-10 pb-md-10 text-center">
-      <div class="row">
-        <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-6 mx-auto">
-          <h1 class="display-1 text-white mb-3">Contactanos ahora</h1>
-          <p class="lead fs-lg px-md-3 px-lg-7 px-xl-9 px-xxl-10">
-            Si tienes alguna duda o necesitas ayuda con algunos de nuestros
-            servicios puedes contactarnos por diferentes medios.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <section class="wrapper bg-light mb-5">
-    <div class="container">
+    <div class="container pt-5 pb-5">
       <div class="row mt-5 d-flex justify-content-center">
-        <div class="col-12">
+        <div class="col-12 col-sm-12 col-md-5">
           <div class="card shadow-lg">
             <div class="card-body">
-              <div class="col-md-6 mb-5">
+              <div class="col-12 mb-5">
+
+                <p class="text-center">
+                  <i class="fa-solid fa-circle-user text-primary" style="font-size:50px;"></i>
+                </p>
+                <h3 class="text-primary mb-3 text-center">Portal del nuestros clientes</h3>
+
                 <form @submit.prevent="formloginSubmit">
                   <div class="mb-3">
                     <h6 class="text-danger" v-if="mensajeerror != ''">
