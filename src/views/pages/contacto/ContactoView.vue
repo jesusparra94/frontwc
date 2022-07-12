@@ -1,5 +1,5 @@
 
-<script src="./contacto.js"></script>
+<script lang="ts" src="./contacto.js"></script>
 
 <template>
 <Nav />

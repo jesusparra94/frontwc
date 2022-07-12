@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import ItemServicio from "./ItemServicio.vue";
 
 export default {
