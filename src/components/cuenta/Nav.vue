@@ -42,7 +42,7 @@ button.hamburger span, button.hamburger:after, button.hamburger:before{
   </header>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   data() {
     return {

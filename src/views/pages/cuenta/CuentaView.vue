@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 import Sider from "@/components/cuenta/Sider.vue";
 import Nav from "@/components/cuenta/Nav.vue";
 import ContactoSoporte from "@/components/cuenta/ContactoSoporte.vue";

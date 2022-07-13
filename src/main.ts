@@ -29,7 +29,8 @@ app.use(VueScrollTo)
 
 app.use(createMetaManager())
 
-app.config.globalProperties.urlBackend = 'http://apiwebcompany.local';
+//app.config.globalProperties.urlBackend = 'http://apiwebcompany.local';
+app.config.globalProperties.urlBackend = 'https://api.webcompany.cl/';
 
 app.config.globalProperties.$filters = {
     currencyUSD(value) {
