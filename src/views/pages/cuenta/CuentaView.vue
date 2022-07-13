@@ -59,7 +59,7 @@ export default {
       <Sider />
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div class="row mt-5 p-5">
+        <div class="row mt-5 p-1 p-md-5">
           <div class="col-sm-12 col-md-9">
             <div class="card">
               <div class="card-body">
@@ -78,7 +78,8 @@ export default {
                           class="btn btn-primary btn-sm position-relative w-100 p-0"
                            v-if="item1"
                         >
-                          <div class="table-responsive">
+                          
+                          <div class="table-responsive d-none d-sm-none d-md-block">
                             <table class="table table-borderless text-light">
                               <thead>
                                 <tr>
@@ -106,6 +107,44 @@ export default {
                               </tbody>
                             </table>
                           </div>
+
+                          <div class="d-md-none d-lg-none d-sm-block">
+
+                            <div class="row">
+
+                              <div class="col-12 col-md-12">
+
+                                <ul class="list-group ">
+                                  <li class="list-group-item  d-flex justify-content-between align-items-start align-items-center text-wrap">
+                                    Servicio: 
+                                    <span class="rounded-pill">{{item1.glosa}}</span>
+                                  </li>
+                                  <li class="list-group-item  d-flex justify-content-between align-items-start align-items-center text-wrap">
+                                    Fecha Renovación:
+                                    <span class="rounded-pill">{{item1.fecha_renovacion}}</span>
+                                  </li>
+                                  <li class="list-group-item  d-flex justify-content-between align-items-start align-items-center text-wrap">
+                                    Acción:
+                                    <span class="rounded-pill">
+                                      <a
+                                      :href="'https://'+item1.dominio+'/cpanel'"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      class="btn btn-light btn-sm text-dark"
+                                      v-if="item1.productos.categoria_id == 1"
+                                    >
+                                      Acceder a Cpanel
+                                    </a>
+                                    </span>
+                                  </li>
+                                </ul>
+
+                              </div>
+
+                            </div>
+
+                          </div>
+
                           <span
                             class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle"
                           >
@@ -127,6 +166,7 @@ export default {
 </template>
 
 <style scoped>
+
 body {
   font-size: 0.875rem;
 }
@@ -195,7 +235,7 @@ main {
 }
 
 .sidebar-heading {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 
 /*
@@ -227,5 +267,12 @@ main {
 .form-control-dark:focus {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+.list-group .list-group-item {
+  border:0px!important;
+}
+.list-group{
+  background-color:#FFF!important;
 }
 </style>

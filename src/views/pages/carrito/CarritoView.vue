@@ -25,7 +25,7 @@
     </section> -->
            
     <section class="wrapper bg-light" id="body-carrito">
-        <div class="container pt-5 pb-5">
+        <div class="container pt-10 pt-m-5 pb-5 pb-m-5">
             <div class="row process-wrapper line">
 
                 <div class="col-md-3 col-3 col-sm-3">
@@ -167,7 +167,7 @@
 
                                         </div>
 
-                                        <div class="col-md-2 col-2 col-sm-2 d-flex align-items-center">
+                                        <div class="col-md-2 col-4 col-sm-4 d-flex align-items-center">
 
                                             <img class="rounded-0" src="@/assets/img/svg/trash-can-solid.svg" :dataid="{i}" @click="eliminarcarro(i)" style="cursor:pointer" width="22" alt="">
 
@@ -281,7 +281,7 @@
                                                         </div>
 
                                                         
-                                                        <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+                                                        <div class="col-md-2 col-12 col-sm-12 d-flex justify-content-center mt-3 mt-md-0 ms-2 ms-md-0">
 
                                                             <button
                                                                 type="button"
@@ -347,7 +347,7 @@
                                                             
                                                             </div>
 
-                                                            <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+                                                            <div class="col-md-2 col-12 col-sm-12 d-flex justify-content-center mt-3 mt-md-0 ms-2 ms-md-0">
 
                                                                 <button
                                                                     type="button"
@@ -413,7 +413,7 @@
                                                             
                                                             </div>
 
-                                                            <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+                                                            <div class="col-md-2 col-12 col-sm-12 d-flex justify-content-center mt-3 mt-md-0 ms-2 ms-md-0">
 
                                                                 <button
                                                                     type="button"
@@ -744,7 +744,7 @@
                                         </div>
 
                                         
-                                        <div class="col-md-2 col-12 col-sm-12 d-flex align-items-center">
+                                        <div class="col-md-2 col-12 col-sm-12 d-flex justify-content-center">
 
                                             <button
                                                 type="button"
@@ -1026,7 +1026,7 @@
 
                 <div class="col-md-5 mt-md-0 mt-3" v-if="jsoncarro.length>0">
                     
-                    <h5>Detalles del pedido:</h5>
+                    <h3>Detalles del pedido:</h3>
 
                     <DetallesCarrito :carrito="jsoncarro" :neto="this.totales.neto" :iva="this.totales.iva" :total="this.totales.total" />
 
