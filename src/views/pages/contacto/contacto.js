@@ -11,7 +11,7 @@ import {
     maxLength,
     minLength
 } from "@vuelidate/validators";
-import { idText } from 'typescript'
+// import { idText } from 'typescript'
 
 export default {
     components: {
